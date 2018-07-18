@@ -1,6 +1,7 @@
 click==6.7
 docopt==0.6.2
 Flask==1.0.2
+Flask-SocketIO==3.0.1
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
@@ -8,5 +9,9 @@ pymongo==3.7.1
 pyqt-distutils==0.7.3
 PyQt5==5.11.2
 PyQt5-sip==4.19.12
+python-engineio==2.2.0
+python-socketio==2.0.0
 scapy==2.4.0
+six==1.11.0
+tornado==5.1
 Werkzeug==0.14.1
