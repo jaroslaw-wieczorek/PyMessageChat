@@ -1,0 +1,118 @@
+/* Base */
+body
+{
+    background: linear-gradient(to left, white 50%, #3f19b1 50%);
+}
+
+.wrapper
+{
+    max-width: 400px;
+    margin: auto;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+/* Form styles */
+.signUp,
+.signIn
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    max-width: 400px;
+    height: 337px;
+    margin: auto;
+    padding: 60px 0;
+
+    background: white;
+    box-shadow: 0 0 15px #333;
+}
+
+.signIn
+{
+    display: none;
+
+    height: 173px;
+}
+
+
+form div
+{
+    width: 100%;
+    
+    margin-bottom: 35px;
+}
+
+/* Input text field styles */
+
+input
+{
+    font-size: 1.1em;
+    font-weight: normal;
+
+    display: block;
+
+    width: 85%;
+    margin: 0 auto;
+    height:45px;
+
+    -webkit-transition: box-shadow .3s;
+            transition: box-shadow .3s;
+            transition: .25s linear;
+    text-align: center;
+
+    color: #3f19b1;
+    border: 0;
+    outline: 0;
+    background: #eee;
+    box-shadow: 0 0 0 2px transparent;
+}
+
+input:focus
+{
+    animation: boxShadow .3s backwards;
+
+    box-shadow: 0 0 0 2px #3f19b1;
+}
+
+/* Button styles  */
+
+.btn
+{
+    float: right;
+
+    width: 50%;
+    height: auto;
+    padding-top: 23px;
+    padding-bottom: 23px;
+
+    cursor: pointer;
+
+    border: 0;
+    border-top: 1px solid #eee;
+    outline: 0;
+}
+
+.btn-member,
+.btn-back
+{
+    font-size: .9em;
+
+    color: #333;
+    background: white;
+}
+
+.btn-sign-up,
+.btn-log-in
+{
+    font-size: 1.2em;
+    font-weight: bold;
+
+    color: white;
+    background: #3f19b1;
+}
+
