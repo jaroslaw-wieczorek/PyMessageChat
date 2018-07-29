@@ -8,8 +8,10 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 app = QApplication(sys.argv)
 
+url = "https://arkadiusz-wieczorek.pl/"
+
 web = QWebEngineView()
-web.load(QUrl("http://duckduckgo.com"))
+web.load(QUrl(url))
 web.show()
 
 sys.exit(app.exec_())
