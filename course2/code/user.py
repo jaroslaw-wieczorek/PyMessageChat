@@ -7,10 +7,11 @@ from flask_restful import Resource
 
 class User:
 
-    def __init__(self, _db_id, _id, username, password):
+    def __init__(self, _db_id, _id, email, username, password):
         # used _id because id is python keyword than self.id.
         self.db_id = _db_id
         self.id = _id
+        self.email = email
         self.username = username
         self.password = password
 
@@ -51,6 +52,11 @@ class User:
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
+    parser.add_argument('email',
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank")
+
     parser.add_argument('username',
                         type=str,
                         required=True,
@@ -72,10 +78,11 @@ class UserRegister(Resource):
         data.update({"user_id": data['username'] + "_id"})
         #
         #
-        query = "INSERT INTO users (id, user_id, username, password) \
-                 VALUES (NULL, ?, ?, ?)"
+        query = "INSERT INTO users (id, user_id, email, username, password) \
+                 VALUES (NULL,?, ?, ?, ?)"
 
         cursor.execute(query, (data['user_id'],
+                               data['email'],
                                data['username'],
                                data['password'])
                        )
