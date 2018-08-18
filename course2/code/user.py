@@ -7,9 +7,8 @@ from flask_restful import Resource
 
 class User:
 
-    def __init__(self, _db_id, _id, email, username, password):
+    def __init__(self, _id,  email, username, password):
         # used _id because id is python keyword than self.id.
-        self.db_id = _db_id
         self.id = _id
         self.email = email
         self.username = username
@@ -70,22 +69,23 @@ class UserRegister(Resource):
     def post(self):
         data = UserRegister.parser.parse_args()
 
+        if User.find_by_username(data['username']):
+            return {"message": "A user with that username already exists"}, 400
+
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
         # Create user ID for app
         #
-        data.update({"user_id": data['username'] + "_id"})
         #
         #
-        query = "INSERT INTO users (id, user_id, email, username, password) \
-                 VALUES (NULL,?, ?, ?, ?)"
+        query = "INSERT INTO users (id, email, username, password) \
+                 VALUES (NULL, ?, ?, ?)"
 
-        cursor.execute(query, (data['user_id'],
-                               data['email'],
-                               data['username'],
-                               data['password'])
-                       )
+        cursor.execute(query, (data['email'],
+                       data['username'],
+                       data['password']))
+
 
         connection.commit()
         connection.close()
