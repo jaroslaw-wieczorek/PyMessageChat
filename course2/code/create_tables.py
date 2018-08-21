@@ -12,7 +12,7 @@ cursor = connection.cursor()
 #			   """
 
 
-create_table_users = """	CREATE TABLE users (
+create_table_users = """CREATE TABLE users (
 						user_id integer PRIMARY KEY AUTOINCREMENT,
 						username text, 
 						password text,

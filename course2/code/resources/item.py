@@ -10,12 +10,12 @@ from flask_jwt import jwt_required
 
 
 
-class Channel(Resource):
+class Item(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('name',
-                        type=str,
+    parser.add_argument('price',
+                        type=float,
                         required=True,
-                        help="")
+                        help="i")
 
 
     @jwt_required()
@@ -49,6 +49,6 @@ class Channel(Resource):
         items = list(filter(lambda x: x['name'] != name, items))
         return {'message': 'Item deleted'}
 
-class ChannelList(Resource):
+class ItemList(Resource):
     def get(self):
-        return {'Channels': channels}, 200
+        return {'items': items}, 200

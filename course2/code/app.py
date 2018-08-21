@@ -12,10 +12,11 @@ from flask_jwt import jwt_required
 from security import authenticate
 from security import identity
 
-from user import UserRegister
-from item import Item, ItemList
-from message import Message, MessageList
-from channell import ChannelList, Channel
+from models.message import MessageModel
+
+from resources.user import UserList, UserRegister
+from resources.message import MessageList, ResourceMessage
+from resources.channel import ChannelList, ResourceChannel
 
 # nadanie nazwy pliku
 app = Flask(__name__)
@@ -26,16 +27,22 @@ api = Api(app)
 
 jwt = JWT(app, authenticate, identity) #/auth
 
-api.add_resource(Item, '/item/<string:name>')
-api.add_resource(ItemList, '/items')
+#api.add_resource(Item, '/item/<string:name>')
+#api.add_resource(ItemList, '/items')
+
+
 api.add_resource(UserRegister, '/register')
+api.add_resource(UserList, '/users/')
 
-api.add_resource(Channel, '/channel/<int:channel_id>')
-api.add_resource(ChannelList, '/channels')
 
-api.add_resource(Message, '/channel/<int:channel_id>/<int:message_id>')
-api.add_resource(MessageList, '/channel/<int:channel_id>/')
-app.run(port=5000, debug=True)
+api.add_resource(ResourceChannel, '/channel/')
+api.add_resource(ChannelList, '/channels/')
+
+api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
+api.add_resource(MessageList, '/messages/')
+
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
 
 """
 # Store app
