@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html {
+    height: 100%;
+}
+body {
+    margin: 0 auto;
+    max-width: auto;
+    padding: 0 20px;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+}
+
+.container {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.darker {
+    border-color: #ccc;
+    background-color: #ddd;
+}
+
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.container img {
+    float: left;
+    max-width: 60px;
+    width: 100%;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+
+.container img.right {
+    float: right;
+    margin-left: 20px;
+    margin-right:0;
+}
+
+.time-right {
+    float: right;
+    color: #aaa;
+}
+
+.time-left {
+    float: left;
+    color: #999;
+}
+
+.row {
+    height: 100%;
+}
+
+.chatcolumn {
+    float: left;
+    width: 65%;
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 0.4em;
+}
+.msglist{
+    height: 100%;
+    box-sizing: border-box;
+
+}
+.channellistcolumn {
+    float: left;
+    width: 20%;
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 0.4em;
+}
+.userlistcolumn {
+    float: right;
+    width: 15%;
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding: 0.4em;
+}
+</style>
+</head>
+
+<body>
+ <div class="row" style="height: 10%; ! important;">
+       <div class="channellistcolumn" style="overflow: hidden; ! important;">
+                 <h2>CHANNEL LIST</h2>
+       </div>
+     <div class="chatcolumn" style="overflow: hidden; ! important;">
+               <h2>CHAT</h2>
+       </div>
+     <div class="userlistcolumn" style="overflow: hidden; ! important;">
+               <h2>USER LIST</h2>
+       </div>
+ </div>
+ <div class="row">
+  <div class="channellistcolumn">
+      <div class="container darker">
+        <p>Channel1</p>
+      </div>
+            <div class="container darker">
+        <p>Channel2</p>
+      </div>
+            <div class="container darker">
+        <p>Channel3</p>
+      </div>
+            <div class="container darker">
+        <p>Channel4</p>
+      </div>
+      <div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div><div class="container darker">
+        <p>Channel4</p>
+      </div>
+  </div>
+  <div class="chatcolumn">
+
+<script>
+let url = 'https://example.com';
+var msgs;
+fetch(url)
+.then(res => res.json())
+.then(out) => {msgs=JSON.parse(out)}
+.catch(err => { throw err });
+
+for (i=0;i<msgs.length;i++)
+{
+document.write("<div class=\"container\"><img src=\"\" alt=\"Avatar\" style=\"width:100%;\"><p>" + scripts[i] + "</p><span class=\"time-right\">11:00</span></div>");
+}
+</script>
+
+//example messages
+<div class="container darker">
+  <img src="" alt="Avatar" class="right" style="width:100%;">
+  <p>TTESTET</p>
+  <span class="time-left">11:01</span>
+</div>
+
+<div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div>
+<div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div><div class="container">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TESTDS</p>
+  <span class="time-right">11:02</span>
+</div>
+<div class="container darker">
+  <img src="" alt="Avatar" style="width:100%;">
+  <p>TTEST</p>
+  <span class="time-left">11:05</span>
+</div>
+  </div>
+     <div class="userlistcolumn">
+         <div class="container darker">
+             <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User1</p>
+      </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User2</p>
+      </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User3</p>
+      </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+                     <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+            <div class="container darker">
+                <img src="" alt="Avatar" class="right" style="width:100%;">
+        <p>User4</p>
+  </div>
+
+</div>
+
+ </div>
+</body>
+</html>
