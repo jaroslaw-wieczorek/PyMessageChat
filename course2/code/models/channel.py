@@ -13,12 +13,13 @@ class ChannelModel:
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = """SELECT * FROM channels where name=?"""
+        query = "SELECT * FROM channels where name=?"
         result = cursor.execute(query, (name,))
         row = result.fetchone()
 
         if row:
             channel = cls(*row)
+            
         else:
             channel = None
 
@@ -45,12 +46,13 @@ class ChannelModel:
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = """SELECT * FROM channels where name=?"""
+        query = "SELECT * FROM channels where name=?"
         result = cursor.execute(query, (name,))
         row = result.fetchone()
-
+        print(row)
         if row:
             channel = cls(*row)
+            print(channel)
         else:
             channel = None
 

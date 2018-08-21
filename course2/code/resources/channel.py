@@ -12,18 +12,17 @@ from models.channel import ChannelModel
 
 
 class ResourceChannel(Resource):
-    
     parser = reqparse.RequestParser()
     parser.add_argument('name',
                         type=str,
                         required=True,
                         help='This field cannot be blank')
-    
+
     # @jwt_required()
     def get(self, name):
-        channel = self.find_by_name(name)
-        if channel:
-            return channel
+        channel = ChannelModel.find_by_name(name)
+        if channel is not None:
+            return { 'channel_id': channel.id, 'name': channel.name }
         return {'message': 'Channel not found'}, 404
 
     def post(self):
@@ -48,14 +47,11 @@ class ResourceChannel(Resource):
 
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
-        print("looking for id of channel by name")
         result = ChannelModel.fing_id_by_name(data['name'])
-        print(result, file=sys.stderr)
+
         if result["channel_id"] is None:
-            print("Inside")
             return { 'message': 'Channel not exist!'}, 400
 
-        print(result, file=sys.stderr)
         query = "DELETE FROM messages WHERE channel_id=?"
         cursor.execute(query, (result['channel_id'],))
 
