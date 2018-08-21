@@ -35,7 +35,8 @@ api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users/')
 
 
-api.add_resource(ResourceChannel, '/channel/')
+api.add_resource(ResourceChannel, '/channel/<string:name>')
+
 api.add_resource(ChannelList, '/channels/')
 
 api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
