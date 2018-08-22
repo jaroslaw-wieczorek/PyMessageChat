@@ -19,7 +19,7 @@ class ChannelModel:
 
         if row:
             channel = cls(*row)
-            
+
         else:
             channel = None
 
