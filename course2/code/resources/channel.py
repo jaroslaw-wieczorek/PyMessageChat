@@ -21,8 +21,8 @@ class ResourceChannel(Resource):
     @jwt_required()
     def get(self, name):
         channel = ChannelModel.find_by_name(name)
-        if channel is not None:
-            return {'channel_id': channel.id, 'name': channel.name}
+        if channel:
+            return channel.json()
         return {'message': 'Channel not found'}, 404
 
     def post(self, name):
@@ -32,35 +32,36 @@ class ResourceChannel(Resource):
         #try:
         #    data = ResourceChannel.parser.parse_args()
         #except:
-        #    data = {}
+        #    channel = ChannelModel(name, data['id'])
 
-        item = {'name': name}
+        channel = ChannelModel(None, name)
 
         try:
-            ChannelModel.insert(item)
+            channel.insert()
         except Exception as err:
-            return {'message': 'An error occured inserting the item\n',
-                    'error': err.message}, 500
-        return {"message": "Channel created '{}' successfully.".format(item['name'])}, 201
+            return {'message': 'An error occured inserting the item\n', 'error': err.message}, 500
+        return channel.json(), 201
 
     def put(self, name):
         data = ResourceChannel.parser.parse_args()
 
         channel = ChannelModel.find_by_name(name)
-        update_channel = {'name': name, 'update_name': data['name']}
+        item_id = ChannelModel.find_id_by_name(name)
+
+        update_channel = ChannelModel(item_id['channel_id'], data['name'])
 
         # update_channel will be used to updated users in channels
         if channel is None:
             try:
-                ChannelModel.insert(update_channel)
+                update_channel.insert()
             except: 
                 return {'message': 'An error occurred inserting the item.'}, 500
         else:
             try:
-                ChannelModel.update(update_channel)
+                update_channel.update()
             except:
                 return {'message': 'An error occurred updating the item.'}, 500
-        return update_channel, 201
+        return update_channel.json()
 
    
     def delete(self, name):

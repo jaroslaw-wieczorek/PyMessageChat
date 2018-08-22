@@ -18,18 +18,15 @@ class ChannelModel:
         query = "SELECT * FROM channels where name=?"
         result = cursor.execute(query, (name,))
         row = result.fetchone()
+        connection.close()
 
         if row:
-            channel = cls(*row)
-
+            return cls(*row)
         else:
-            channel = None
-
-        connection.close()
-        return channel
+            return None
 
     @classmethod
-    def fing_id_by_name(cls, name):
+    def find_id_by_name(cls, name):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
@@ -78,25 +75,23 @@ class ChannelModel:
         connection.close()
         return channel
     
-    @classmethod
-    def insert(cls, item):
+    def insert(self):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
         query = "INSERT INTO channels VALUES(null, ?)"
-        cursor.execute(query, (item['name'], ))
+        cursor.execute(query, (self.name, ))
 
         connection.commit()
         connection.close()
 
-    @classmethod
-    def update(cls, item):
+    def update(self):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "UPDATE channels SET name=? WHERE name=?"
+        query = "UPDATE channels SET name=? WHERE channel_id=?"
 
-        cursor.execute(query, (item['update_name'], item['name']))
+        cursor.execute(query, (self.name, self.channel_id))
 
         connection.commit()
         connection.close()
