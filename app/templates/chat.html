@@ -181,15 +181,64 @@ function clickedchannel(nr) {
  alert("You clicked on channel nr:" + nr);
 }
 
-function addachannel(name) {
- alert("You clicked on channel nr:" + nr);
+function addachanneltolist(name) {
+    var chanlist  = document.getElementById("chanulisto"),
+        div    = document.createElement('div'),
+        text   = document.createElement('p');
+
+    text.innerHTML += name;
+    div.className  = 'container darker_channel';
+    div.onclick = function() { clickedchannel(name); };
+    div.appendChild(text);
+    chanlist.appendChild(div);
 }
-function addamsg(text,date,who,avatar) {
- alert("You clicked on channel nr:" + nr);
+
+function addamsgtolist(text,date,who,avatar) {
+    var msglist  = document.getElementById("msglisto"),
+            div    = document.createElement('div'),
+            img    = document.createElement('img'),
+            texto   = document.createElement('p'),
+            span   = document.createElement('span'),
+            name   = document.createElement('p');
+
+        img.src = avatar;
+        img.alt = "Avatar";
+        img.style = "width:100%;";
+        texto.innerHTML += text;
+        span.className = "time-right";
+        span.innerHTML += date;
+        name.innerHTML += who;
+
+        div.className  = 'container darker';
+
+        div.appendChild(img);
+        div.appendChild(name);
+        div.appendChild(texto);
+        div.appendChild(span);
+
+        msglist.appendChild(div);
+
 }
-function addauser(name,avatar) {
- alert("You clicked on channel nr:" + nr);
+
+function addausertolist(name,avatar) {
+            var usrlist  = document.getElementById("usrlistocolumn"),
+            div    = document.createElement('div'),
+            img    = document.createElement('img'),
+            nameo   = document.createElement('p');
+
+        img.src = avatar;
+        img.alt = "Avatar";
+        img.style = "width:100%;";
+        nameo.innerHTML += name;
+
+        div.className  = 'container darker';
+
+        div.appendChild(img);
+        div.appendChild(nameo);
+
+        usrlist.appendChild(div);
 }
+
 </script>
 <body>
  <div class="row" style="height: 12%; ! important;">
@@ -209,7 +258,7 @@ function addauser(name,avatar) {
          </div>     </div>
  </div>
  <div class="row">
-  <div class="channellistcolumn">
+  <div class="channellistcolumn" id="chanulisto">
       <div class="container darker_channel" onclick="clickedchannel(1)">
         <p>Channel1</p>
       </div>
@@ -308,9 +357,9 @@ function addauser(name,avatar) {
       </div>
   </div>
 
-  <div class="userlistcolumn">
+  <div class="userlistcolumn" id="usrlistocolumn">
          <div class="container darker">
-             <img src="https://memegenerator.net/img/instances/500x/36373023/lol-asd.jpg" alt="Avatar" class="right" style="width:100%;">
+             <img src="" alt="Avatar" class="right" style="width:100%;">
         <p>User1</p>
       </div>
             <div class="container darker">
