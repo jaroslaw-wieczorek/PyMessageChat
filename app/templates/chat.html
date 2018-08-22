@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 html {
     height: 100%;
@@ -65,20 +66,36 @@ body {
 .chatcolumn {
     float: left;
     width: 65%;
-    height: 100%;
-    overflow: auto;
+    height: 90%;
     box-sizing: border-box;
     padding: 0.4em;
 }
-.msglist{
-    height: 100%;
+.inputbox {
+    height: 10%;
+    overflow: hide;
+    width: 100%;
     box-sizing: border-box;
+    padding: 0.4em;
 
+}
+input[type=text] {
+    width: 100%;
+    height: 95%;
+    background-color: #ddd;
+    color: black;
+    margin: 2px 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.msglist{
+    height: 90%;
+    box-sizing: border-box;
+    overflow: auto;
 }
 .channellistcolumn {
     float: left;
     width: 20%;
-    height: 100%;
+    height: 90%;
     overflow: auto;
     box-sizing: border-box;
     padding: 0.4em;
@@ -86,78 +103,151 @@ body {
 .userlistcolumn {
     float: right;
     width: 15%;
-    height: 100%;
+    height: 90%;
     overflow: auto;
     box-sizing: border-box;
     padding: 0.4em;
 }
+.magichide{
+    height: 100%;
+    width: 100%;
+}
+.magichide:hover {
+    display:none;
+}
+.hoverWrapper:hover #hoverShow1 {
+ display: block;
+ float: right;
+}
+
+.hoverWrapper #hoverShow1 {
+    float: right;
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+.hoverWrapper:hover #hoverShow2 {
+ display: block;
+ float: right;
+}
+
+.hoverWrapper #hoverShow2 {
+    float: right;
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+.darker_channel {
+    border-color: #ccc;
+    background-color: #ddd;
+}
+.darker_channel:hover {
+    border-color: #ccc;
+    background-color: #999999;
+}
 </style>
 </head>
+<script>
+function addchannel() {
+ var channelname = prompt("Please enter the channel name:", "Lemons");
 
+    if (channelname == null || channelname == "") {
+        txt = "User cancelled the prompt.";
+    } else {
+        txt = channelname;
+    }
+}
+function adduser() {
+ var username = prompt("Please enter the name of the person you want to invite:", "Lemon_God");
+
+    if (username == null || username == "") {
+        txt = "User cancelled the prompt.";
+    } else {
+        txt = username;
+    }
+}
+window.onload = function(){
+
+document.getElementById('inputbex').onkeydown = function(e){
+   if(e.keyCode == 13){
+    alert(document.getElementById("msgtext").value);
+    var element = document.getElementById("msglisto");
+    element.scrollTop = element.scrollHeight - element.clientHeight;
+    document.getElementById("msgtext").value = "";
+  }
+};
+}
+function clickedchannel(nr) {
+ alert("You clicked on channel nr:" + nr);
+}
+
+function addachannel(name) {
+ alert("You clicked on channel nr:" + nr);
+}
+function addamsg(text,date,who,avatar) {
+ alert("You clicked on channel nr:" + nr);
+}
+function addauser(name,avatar) {
+ alert("You clicked on channel nr:" + nr);
+}
+</script>
 <body>
- <div class="row" style="height: 10%; ! important;">
-       <div class="channellistcolumn" style="overflow: hidden; ! important;">
-                 <h2>CHANNEL LIST</h2>
-       </div>
+ <div class="row" style="height: 12%; ! important;">
+     <div class="channellistcolumn" style="overflow: hidden; ! important;">
+         <div class="hoverWrapper">
+            <div id="hoverShow1"><button onclick="addchannel()" class="w3-button w3-xlarge w3-circle w3-green">+</button></div>
+            <h2>CHANNEL LIST</h2>
+         </div>
+     </div>
      <div class="chatcolumn" style="overflow: hidden; ! important;">
-               <h2>CHAT</h2>
-       </div>
+         <h2>MESSAGES</h2>
+     </div>
      <div class="userlistcolumn" style="overflow: hidden; ! important;">
-               <h2>USER LIST</h2>
-       </div>
+<div    class="hoverWrapper">
+            <div id="hoverShow2"><button onclick="adduser()" class="w3-button w3-xlarge w3-circle w3-green">+</button></div>
+            <h2>USER LIST</h2>
+         </div>     </div>
  </div>
  <div class="row">
   <div class="channellistcolumn">
-      <div class="container darker">
+      <div class="container darker_channel" onclick="clickedchannel(1)">
         <p>Channel1</p>
       </div>
-            <div class="container darker">
+            <div class="container darker_channel">
         <p>Channel2</p>
       </div>
-            <div class="container darker">
+            <div class="container darker_channel">
         <p>Channel3</p>
       </div>
-            <div class="container darker">
+            <div class="container darker_channel">
         <p>Channel4</p>
       </div>
-      <div class="container darker">
+      <div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
-      </div><div class="container darker">
+      </div><div class="container darker_channel">
         <p>Channel4</p>
       </div>
   </div>
+
   <div class="chatcolumn">
 
-<script>
-let url = 'https://example.com';
-var msgs;
-fetch(url)
-.then(res => res.json())
-.then(out) => {msgs=JSON.parse(out)}
-.catch(err => { throw err });
-
-for (i=0;i<msgs.length;i++)
-{
-document.write("<div class=\"container\"><img src=\"\" alt=\"Avatar\" style=\"width:100%;\"><p>" + scripts[i] + "</p><span class=\"time-right\">11:00</span></div>");
-}
-</script>
-
+    <div class="msglist" id="msglisto">
 //example messages
 <div class="container darker">
   <img src="" alt="Avatar" class="right" style="width:100%;">
@@ -213,9 +303,14 @@ document.write("<div class=\"container\"><img src=\"\" alt=\"Avatar\" style=\"wi
   <span class="time-left">11:05</span>
 </div>
   </div>
-     <div class="userlistcolumn">
+    <div class="inputbox" id="inputbex">
+              <input type="text" id="msgtext" name="msgtexto" placeholder="Say something!">
+      </div>
+  </div>
+
+  <div class="userlistcolumn">
          <div class="container darker">
-             <img src="" alt="Avatar" class="right" style="width:100%;">
+             <img src="https://memegenerator.net/img/instances/500x/36373023/lol-asd.jpg" alt="Avatar" class="right" style="width:100%;">
         <p>User1</p>
       </div>
             <div class="container darker">
@@ -278,5 +373,6 @@ document.write("<div class=\"container\"><img src=\"\" alt=\"Avatar\" style=\"wi
 </div>
 
  </div>
+
 </body>
 </html>

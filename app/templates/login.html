@@ -15,7 +15,7 @@
             {{ form.hidden_tag() }}
     <div class="signUp">
 
-      <form action="index.html" method="post">
+      <form action="chat.html" method="post">
           <div>
             <input required type="text" name="user_name" id="name" placeholder="Username">
 
@@ -35,7 +35,7 @@
       </form>
     </div>
     <div class="signIn">
-        <form action="index.html" method="post">
+        <form action="chat.html" method="post">
 
             <div>
             {{ form.login(placeholder="Username") }} {% for error in form.login.errors %}{{ error }}{% endfor %}<br>
