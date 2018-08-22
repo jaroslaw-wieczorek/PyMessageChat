@@ -3,10 +3,12 @@ import sqlite3
 
 class ChannelModel:
 
-    def __init__(self, _id, name):
-        self.id = _id
+    def __init__(self, _channel_id, name):
+        self.channel_id = _channel_id
         self.name = name
 
+    def json(self):
+        return {'channel_id': self.channel_id, 'name': self.name}
 
     @classmethod
     def find_by_name(cls, name):
@@ -16,18 +18,15 @@ class ChannelModel:
         query = "SELECT * FROM channels where name=?"
         result = cursor.execute(query, (name,))
         row = result.fetchone()
+        connection.close()
 
         if row:
-            channel = cls(*row)
-
+            return cls(*row)
         else:
-            channel = None
-
-        connection.close()
-        return channel
+            return None
 
     @classmethod
-    def fing_id_by_name(cls, name):
+    def find_id_by_name(cls, name):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
@@ -75,3 +74,24 @@ class ChannelModel:
 
         connection.close()
         return channel
+    
+    def insert(self):
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+
+        query = "INSERT INTO channels VALUES(null, ?)"
+        cursor.execute(query, (self.name, ))
+
+        connection.commit()
+        connection.close()
+
+    def update(self):
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+
+        query = "UPDATE channels SET name=? WHERE channel_id=?"
+
+        cursor.execute(query, (self.name, self.channel_id))
+
+        connection.commit()
+        connection.close()
