@@ -37,7 +37,7 @@ class ResourceChannel(Resource):
         item = {'name': name}
 
         try:
-            ResourceChannel.insert(item)
+            ChannelModel.insert(item)
         except Exception as err:
             return {'message': 'An error occured inserting the item\n',
                     'error': err.message}, 500
@@ -52,39 +52,17 @@ class ResourceChannel(Resource):
         # update_channel will be used to updated users in channels
         if channel is None:
             try:
-                self.insert(update_channel)
+                ChannelModel.insert(update_channel)
             except: 
                 return {'message': 'An error occurred inserting the item.'}, 500
         else:
             try:
-                self.update(update_channel)
+                ChannelModel.update(update_channel)
             except:
                 return {'message': 'An error occurred updating the item.'}, 500
         return update_channel, 201
 
-    @classmethod
-    def insert(cls, item):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        query = "INSERT INTO channels VALUES(null, ?)"
-        cursor.execute(query, (item['name'], ))
-
-        connection.commit()
-        connection.close()
-
-    @classmethod
-    def update(cls, item):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        query = "UPDATE channels SET name=? WHERE name=?"
-
-        cursor.execute(query, (item['update_name'], item['name']))
-
-        connection.commit()
-        connection.close()
-
+   
     def delete(self, name):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()

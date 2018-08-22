@@ -31,13 +31,18 @@ class ResourceMessage(Resource):
                         required=True,
                         help='This field cannot be blank')
 
-    parser.add_argument('user_id',
-                        type=int,
+    parser.add_argument('username',
+                        type=str,
                         required=True,
                         help='This field cannot be blank')
 
+    parser.add_argument('avatar',
+                        type=str,
+                        required=True,
+                        help='This filed cannot be blank')
 
-    # @jwt_required()
+
+    #@jwt_required()
     def get(self, message_id):
         message = self.find_by_id(message_id)
         if message:

@@ -3,10 +3,12 @@ import sqlite3
 
 class ChannelModel:
 
-    def __init__(self, _id, name):
-        self.id = _id
+    def __init__(self, _channel_id, name):
+        self.channel_id = _channel_id
         self.name = name
 
+    def json(self):
+        return {'channel_id': self.channel_id, 'name': self.name}
 
     @classmethod
     def find_by_name(cls, name):
@@ -75,3 +77,26 @@ class ChannelModel:
 
         connection.close()
         return channel
+    
+    @classmethod
+    def insert(cls, item):
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+
+        query = "INSERT INTO channels VALUES(null, ?)"
+        cursor.execute(query, (item['name'], ))
+
+        connection.commit()
+        connection.close()
+
+    @classmethod
+    def update(cls, item):
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+
+        query = "UPDATE channels SET name=? WHERE name=?"
+
+        cursor.execute(query, (item['update_name'], item['name']))
+
+        connection.commit()
+        connection.close()
