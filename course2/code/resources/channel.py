@@ -67,7 +67,7 @@ class ResourceChannel(Resource):
     def delete(self, name):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
-        result = ChannelModel.fing_id_by_name(name)
+        result = ChannelModel.find_id_by_name(name)
         print("RESULT:", result)
         if result["channel_id"] is None:
             return {'message': 'Channel not exist!'}, 400
