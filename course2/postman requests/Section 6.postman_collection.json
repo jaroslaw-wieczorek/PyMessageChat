@@ -1,0 +1,393 @@
+{
+	"info": {
+		"_postman_id": "babab1e0-fe57-4b02-8028-53af54d6c450",
+		"name": "Section 6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "35bc2b8f-b450-4b2a-9d4e-bd0cf5eb14e3",
+			"name": "[ USER CREATE ]/register",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"bob\",\n\t\"password\": \"1234\",\n\t\"email\": \"jaroslaw.wieczorek@sealcode.org\",\n\t\"picture\": \"No picture\",\n\t\"status\": \"offline\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				},
+				"description": "This will return one specific item, uniquely identified by its name. No two items may have the same name."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "8acf5c44-5c79-41d0-961d-2fe73043dec3",
+			"name": "[ AUTH USER ]/login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"bob\",\n\t\"password\": \"1234\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				},
+				"description": "This will return one specific item, uniquely identified by its name. No two items may have the same name."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "f78a76b2-54cb-48d7-87da-09dea1bc5ead",
+			"name": "[ CHANNELS ]/channels",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "con",
+						"value": ""
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:5000/channels",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channels"
+					]
+				},
+				"description": "This should return a list of items, each in JSON format."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "77c210b6-1197-4139-bf87-db234bf86119",
+			"name": "[ CHANNELS ]/channel/<string:name>",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MzQ5NzI4MTcsImlhdCI6MTUzNDk2OTIxNywibmJmIjoxNTM0OTY5MjE3LCJpZGVudGl0eSI6Mn0.ytZVK0ukUq359osmRzPF39XEzDOKtCfzRO3oFNnocH4"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:5000/channel/kanal_18",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channel",
+						"kanal_18"
+					]
+				},
+				"description": "This should return a list of items, each in JSON format."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "b573fed8-822d-4ee7-aa15-aa388e971fa2",
+			"name": "[ CHANNELS ]/channel/<string:name>",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"dupa\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/channel/kanal_18",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channel",
+						"kanal_18"
+					]
+				},
+				"description": "This will create a new item. If the item already exists, it will fail."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "57046472-b039-4e41-b795-773edb8fcfe4",
+			"name": "[ CHANNELS ]/channel/<string:name>",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"dupa\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/channel/kanal_4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channel",
+						"kanal_4"
+					]
+				},
+				"description": "This will create a new item. If the item already exists, it will fail."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "2c015a22-e54b-493d-8cb0-4a6075ebd7a2",
+			"name": "[ CHANNELS ]/channel/<string:name>",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:5000/channel/dupa",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channel",
+						"dupa"
+					]
+				},
+				"description": "This will return one specific item, uniquely identified by its name. No two items may have the same name."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "ab4f805f-cec1-44c5-85ea-218cc818d671",
+			"name": "[ MESSAGES ]/message/<string:channel_name> Copy",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"dupa\"\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/channel/kanal_4",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channel",
+						"kanal_4"
+					]
+				},
+				"description": "This will create a new item. If the item already exists, it will fail."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "b2f2bc4e-db6f-4dc0-badb-e87a05b7fb8f",
+			"name": "[ MESSAGES ]/channels Copy",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "con",
+						"value": ""
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:5000/channels",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channels"
+					]
+				},
+				"description": "This should return a list of items, each in JSON format."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "01928848-eba3-4df0-85fd-cd68d79d1fc2",
+			"name": "/item/<name>#/auth",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MzQ2MDM4OTUsImlhdCI6MTUzNDYwMzU5NSwibmJmIjoxNTM0NjAzNTk1LCJpZGVudGl0eSI6ImJvYl9pZCJ9.706gJ5JYLKm4FrwZtOmr9uYzOZSM28vSGa3Kr8pUNJI"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "http://127.0.0.1:5000/item/piano",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"item",
+						"piano"
+					]
+				},
+				"description": "This will return one specific item, uniquely identified by its name. No two items may have the same name. added auth token."
+			},
+			"response": []
+		},
+		{
+			"_postman_id": "7e6b4828-2a62-4c11-9c68-7086f1e38c4f",
+			"name": "/channel/<name>/<id>",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"content\": \"To jest moja nie oceniona wiadomość\",\n\t\"time\": \"2018-08-19 23:52:52.242316\",\n\t\"channel_id\": 1,\n\t\"user_id\": 1\n}"
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/channel/kanal_1/1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"channel",
+						"kanal_1",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

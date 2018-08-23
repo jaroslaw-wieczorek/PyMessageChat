@@ -42,9 +42,9 @@ class ResourceMessage(Resource):
                         help='This filed cannot be blank')
 
 
-    #@jwt_required()
+    @jwt_required()
     def get(self, message_id):
-        message = self.find_by_id(message_id)
+        message = MessageModel.find_by_id(message_id)
         if message:
             return message
         return {'message': 'Message not found'}, 404

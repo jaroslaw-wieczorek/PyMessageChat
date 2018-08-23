@@ -24,7 +24,7 @@ class UserRegister(Resource):
                         required=True,
                         help="This field cannot be blank")
 
-    parser.add_argument('picture',
+    parser.add_argument('avatar',
                         type=str,
                         required=True,
                         help="This field cannot be blank")
@@ -50,13 +50,13 @@ class UserRegister(Resource):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = """INSERT INTO users (user_id, username, password, email, picture, status) \
+        query = """INSERT INTO users (user_id, username, password, email, avatar, status) \
                  VALUES (null, ?, ?, ?, ?, ?)"""
 
         cursor.execute(query, (data['username'],
                                data['password'],
                                data['email'],
-                               data['picture'],
+                               data['avatar'],
                                data['status']))
 
         connection.commit()

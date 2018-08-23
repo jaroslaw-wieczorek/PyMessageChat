@@ -17,7 +17,7 @@ create_table_users = """CREATE TABLE users (
 						username text, 
 						password text,
 						email text, 
-						picture text, 
+						avatar text, 
 						status text);
 					"""
 
@@ -28,12 +28,13 @@ create_table_channels = """ CREATE TABLE channels (
 
 create_table_messages = """	CREATE TABLE messages (
 							message_id integer PRIMARY KEY AUTOINCREMENT,
+							channel_id integer, 
 							contents text,
 							time datetime,
-							channel_id integer, 
-							user_id integer, 
-							FOREIGN KEY(channel_id) REFERENCES channels(channel_id),
-							FOREIGN KEY(user_id) REFERENCES users(user_id));
+							username integer, 
+
+							FOREIGN KEY(channel_id) REFERENCES channels(channel_id));
+							
 						"""
 
 

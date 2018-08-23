@@ -29,7 +29,6 @@ api = Api(app)
 
 
 
-
 app.config['JWT_AUTH_URL_RULE'] = '/login'
 jwt = JWT(app, authenticate, identity_function)
 
@@ -50,13 +49,13 @@ app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users')
 
-#api.add_resource(ResourceChannel, '/channel')
+api.add_resource(ChannelList, '/channels')
 api.add_resource(ResourceChannel, '/channel/<string:name>')
 
-api.add_resource(ChannelList, '/channels')
-
+api.add_resource(MessageList, '/channel/<string:channel_name>/messages')
 api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
-api.add_resource(MessageList, '/messages/<string:channel_name>')
+
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
