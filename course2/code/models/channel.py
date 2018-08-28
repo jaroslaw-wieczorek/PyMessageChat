@@ -39,6 +39,13 @@ class ChannelModel:
             return {"channel_id": row[0]}
         return {"channel_id": None}
 
+    @classmethod
+    def get_id_by_name(cls, name):
+        connection = sqlite3.connect('data.db')
+        cursor = connection.cursor()
+
+        query = "SELECT * FROM channels where name=?"
+        result = cursor.execute(query, (name,))
 
     @classmethod
     def find_by_id(cls, name):
@@ -90,7 +97,6 @@ class ChannelModel:
         cursor = connection.cursor()
 
         query = "UPDATE channels SET name=? WHERE channel_id=?"
-
         cursor.execute(query, (self.name, self.channel_id))
 
         connection.commit()

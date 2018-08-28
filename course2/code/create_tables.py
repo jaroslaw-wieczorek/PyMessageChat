@@ -32,7 +32,7 @@ create_table_messages = """	CREATE TABLE messages (
 							contents text,
 							time datetime,
 							username integer, 
-
+							avatar text,
 							FOREIGN KEY(channel_id) REFERENCES channels(channel_id));
 							
 						"""
@@ -44,7 +44,6 @@ create_table_channels_users = """ CREATE TABLE channels_users (
 								  FOREIGN KEY(channel_id) REFERENCES channels(channel_id),
 								  FOREIGN KEY(user_id) REFERENCES users(user_id));
 							  """
-
 
 
 cursor.execute(create_table_users)
@@ -60,13 +59,24 @@ create_channel = """ INSERT INTO channels values(null, 'kanal_1');"""
 cursor.execute(create_channel)
 
 now = datetime.now()
-create_message = """ INSERT INTO messages values(null, 'treść pierwszej testowej wiadomości', ?, 1, 1);"""
-cursor.execute(create_message, (now,))
+create_message = """ INSERT INTO messages values(null, 1, 'treść pierwszej testowej wiadomości', ?, 1, "avatar");"""
+cursor.execute(create_message, (str(now),))
+
+
+now = datetime.now()
+create_message = """ INSERT INTO messages values(null, 1, 'treść drugiej testowej wiadomości', ?, 1, "avatar");"""
+cursor.execute(create_message, (str(now),))
 
 create_table_channels_users = """ INSERT INTO channels_users values(1,1)"""
 cursor.execute(create_table_channels_users)
 
 connection.commit()
-
 connection.close()
 
+connection = sqlite3.connect('data.db')
+cursor = connection.cursor()
+
+select_messages_query = """ SELECT * FROM messages WHERE channel_id =? """
+data = cursor.execute(select_messages_query, (1,))
+rows = data.fetchall()
+print(rows)

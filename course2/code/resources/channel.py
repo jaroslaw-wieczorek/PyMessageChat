@@ -18,7 +18,7 @@ class ResourceChannel(Resource):
                         required=False,
                         help='This field cannot be blank')
 
-    @jwt_required()
+    #@jwt_required()
     def get(self, name):
         channel = ChannelModel.find_by_name(name)
         if channel:

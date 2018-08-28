@@ -1,10 +1,12 @@
 import sqlite3
-
+from datetime import datetime
+from datetime import timedelta
 
 class MessageModel:
-    def __init__(self, _message_id, _channel_id, content, time, username, avatar):
+    def __init__(self, _message_id, _channel_id, content,
+                 time, username, avatar):
         self.message_id = _message_id
-        self.channel_id = channel_id
+        self.channel_id = _channel_id
         self.content = content
         self.time = time
         self.username = username
@@ -15,7 +17,8 @@ class MessageModel:
                 "channel_id": self.channel_id,
                 "content": self.content,
                 "time": self.time,
-                "user_name": self.user_name
+                "username": self.username,
+                "avatar": self.avatar
                 }
 
     @classmethod
@@ -35,22 +38,24 @@ class MessageModel:
         connection.close()
         return channel
 
+
     @classmethod
-    def find_by_id(cls, channel_id, message_id):
+    def find_by_channel_id_and_message_id(cls, channel_id, message_id):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "SELECT * FROM messages where channel_id=? and message_id=?"
+        query = "SELECT * FROM messages WHERE channel_id=? AND message_id=?"
         result = cursor.execute(query, (channel_id, message_id))
         row = result.fetchone()
 
         if row:
-            channel = cls(*row)
+            message = cls(*row)
         else:
-            channel = None
+            message = None
 
         connection.close()
-        return channel
+        return message
+
 
     def insert(self):
         connection = sqlite3.connect('data.db')
@@ -67,8 +72,8 @@ class MessageModel:
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = "UPDATE messages SET content=? and avatar=? WHERE channel_id=? AND message_id=?"
-        cursor.execute(query, (self.content, self.avatar, self.channel_id, self.message_id))
+        query = "UPDATE messages SET content=? WHERE channel_id=? AND message_id=? AND user_id=?"
+        cursor.execute(query, (self.content, self.channel_id, self.message_id, self.user_id))
 
         connection.commit()
         connection.close()
