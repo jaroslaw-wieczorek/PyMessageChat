@@ -28,7 +28,7 @@ app.secret_key = 'josie'
 api = Api(app)
 
 
-
+app.config['JSON_AS_ASCII'] = False
 app.config['JWT_AUTH_URL_RULE'] = '/login'
 jwt = JWT(app, authenticate, identity_function)
 
@@ -46,7 +46,9 @@ app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
 #app.config['JWT_AUTH_USERNAME_KEY'] = 'email'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users')

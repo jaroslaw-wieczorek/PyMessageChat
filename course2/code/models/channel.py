@@ -1,14 +1,14 @@
 from db import db
-
+import json
 
 class ChannelModel(db.Model):
 
     __tablename__ = 'channels'
 
     channel_id = db.Column(db.Integer, primary_key=True, unique=True)
-    name = db.Column(db.String(64), unique=True)
-    owners = db.Column(db.Binary)
-    users = db.Column(db.Binary)
+    name = db.Column(db.String(64, collation='utf-8'), unique=True)
+    owners = db.Column(db.Text)
+    users = db.Column(db.Text)
 
     def __init__(self, _channel_id, name, owners, users):
         self.channel_id = _channel_id
@@ -20,8 +20,8 @@ class ChannelModel(db.Model):
         return {
             'channel_id': self.channel_id,
             'name': self.name,
-            'owners': self.owners,
-            'users': self.users
+            'owners': json.loads(self.owners),
+            'users': json.loads(self.users)
         }
 
     @classmethod
@@ -48,7 +48,7 @@ class ChannelModel(db.Model):
 
     @classmethod
     def find_id_by_name(cls, name):
-        return cls.query.filter_by(name=name).channel_id
+        return cls.query.filter_by(name=name).first().channel_id
     """
     @classmethod
     def find_id_by_name(cls, name):

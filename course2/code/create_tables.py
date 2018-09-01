@@ -25,8 +25,8 @@ create_table_users = """CREATE TABLE users (
 create_table_channels = """ CREATE TABLE channels (
 							channel_id integer PRIMARY KEY AUTOINCREMENT,
 							name text,
-							owners blob,
-							users blob)
+							owners text,
+							users text)
 						"""
 
 create_table_messages = """CREATE TABLE messages (
@@ -57,15 +57,17 @@ cursor.execute(create_table_channels_users)
 create_user = """ INSERT INTO users values(null, 'jaro', '1234', 'jaroslaw.wieczorek@sealcode.org', 'None', 'offline');"""
 cursor.execute(create_user)
 
-json_users ={"user":"jaro"}
+json_users = ["jaro", "bob"]
 
 json_users_dump = json.dumps(json_users)
 
 
-json_owners = {"owner":"jaro"}
+json_owners = ["jaro", "bob"]
 
 
 json_owners_dump = json.dumps(json_owners)
+
+print(json_owners_dump)
 
 
 create_channel = """ INSERT INTO channels values(null, ?, ?, ?);"""
