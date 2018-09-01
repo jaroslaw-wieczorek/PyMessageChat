@@ -1,8 +1,22 @@
-import sqlite3
+from db import db
 from datetime import datetime
 from datetime import timedelta
+from models.channel import ChannelModel
 
-class MessageModel:
+class MessageModel(db.Model):
+
+    __tablename__ = "messages"
+
+    message_id = db.Column(db.String(64),
+                           primary_key=True,
+                           unique=True,
+                           nullable=False)
+
+    content = db.Column(db.Text, nullable=False)
+    time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    channel = db.relationship('ChannelModel', backref='channels')
+    channel_id = db.Column(db.String(64), db.ForeignKey('channels.channel_id'))
+
     def __init__(self, _message_id, _channel_id, content,
                  time, username, avatar):
         self.message_id = _message_id

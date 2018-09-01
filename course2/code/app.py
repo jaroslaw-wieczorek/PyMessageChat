@@ -45,19 +45,24 @@ def customized_response_handler(access_token, identity):
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
 #app.config['JWT_AUTH_USERNAME_KEY'] = 'email'
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users')
+
 
 api.add_resource(ChannelList, '/channels')
 api.add_resource(ResourceChannel, '/channel/<string:name>')
 
 api.add_resource(MessageList, '/channel/<string:channel_name>/messages')
-api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
+api.add_resource(ResourceMessage, '/channel/<string:channel_name>/messages')
 
-
+#api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
 
 if __name__ == '__main__':
+    from db import db
+    db.init_app(app)
     app.run(port=5000, debug=True)
 
 """

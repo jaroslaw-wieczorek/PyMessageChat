@@ -1,4 +1,5 @@
 import sqlite3
+import json
 from datetime import date, datetime
 
 connection = sqlite3.connect('data.db')
@@ -23,18 +24,19 @@ create_table_users = """CREATE TABLE users (
 
 create_table_channels = """ CREATE TABLE channels (
 							channel_id integer PRIMARY KEY AUTOINCREMENT,
-							name text);
+							name text,
+							owners blob,
+							users blob)
 						"""
 
-create_table_messages = """	CREATE TABLE messages (
+create_table_messages = """CREATE TABLE messages (
 							message_id integer PRIMARY KEY AUTOINCREMENT,
 							channel_id integer, 
-							contents text,
+							content text,
 							time datetime,
 							username integer, 
 							avatar text,
 							FOREIGN KEY(channel_id) REFERENCES channels(channel_id));
-							
 						"""
 
 
@@ -55,8 +57,19 @@ cursor.execute(create_table_channels_users)
 create_user = """ INSERT INTO users values(null, 'jaro', '1234', 'jaroslaw.wieczorek@sealcode.org', 'None', 'offline');"""
 cursor.execute(create_user)
 
-create_channel = """ INSERT INTO channels values(null, 'kanal_1');"""
-cursor.execute(create_channel)
+json_users ={"user":"jaro"}
+
+json_users_dump = json.dumps(json_users)
+
+
+json_owners = {"owner":"jaro"}
+
+
+json_owners_dump = json.dumps(json_owners)
+
+
+create_channel = """ INSERT INTO channels values(null, ?, ?, ?);"""
+cursor.execute(create_channel, ("kanal_1", json_owners_dump, json_users_dump))
 
 now = datetime.now()
 create_message = """ INSERT INTO messages values(null, 1, 'treść pierwszej testowej wiadomości', ?, 1, "avatar");"""

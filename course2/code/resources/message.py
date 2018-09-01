@@ -10,9 +10,10 @@ from flask_restful import Resource
 from flask_jwt import jwt_required
 
 from datetime import datetime
+from models.user import UserModel
 from models.message import MessageModel
 from models.channel import ChannelModel
-
+from resources.channel import ResourceChannel
 
 class ResourceMessage(Resource):
     parser = reqparse.RequestParser()
@@ -36,34 +37,37 @@ class ResourceMessage(Resource):
                         required=True,
                         help='This filed cannot be blank')
 
-
-    #@jwt_required()
+    # @jwt_required()
     def get(self, channel_name, message_id):
         data = ChannelModel.find_id_by_name(channel_name)
-        print(data)
-        message = MessageModel.find_by_channel_id_and_message_id(data["channel_id"], message_id)
+        message = MessageModel.find_by_channel_id_and_message_id(
+            data["channel_id"], message_id)
 
-        print(message)
         if message:
             return message.json(), 202
         return {'message': 'Message not found'}, 404
 
     def post(self, channel_name):
+        channel_info = ChannelModel.find_id_by_name(channel_name)
+        if channel_info is None:
+            ResourceChannel.put(channel_name)
+
         data = ResourceMessage.parser.parse_args()
 
-        channel_info = ChannelModel.find_id_by_name(channel_name)
-        if channel_info:
-            return {"message": "Channel not exist."}, 404
         print(channel_info)
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
         print(channel_info)
 
-        query = """INSERT INTO messages (message_id, channel_id, content, time, username, avatar) VALUES (null, ?, ?, ?, ?, ?)"""
+        query = """INSERT INTO messages (message_id, channel_id,
+                                         content, time,
+                                         username, avatar)
+                                         VALUES (null, ?, ?, ?, ?, ?)"""
+
         cursor.execute(query, (channel_info['channel_id'],
                                data['content'],
                                data['time'],
-                               data['user_id'],
+                               data['username'],
                                data['avatar'])
                        )
 
@@ -103,4 +107,3 @@ class MessageList(Resource):
                 messages.append(MessageModel(*row).json())
             return {"messages": messages}
         return {'message': 'Messages or channel not exists.'}, 404
-

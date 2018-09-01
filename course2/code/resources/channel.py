@@ -1,6 +1,7 @@
 import sys
 import sqlite3
 from flask import Flask
+import json
 from flask import jsonify
 
 from flask_restful import Api
@@ -18,9 +19,20 @@ class ResourceChannel(Resource):
                         required=False,
                         help='This field cannot be blank')
 
+    parser.add_argument('users',
+                        type=list,
+                        required=False,
+                        help='This field cannot be blank')
+
+    parser.add_argument('owners',
+                        type=list,
+                        required=False,
+                        help='This field cannot be blank')
+
     #@jwt_required()
     def get(self, name):
         channel = ChannelModel.find_by_name(name)
+        print(type(channel))
         if channel:
             return channel.json()
         return {'message': 'Channel not found'}, 404
@@ -29,15 +41,12 @@ class ResourceChannel(Resource):
         if ChannelModel.find_by_name(name):
             return {'message': "An channel with name '{}' already exists.".format(name)}, 400
 
-        #try:
-        #    data = ResourceChannel.parser.parse_args()
-        #except:
-        #    channel = ChannelModel(name, data['id'])
+        data = ChannelModel.parser.parse_args()
 
-        channel = ChannelModel(None, name)
+        channel = ChannelModel(None, name, data["owners"], data["users"])
 
         try:
-            channel.insert()
+            channel.save_to_db()
         except Exception as err:
             return {'message': 'An error occured inserting the item\n', 'error': err.message}, 500
         return channel.json(), 201
@@ -46,41 +55,21 @@ class ResourceChannel(Resource):
         data = ResourceChannel.parser.parse_args()
 
         channel = ChannelModel.find_by_name(name)
-        item_id = ChannelModel.find_id_by_name(name)
-
-        update_channel = ChannelModel(item_id['channel_id'], data['name'])
 
         # update_channel will be used to updated users in channels
         if channel is None:
-            try:
-                update_channel.insert()
-            except: 
-                return {'message': 'An error occurred inserting the item.'}, 500
+            channel = ChannelModel(data['name'], data['owners'], data['users'])
         else:
-            try:
-                update_channel.update()
-            except:
-                return {'message': 'An error occurred updating the item.'}, 500
-        return update_channel.json()
+            channel.name = name
+            channel.owners = data['owners']
+            channel.users = data['users']
+        channel.save_to_db()
+        return channel.json()
 
-   
     def delete(self, name):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        result = ChannelModel.find_id_by_name(name)
-        print("RESULT:", result)
-        if result["channel_id"] is None:
-            return {'message': 'Channel not exist!'}, 400
-
-        query = "DELETE FROM messages WHERE channel_id=?"
-        cursor.execute(query, (result['channel_id'],))
-
-        query = "DELETE FROM channels WHERE channel_id=?"
-        cursor.execute(query, (result['channel_id'],))
-
-        connection.commit()
-        connection.close()
-
+        channel = ChannelModel.find_by_name(name)
+        if channel:
+            channel.delete_from_db()
         return {'message': 'Channel deleted'}, 201
 
 
@@ -95,7 +84,7 @@ class ChannelList(Resource):
         channels = []
 
         for row in result:
-            channels.append({'channel_id': row[0], 'name': row[1]})
+            channels.append({'channel_id': row[0], 'name': row[1], 'owners': json.loads(row[2]), 'users': json.loads(row[3])})
         connection.close()
 
         return {'channels': channels}, 200
