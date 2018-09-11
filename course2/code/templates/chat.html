@@ -168,6 +168,8 @@ function adduser() {
 }
 window.onload = function(){
   removechannellist();
+  removemsglist();
+  removeuserlist();
   httpGetAsync('http://127.0.0.1:5000/channels', loadmsgs);
 
   document.getElementById('inputbex').onkeydown = function(e){
@@ -200,8 +202,9 @@ function httpGetAsync(theUrl, callback)
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
     xmlHttp.send(null);
 }
-function clickedchannel(nr) {
- alert("You clicked on channel nr:" + nr);
+function clickedchannel(name) {
+ httpGetAsync('http://127.0.0.1:5000/channel/' + name + '/messages', loadmsgs);
+
 }
 
 function addachanneltolist(name) {
