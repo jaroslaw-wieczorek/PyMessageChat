@@ -168,14 +168,39 @@ function adduser() {
 }
 window.onload = function(){
 
-document.getElementById('inputbex').onkeydown = function(e){
+  httpGetAsync('127.0.0.1:5000/channels', loadmsgs);
+
+    document.getElementById('inputbex').onkeydown = function(e){
    if(e.keyCode == 13){
     alert(document.getElementById("msgtext").value);
     var element = document.getElementById("msglisto");
     element.scrollTop = element.scrollHeight - element.clientHeight;
     document.getElementById("msgtext").value = "";
   }
+
+
 };
+}
+
+function loadmsgs(jsonstring)
+{
+    var obj = JSON.parse(jsonstring);
+    for (var i = 0; i < obj.channel.length; i++) {
+        alert(channel.d[i].name);
+    }
+}
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+ alert(theUrl);
+
+    xmlHttp.send(null);
 }
 function clickedchannel(nr) {
  alert("You clicked on channel nr:" + nr);
@@ -259,6 +284,9 @@ function removechannellist(){
     }
 
 }
+
+
+
 </script>
 <body>
  <div class="row" style="height: 12%; ! important;">
