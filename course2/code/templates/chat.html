@@ -167,7 +167,7 @@ function adduser() {
     }
 }
 window.onload = function(){
-
+  removechannellist();
   httpGetAsync('http://127.0.0.1:5000/channels', loadmsgs);
 
   document.getElementById('inputbex').onkeydown = function(e){
@@ -184,10 +184,9 @@ window.onload = function(){
 
 function loadmsgs(jsonstring)
 {
-    alert("huh");
     var obj = JSON.parse(jsonstring);
-    for (var i = 0; i < obj.channel.length; i++) {
-        alert(channel.d[i].name);
+    for (var i = 0; i < obj.channels.length; i++) {
+        addachanneltolist(obj.channels[i].name);
     }
 }
 
