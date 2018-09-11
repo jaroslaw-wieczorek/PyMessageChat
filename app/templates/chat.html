@@ -238,7 +238,27 @@ function addausertolist(name,avatar) {
 
         usrlist.appendChild(div);
 }
+function removeuserlist(){
+    var myNode = document.getElementById("usrlistocolumn");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
 
+}
+function removemsglist(){
+    var myNode = document.getElementById("msglisto");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+
+}
+function removechannellist(){
+    var myNode = document.getElementById("chanulisto");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+
+}
 </script>
 <body>
  <div class="row" style="height: 12%; ! important;">
