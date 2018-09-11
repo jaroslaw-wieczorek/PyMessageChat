@@ -168,10 +168,10 @@ function adduser() {
 }
 window.onload = function(){
 
-  httpGetAsync('127.0.0.1:5000/channels', loadmsgs);
+  httpGetAsync('http://127.0.0.1:5000/channels', loadmsgs);
 
-    document.getElementById('inputbex').onkeydown = function(e){
-   if(e.keyCode == 13){
+  document.getElementById('inputbex').onkeydown = function(e){
+  if(e.keyCode == 13){
     alert(document.getElementById("msgtext").value);
     var element = document.getElementById("msglisto");
     element.scrollTop = element.scrollHeight - element.clientHeight;
@@ -184,6 +184,7 @@ window.onload = function(){
 
 function loadmsgs(jsonstring)
 {
+    alert("huh");
     var obj = JSON.parse(jsonstring);
     for (var i = 0; i < obj.channel.length; i++) {
         alert(channel.d[i].name);
@@ -198,8 +199,6 @@ function httpGetAsync(theUrl, callback)
             callback(xmlHttp.responseText);
     }
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
- alert(theUrl);
-
     xmlHttp.send(null);
 }
 function clickedchannel(nr) {
