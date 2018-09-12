@@ -2,7 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import render_template
 
-
+#from flask.ext.hashing import Hashing
 from flask_restful import Api
 from flask_restful import Resource
 
@@ -10,6 +10,14 @@ from flask_restful import Resource
 from flask_jwt import JWT
 
 from flask_jwt import jwt_required
+
+from flask_jwt_extended import get_raw_jwt
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_refresh_token
+from flask_jwt_extended import jwt_refresh_token_required
+
 
 from security import authenticate
 from security import identity as identity_function
@@ -26,7 +34,6 @@ from datetime import timedelta
 app = Flask(__name__)
 app.secret_key = 'josie'
 api = Api(app)
-
 
 app.config['JSON_AS_ASCII'] = False
 app.config['JWT_AUTH_URL_RULE'] = '/login'
@@ -55,10 +62,10 @@ api.add_resource(UserList, '/users')
 
 
 api.add_resource(ChannelList, '/channels')
-api.add_resource(ResourceChannel, '/channel/<string:name>')
+api.add_resource(ResourceChannel, '/channels/<string:name>')
 
-api.add_resource(MessageList, '/channel/<string:channel_name>/messages')
-api.add_resource(ResourceMessage, '/channel/<string:channel_name>/messages')
+api.add_resource(MessageList, '/channels/<string:channel_name>/messages')
+api.add_resource(ResourceMessage, '/channels/<string:channel_name>/message')
 
 #api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
 

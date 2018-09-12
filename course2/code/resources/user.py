@@ -50,7 +50,7 @@ class UserRegister(Resource):
         connection = sqlite3.connect('data.db')
         cursor = connection.cursor()
 
-        query = """INSERT INTO users (user_id, username, password, email, avatar, status) \
+        query = """INSERT INTO users (id, username, password, email, avatar, status) \
                  VALUES (null, ?, ?, ?, ?, ?)"""
 
         cursor.execute(query, (data['username'],

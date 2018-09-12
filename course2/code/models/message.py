@@ -1,21 +1,23 @@
 from db import db
+import json
 from datetime import datetime
 from datetime import timedelta
+from json_encoder import DateEncoder
 from models.channel import ChannelModel
+
 
 class MessageModel(db.Model):
 
     __tablename__ = "messages"
 
-    message_id = db.Column(db.String(64),
-                           primary_key=True,
+    message_id = db.Column(db.String(64), primary_key=True,
                            unique=True,
                            nullable=False)
 
     content = db.Column(db.Text, nullable=False)
     time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    channel = db.relationship('ChannelModel', backref='channels')
-    channel_id = db.Column(db.String(64), db.ForeignKey('channels.channel_id'))
+    #channel = db.relationship('ChannelModel', backref='channels')
+    channel_id = db.Column(db.String(64), nullable=False)#, db.ForeignKey('channels.channel_id'))
     username = db.Column(db.String(64), nullable=False)
     avatar = db.Column(db.Text, nullable=False)
 
@@ -32,56 +34,32 @@ class MessageModel(db.Model):
         return {"message_id": self.message_id,
                 "channel_id": self.channel_id,
                 "content": self.content,
-                "time": self.time,
+                "time": json.dumps(str(self.time), cls=DateEncoder),
                 "username": self.username,
                 "avatar": self.avatar
                 }
 
+    @classmethod
+    def find_last_msg_by_channel_id(cls, channel_id):
+        return cls.query.filter_by(channel_id=channel_id).last()
 
     @classmethod
-    def find_by_name(cls, name):
-        return cls.query.filter_by(name=name).first()
+    def find_msgs_by_channel_id(cls, channel_id):
+        return cls.query.filter_by(channel_id=channel_id).all()
+
+    @classmethod
+    def find_msg_by_id_and_channel_id(cls, msg_id, channel_id):
+        return cls.query.filter_by(channel_id=channel_id).last()
 
     @classmethod
     def find_by_channel(cls, channel_name):
         channel_id = ChannelModel.find_id_by_name(channel_name)
         return cls.query.filter_by(channel_id=channel_id).all()
 
-    @classmethod
-    def find_by_channel_id_and_message_id(cls, channel_id, message_id):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
-        query = "SELECT * FROM messages WHERE channel_id=? AND message_id=?"
-        result = cursor.execute(query, (channel_id, message_id))
-        row = result.fetchone()
-
-        if row:
-            message = cls(*row)
-        else:
-            message = None
-
-        connection.close()
-        return message
-
-
-    def insert(self):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        query = "INSERT INTO messages VALUES(null, ?, ?, ?, ?, ?)"
-        cursor.execute(query, (self.channel_id, self.content,
-                               self.time, self.username, self.avatar))
-
-        connection.commit()
-        connection.close()
-
-    def update(self):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        query = "UPDATE messages SET content=? WHERE channel_id=? AND message_id=? AND user_id=?"
-        cursor.execute(query, (self.content, self.channel_id, self.message_id, self.user_id))
-
-        connection.commit()
-        connection.close()
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()

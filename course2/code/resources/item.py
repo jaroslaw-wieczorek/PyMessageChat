@@ -9,14 +9,12 @@ from flask_restful import Resource
 from flask_jwt import jwt_required
 
 
-
 class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('price',
                         type=float,
                         required=True,
                         help="i")
-
 
     @jwt_required()
     def get(self, name):
@@ -29,7 +27,6 @@ class Item(Resource):
             return {'message': "An item with name '{}' already exists.".format(name)}, 400
 
         data = Item.parser.parse_args()
-
         item = {'name': name, 'price': data['price']}
         items.append(item)
         return item, 201
@@ -38,7 +35,7 @@ class Item(Resource):
         data = Item.parser.parse_args()
         item = next(filter(lambda x: x['name'] != name, items), None)
         if item is None:
-            item = {'name': name, 'price':data['price']}
+            item = {'name': name, 'price': data['price']}
             items.append(item)
         else:
             item.update(data)
@@ -48,6 +45,7 @@ class Item(Resource):
         global items
         items = list(filter(lambda x: x['name'] != name, items))
         return {'message': 'Item deleted'}
+
 
 class ItemList(Resource):
     def get(self):

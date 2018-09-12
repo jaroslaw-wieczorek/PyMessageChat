@@ -1,56 +1,48 @@
 import sqlite3
 from db import db
+from passlib.hash import pbkdf2_sha256 as sha256
+
 
 class UserModel(db.Model):
 
     __tablename__ = 'users'
 
-    user_id = db.Column(db.Integer, primary_key=True)
-    email =  db.Column(db.String(64))
-    username = db.Column(db.String(64))
-    password = db.Column(db.String(64))
-    picture = db.Column(db.String(64))
+    id = db.Column(db.String(64), unique=True,
+                   primary_key=True, nullable=False)
+
+    email = db.Column(db.String(64), unique=True, nullable=False)
+
+    username = db.Column(db.String(64), unique=True, nullable=False)
+
+    password = db.Column(db.String(64), nullable=False)
+
+    avatar = db.Column(db.String(64), nullable=False)
+
     status = db.Column(db.String(3))
 
-    def __init__(self, _id, username, password, email, picture, status):
+    def __init__(self, _id, username, password, email, avatar, status):
         # used _id because id is python keyword than self.id.
         self.id = _id
         self.email = email
         self.username = username
         self.password = password
-        self.picture = picture
+        self.avatar = avatar
         self.status = status
+
+        
 
     @classmethod
     def find_by_username(cls, username):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        query = "SELECT * FROM users WHERE username=?"
-        result = cursor.execute(query, (username,))  # arg must be tuple
-        row = result.fetchone()
-
-        if row:
-            user = cls(*row)
-        else:
-            user = None
-
-        connection.close()
-        return user
+        return cls.query.filter_by(username=username).first()
 
     @classmethod
     def find_by_id(cls, _id):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
+        return cls.query.filter_by(id=_id).first()
 
-        query = """SELECT * FROM users WHERE user_id=?"""
-        result = cursor.execute(query, (_id,))  # arg must be tuple
-        row = result.fetchone()
+    @staticmethod
+    def generate_hash(password):
+        return sha256.hash(password)
 
-        if row:
-            user = cls(*row)
-        else:
-            user = None
-
-        connection.close()
-        return user
+    @staticmethod
+    def verify_hash(password, hash):
+        return sha256.verify(password, hash)

@@ -1,7 +1,16 @@
 import sys
 import sqlite3
+import json
+
+
+from security import randomRubbish
+from security import hashRubbish
+
+
 from flask import Flask
 from flask import jsonify
+
+#from flask.ext.hashing import Hashing
 
 from flask_restful import Api
 from flask_restful import reqparse
@@ -15,6 +24,8 @@ from models.message import MessageModel
 from models.channel import ChannelModel
 from resources.channel import ResourceChannel
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 class ResourceMessage(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('content',
@@ -22,57 +33,48 @@ class ResourceMessage(Resource):
                         required=True,
                         help='This field cannot be blank')
 
-    parser.add_argument('time',
-                        type=str,
-                        required=True,
-                        help='This field cannot be blank')
+   # parser.add_argument('time',
+   #                     type=str,
+   #                     required=False,
+   #                     help='This field cannot be blank')
 
     parser.add_argument('username',
                         type=str,
                         required=True,
                         help='This field cannot be blank')
 
-    parser.add_argument('avatar',
-                        type=str,
-                        required=True,
-                        help='This filed cannot be blank')
 
     # @jwt_required()
     def get(self, channel_name, message_id):
-        data = ChannelModel.find_id_by_name(channel_name)
-        message = MessageModel.find_by_channel_id_and_message_id(
-            data["channel_id"], message_id)
-
+        channel_id = ChannelModel.find_id_by_name(channel_name)
+        if channel_id:
+            message = MessageModel.find_msg_by_id_and_channel_id(
+                message_id
+            )
         if message:
             return message.json(), 202
         return {'message': 'Message not found'}, 404
 
     def post(self, channel_name):
-        channel_info = ChannelModel.find_id_by_name(channel_name)
-        if channel_info is None:
-            ResourceChannel.put(channel_name)
+        channel_id = ChannelModel.find_id_by_name(channel_name)
+        if channel_id:
+             data = ResourceMessage.parser.parse_args()
 
-        data = ResourceMessage.parser.parse_args()
+             time = datetime.now()
 
-        print(channel_info)
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        print(channel_info)
+             message_id="odnfosnfosnfd"
 
-        query = """INSERT INTO messages (message_id, channel_id,
-                                         content, time,
-                                         username, avatar)
-                                         VALUES (null, ?, ?, ?, ?, ?)"""
+             message = MessageModel(message_id, channel_id, data["content"], json.dumps(time), data["username"], "fdsfsdf")
+             message.save_to_db()
+        else:
+            return {'message': 'First create channel.'}, 404
 
-        cursor.execute(query, (channel_info['channel_id'],
-                               data['content'],
-                               data['time'],
-                               data['username'],
-                               data['avatar'])
-                       )
 
-        connection.commit()
-        connection.close()
+       
+
+
+
+
 
         return {"message": "Message created successfully."}, 201
 
@@ -91,19 +93,17 @@ class ResourceMessage(Resource):
 
 class MessageList(Resource):
     def get(self, channel_name):
-        data = ChannelModel.find_id_by_name(channel_name)
-        print(data)
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        query = 'SELECT * FROM messages WHERE channel_id=?'
-        result = cursor.execute(query, (data['channel_id'],))
-        rows = result.fetchall()
-        connection.close()
-
-        messages = []
-        if rows:
-            for row in rows:
-                messages.append(MessageModel(*row).json())
-            return {"messages": messages}
-        return {'message': 'Messages or channel not exists.'}, 404
+        channel_id = ChannelModel.find_id_by_name(channel_name)
+        print("Channel id: ", channel_id)
+        if channel_id:
+            messages_list = []
+            messages = MessageModel.find_msgs_by_channel_id(channel_id)
+            print("Messages: ", messages)
+            if messages:
+                for message in messages:
+                    messages_list.append(message.json())
+                return {"messages": messages_list}
+            else:
+                return {'message': 'Channel is empty.'}, 200
+        else:
+            return {'message': 'Channel don\'t exist.'}, 200
