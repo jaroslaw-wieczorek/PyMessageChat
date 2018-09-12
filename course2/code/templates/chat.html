@@ -145,6 +145,12 @@ input[type=text] {
     border-color: #ccc;
     background-color: #999999;
 }
+.showme{ 
+display: none;
+}
+.showhim:hover .showme{
+display : inline-block;
+}
 </style>
 </head>
 <script>
@@ -210,13 +216,28 @@ function clickedchannel(name) {
 function addachanneltolist(name) {
     var chanlist  = document.getElementById("chanulisto"),
         div    = document.createElement('div'),
-        text   = document.createElement('p');
+        text   = document.createElement('span'),
+        spanhide   = document.createElement('span'),
+        button = document.createElement('button');
+
+
 
     text.innerHTML += name;
-    div.className  = 'container darker_channel';
+    div.className  = 'showhim container darker_channel';
     div.onclick = function() { clickedchannel(name); };
+    button.innerHTML += 'x';
+    button.className = 'w3-button w3-small w3-circle w3-red';
+    button.onclick = function() { removechannel(name); };
+    spanhide.className = 'showme';
+
+    spanhide.appendChild(button);
     div.appendChild(text);
+    div.appendChild(spanhide);
     chanlist.appendChild(div);
+}
+
+function removechannel(name) {
+  alert("remove channel")
 }
 
 function addamsgtolist(text,date,who,avatar) {
