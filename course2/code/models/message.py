@@ -48,8 +48,9 @@ class MessageModel(db.Model):
         return cls.query.filter_by(channel_id=channel_id).all()
 
     @classmethod
-    def find_msg_by_id_and_channel_id(cls, msg_id, channel_id):
-        return cls.query.filter_by(channel_id=channel_id).first()
+    def find_msg_by_channel_id_msg_id(cls, channel_id, message_id):
+        return cls.query.filter_by(
+            channel_id=channel_id, message_id=message_id).first()
 
     @classmethod
     def find_by_channel(cls, channel_name):

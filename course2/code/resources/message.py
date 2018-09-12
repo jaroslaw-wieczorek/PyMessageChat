@@ -47,75 +47,59 @@ class ResourceMessage(Resource):
                         required=False,
                         help='This field cannot be blank')
 
-
     # @jwt_required()
-    def get(self, channel_name):
+    def get(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
-        if channel_id:
-            data = ResourceMessage.parser.parse_args()
 
-            if hasattr(data, 'message_id'):
-                message = MessageModel.find_msg_by_id_and_channel_id(
-                    data['message_id']
-                )
-            else:
-                return {'message': 'Bad request - need message id'}, 404
+        if channel_id:
+            message = MessageModel.find_msg_by_channel_id_msg_id(
+                channel_id, message_id)
 
             if message:
                 return message.json(), 202
+            else:
+                return {'message': 'Message not found'}, 404
         else:
             return {'message': 'Channel not found'}, 404
-        return {'message': 'Message not found'}, 404
 
-    def post(self, channel_name):
+    def post(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
         if channel_id:
             data = ResourceMessage.parser.parse_args()
 
             date_now = datetime.utcnow()
-            timestamp = date_now.timestamp()
-            random_data = randomData()
 
-            message_id = hashData(random_data, str(timestamp) + str(channel_name))
-
-            #try:
             message = MessageModel(message_id, channel_id,
                                    data["content"], date_now,
                                    data["username"], "place for avatar")
             message.save_to_db()
-           #except Exception as err:
-           #     return {'message': 'internall error ' + str(err)}, 500
+            return message.json(), 201
         else:
             return {'message': 'Channel not exist.'}, 404
 
-        return {"message": "Message created successfully."}, 201
+    def delete(self, channel_name, message_id):
+        channel_id = ChannelModel.find_id_by_name(channel_name)
 
-    def delete(self, channel_name):
-        channel_id = ChannelModel.find_by_name(channel_name)
         if channel_id:
-            data = ResourceMessage.parser.parse_args()
+            message = MessageModel.find_msg_by_channel_id_msg_id(
+                channel_id, message_id)
 
-            if hasattr(data, 'message_id'):
-                message = MessageModel.find_msg_by_id_and_channel_id(
-                    channel_id.channel_id, data['message_id'])
-
-                if message:
-                    message.delete_from_db()
-                    return {'message': 'Message was deleted.'}, 201
-                else:
-                    return {'message': 'Not found message with that id'}, 404
+            if message:
+                message.delete_from_db()
+                return {'message': 'Message was deleted.'}, 201
             else:
-                return {'message': 'Bad request - need message id'}, 400
-        else:
-            return {'message': 'Not found channel with that name'}, 404
+                return {'message': 'Message not found.'}, 404
 
 
 class MessageList(Resource):
+
     def get(self, channel_name):
         channel_id = ChannelModel.find_id_by_name(channel_name)
+
         if channel_id:
             messages_list = []
             messages = MessageModel.find_msgs_by_channel_id(channel_id)
+
             if messages:
                 for message in messages:
                     messages_list.append(message.json())
