@@ -29,7 +29,13 @@ class UserModel(db.Model):
         self.avatar = avatar
         self.status = status
 
-        
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
 
     @classmethod
     def find_by_username(cls, username):

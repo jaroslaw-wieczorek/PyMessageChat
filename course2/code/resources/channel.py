@@ -1,9 +1,14 @@
 import sys
 import json
 import sqlite3
+from datetime import timezone
+from datetime import date
 
-from security import randomRubbish
-from security import hashRubbish
+from datetime import datetime
+
+
+from hashes import randomData
+from hashes import hashData
 
 from flask import Flask
 from flask import jsonify
@@ -46,29 +51,27 @@ class ResourceChannel(Resource):
     def post(self, name):
         check = ChannelModel.find_by_name(name)
         if check:
-            return {'message': "An channel with name '{}' already exists.".format(name)}, 400
+            return {'message': "An channel with that name already exists."}, 400
 
         data = ResourceChannel.parser.parse_args()
 
-        trash = randomRubbish()
-        print("TRASH:", trash)
-        channel_id = hashRubbish(trash)
-        print("HASH:", channel_id)
-        print("LEN:", len(channel_id))
-        print("TYPE:", type(channel_id))
+        random_data = randomData()
+
+        timestamp = datetime.utcnow().timestamp()
+
+        channel_id = hashData(random_data, str(timestamp) + str(name))
 
         # None is used because the user will not set the channel id.
-        channel = ChannelModel(str(channel_id), str(name),
-                               json.dumps(data["owners"]),
-                               json.dumps(data["users"])
-                               )
         try:
+            channel = ChannelModel(channel_id, str(name),
+                                   json.dumps(data["owners"]),
+                                   json.dumps(data["users"])
+                                   )
             channel.save_to_db()
 
         except Exception as err:
             return {'message': 'An error occured inserting the item\n',
                     'error': err}, 500
-
 
         return channel.json(), 201
 
@@ -77,12 +80,11 @@ class ResourceChannel(Resource):
         data = ResourceChannel.parser.parse_args()
 
         if channel is None:
-            trash = randomRubbish()
-            print("TRASH:", trash)
-            channel_id = hashRubbish(trash)
-            print("HASH:", channel_id)
-            print("LEN:", len(channel_id))
-            print("TYPE:", type(channel_id))
+
+            timestamp = datetime.utcnow().timestamp()
+            random_data = randomData()
+
+            channel_id = hashData(random_data, str(timestamp) + str(name))
 
             channel = ChannelModel(channel_id, name,
                                    json.dumps(data['owners']),
@@ -107,17 +109,16 @@ class ResourceChannel(Resource):
                     message.delete_from_db()
             channel.delete_from_db()
             return {'message': 'Channel deleted'}, 201
-        return {'message': "An channel with name '{}' already not exists".format(name)}, 404
+        return {'message': "An channel not found"}, 404
 
 
 class ChannelList(Resource):
     def get(self):
         channels = ChannelModel.query.all()
         channel_list = []
-        print("CHANNELS: ", channels)
+
         if channels != [None]:
             for channel in channels:
-                print("CHANNEL: ", channel)
                 channel_list.append(channel.json())
             return {'channels': channel_list}, 200
-        return {'message': 'Channels not exists'}
+        return {'message': 'Channels not found'}, 404
