@@ -69,10 +69,15 @@ api.add_resource(ResourceMessage, '/channels/<string:channel_name>/message')
 
 #api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
 
+@app.route('/')
+def home():
+    return render_template('chat.html')
+
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
     app.run(port=5000, debug=True)
+
 
 """
 # Store app

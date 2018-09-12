@@ -167,18 +167,44 @@ function adduser() {
     }
 }
 window.onload = function(){
+  removechannellist();
+  removemsglist();
+  removeuserlist();
+  httpGetAsync('http://127.0.0.1:5000/channels', loadmsgs);
 
-document.getElementById('inputbex').onkeydown = function(e){
-   if(e.keyCode == 13){
+  document.getElementById('inputbex').onkeydown = function(e){
+  if(e.keyCode == 13){
     alert(document.getElementById("msgtext").value);
     var element = document.getElementById("msglisto");
     element.scrollTop = element.scrollHeight - element.clientHeight;
     document.getElementById("msgtext").value = "";
   }
+
+
 };
 }
-function clickedchannel(nr) {
- alert("You clicked on channel nr:" + nr);
+
+function loadmsgs(jsonstring)
+{
+    var obj = JSON.parse(jsonstring);
+    for (var i = 0; i < obj.channels.length; i++) {
+        addachanneltolist(obj.channels[i].name);
+    }
+}
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+}
+function clickedchannel(name) {
+ httpGetAsync('http://127.0.0.1:5000/channel/' + name + '/messages', loadmsgs);
+
 }
 
 function addachanneltolist(name) {
@@ -238,6 +264,29 @@ function addausertolist(name,avatar) {
 
         usrlist.appendChild(div);
 }
+function removeuserlist(){
+    var myNode = document.getElementById("usrlistocolumn");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+
+}
+function removemsglist(){
+    var myNode = document.getElementById("msglisto");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+
+}
+function removechannellist(){
+    var myNode = document.getElementById("chanulisto");
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+
+}
+
+
 
 </script>
 <body>
