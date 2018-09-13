@@ -65,9 +65,7 @@ api.add_resource(ChannelList, '/channels')
 api.add_resource(ResourceChannel, '/channels/<string:name>')
 
 api.add_resource(MessageList, '/channels/<string:channel_name>/messages')
-api.add_resource(ResourceMessage, '/channels/<string:channel_name>/message')
-
-#api.add_resource(ResourceMessage, '/channel/<string:channel_name>/<int:message_id>')
+api.add_resource(ResourceMessage, '/channels/<string:channel_name>/messages/<string:message_id>')
 
 @app.route('/')
 def home():

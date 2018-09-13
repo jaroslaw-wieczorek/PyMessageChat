@@ -6,6 +6,9 @@ from models.user import UserModel
 from flask_restful import reqparse
 from flask_restful import Resource
 
+from hashes import randomData
+from hashes import hashData
+
 
 class UserRegister(Resource):
     parser = reqparse.RequestParser()
@@ -40,27 +43,21 @@ class UserRegister(Resource):
             return user
         return {'message': 'User not exist.'}, 404
 
-
     def post(self):
         data = UserRegister.parser.parse_args()
 
         if UserModel.find_by_username(data['username']):
-            return {"message": "A user with name '{}' already exists.".format(data['username'])}, 400
+            return {"message": "A user with that name already exists."}, 400
 
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
+        #trash = security.randomRubbish()
+        #other_data = ''.join(data['username'])
+        #other_data.join(data['email'])
+        #user_id = security.hashRubbish(_data=other_data)
 
-        query = """INSERT INTO users (id, username, password, email, avatar, status) \
-                 VALUES (null, ?, ?, ?, ?, ?)"""
+        _id = security.randomRubbish()
+        user = UserModel(_id, **data)
 
-        cursor.execute(query, (data['username'],
-                               data['password'],
-                               data['email'],
-                               data['avatar'],
-                               data['status']))
-
-        connection.commit()
-        connection.close()
+        user.save_to_db()
 
         return {"message": "User created successfully."}, 201
 

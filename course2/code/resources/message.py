@@ -3,8 +3,8 @@ import sqlite3
 import json
 
 
-from security import randomRubbish
-from security import hashRubbish
+from hashes import randomData
+from hashes import hashData
 
 
 from flask import Flask
@@ -30,9 +30,13 @@ class ResourceMessage(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('content',
                         type=str,
-                        required=True,
+                        required=False,
                         help='This field cannot be blank')
 
+    parser.add_argument('message_id',
+                        type=str,
+                        required=False,
+                        help='This field cannot be blank')
    # parser.add_argument('time',
    #                     type=str,
    #                     required=False,
@@ -40,65 +44,62 @@ class ResourceMessage(Resource):
 
     parser.add_argument('username',
                         type=str,
-                        required=True,
+                        required=False,
                         help='This field cannot be blank')
-
 
     # @jwt_required()
     def get(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
-        if channel_id:
-            message = MessageModel.find_msg_by_id_and_channel_id(
-                message_id
-            )
-        if message:
-            return message.json(), 202
-        return {'message': 'Message not found'}, 404
 
-    def post(self, channel_name):
+        if channel_id:
+            message = MessageModel.find_msg_by_channel_id_msg_id(
+                channel_id, message_id)
+
+            if message:
+                return message.json(), 202
+            else:
+                return {'message': 'Message not found'}, 404
+        else:
+            return {'message': 'Channel not found'}, 404
+
+    def post(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
         if channel_id:
-             data = ResourceMessage.parser.parse_args()
+            data = ResourceMessage.parser.parse_args()
 
-             time = datetime.now()
+            date_now = datetime.utcnow()
 
-             message_id="odnfosnfosnfd"
-
-             message = MessageModel(message_id, channel_id, data["content"], json.dumps(time), data["username"], "fdsfsdf")
-             message.save_to_db()
+            message = MessageModel(message_id, channel_id,
+                                   data["content"], date_now,
+                                   data["username"], "place for avatar")
+            message.save_to_db()
+            return message.json(), 201
         else:
-            return {'message': 'First create channel.'}, 404
-
-
-       
-
-
-
-
-
-        return {"message": "Message created successfully."}, 201
+            return {'message': 'Channel not exist.'}, 404
 
     def delete(self, channel_name, message_id):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        channel_id = ChannelModel.get_id_by_name(channel_name)
+        channel_id = ChannelModel.find_id_by_name(channel_name)
 
-        query = "DELETE FROM messages WHERE channel_id=? and message_id=?"
-        cursor.execute(query, (channel_id, message_id))
-        connection.commit()
-        connection.close()
+        if channel_id:
+            message = MessageModel.find_msg_by_channel_id_msg_id(
+                channel_id, message_id)
 
-        return {'message': 'Item was deleted.'}, 201
+            if message:
+                message.delete_from_db()
+                return {'message': 'Message was deleted.'}, 201
+            else:
+                return {'message': 'Message not found.'}, 404
 
 
 class MessageList(Resource):
+
     def get(self, channel_name):
         channel_id = ChannelModel.find_id_by_name(channel_name)
-        print("Channel id: ", channel_id)
+
         if channel_id:
             messages_list = []
             messages = MessageModel.find_msgs_by_channel_id(channel_id)
-            print("Messages: ", messages)
+
             if messages:
                 for message in messages:
                     messages_list.append(message.json())
@@ -106,4 +107,4 @@ class MessageList(Resource):
             else:
                 return {'message': 'Channel is empty.'}, 200
         else:
-            return {'message': 'Channel don\'t exist.'}, 200
+            return {'message': 'Channel doesn\'t exist.'}, 200
