@@ -176,7 +176,7 @@ window.onload = function(){
   removechannellist();
   removemsglist();
   removeuserlist();
-  httpGetAsync('http://127.0.0.1:5000/channels', loadmsgs);
+  httpGetAsync('http://127.0.0.1:5000/channels', loadchanlist);
 
   document.getElementById('inputbex').onkeydown = function(e){
   if(e.keyCode == 13){
@@ -189,13 +189,22 @@ window.onload = function(){
 
 };
 }
-
-function loadmsgs(jsonstring)
+function loadchanlist(jsonstring)
 {
     var obj = JSON.parse(jsonstring);
     for (var i = 0; i < obj.channels.length; i++) {
         addachanneltolist(obj.channels[i].name);
     }
+}
+function loadmsgs(jsonstring)
+{
+    removemsglist()
+    var obj = JSON.parse(jsonstring);
+    for (var i = 0; i < obj.messages.length; i++) {
+        addamsgtolist(obj.messages[i].content,obj.messages[i].time,obj.messages[i].username,obj.messages[i].avatar);
+    }
+    var element = document.getElementById("msglisto");
+    element.scrollTop = element.scrollHeight - element.clientHeight;
 }
 
 function httpGetAsync(theUrl, callback)
@@ -209,7 +218,7 @@ function httpGetAsync(theUrl, callback)
     xmlHttp.send(null);
 }
 function clickedchannel(name) {
- httpGetAsync('http://127.0.0.1:5000/channel/' + name + '/messages', loadmsgs);
+ httpGetAsync('http://127.0.0.1:5000/channels/' + name + '/messages', loadmsgs);
 
 }
 
@@ -311,7 +320,7 @@ function removechannellist(){
 
 </script>
 <body>
- <div class="row" style="height: 12%; ! important;">
+ <div class="row" style="height: 12%; ! important; min-height: 80px; ! important;">
      <div class="channellistcolumn" style="overflow: hidden; ! important;">
          <div class="hoverWrapper">
             <div id="hoverShow1"><button onclick="addchannel()" class="w3-button w3-xlarge w3-circle w3-green">+</button></div>
