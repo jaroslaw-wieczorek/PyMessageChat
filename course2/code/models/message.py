@@ -16,8 +16,13 @@ class MessageModel(db.Model):
 
     content = db.Column(db.Text, nullable=False)
     time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    #channel = db.relationship('ChannelModel', backref='channels')
-    channel_id = db.Column(db.String(64), nullable=False)#, db.ForeignKey('channels.channel_id'))
+
+    channel_id = db.Column(db.String(64),
+                           db.ForeignKey('channels.channel_id'),
+                           nullable=False)
+
+    channel = db.relationship('ChannelModel')
+
     username = db.Column(db.String(64), nullable=False)
     avatar = db.Column(db.Text, nullable=False)
 
@@ -32,7 +37,7 @@ class MessageModel(db.Model):
 
     def json(self):
         return {"message_id": self.message_id,
-                "channel_id": self.channel_id,
+                #"channel_id": self.channel_id,
                 "content": self.content,
                 "time": json.dumps(str(self.time), cls=DateEncoder),
                 "username": self.username,

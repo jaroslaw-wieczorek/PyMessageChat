@@ -10,6 +10,8 @@ class ChannelModel(db.Model):
     owners = db.Column(db.Text)
     users = db.Column(db.Text)
 
+    messages = db.relationship('MessageModel')
+
     def __init__(self, _channel_id, name, owners, users):
         self.channel_id = _channel_id
         self.name = name
@@ -21,7 +23,8 @@ class ChannelModel(db.Model):
             'channel_id': self.channel_id,
             'name': self.name,
             'owners': json.loads(self.owners),
-            'users': json.loads(self.users)
+            'users': json.loads(self.users),
+            'messages': [message.json() for message in self.messages]
         }
 
     @classmethod
@@ -31,7 +34,7 @@ class ChannelModel(db.Model):
 
     @classmethod
     def find_id_by_name(cls, name):
-        channel =  cls.query.filter_by(name=name).first()
+        channel = cls.query.filter_by(name=name).first()
         if channel:
             return channel.channel_id
 

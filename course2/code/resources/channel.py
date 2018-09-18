@@ -1,11 +1,10 @@
 import sys
 import json
 import sqlite3
-from datetime import timezone
+
 from datetime import date
-
 from datetime import datetime
-
+from datetime import timezone
 
 from hashes import randomData
 from hashes import hashData
@@ -22,7 +21,7 @@ from models.channel import ChannelModel
 from models.message import MessageModel
 
 
-class ResourceChannel(Resource):
+class Channel(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('name',
                         type=str,
@@ -53,7 +52,7 @@ class ResourceChannel(Resource):
         if check:
             return {'message': "An channel with that name already exists."}, 400
 
-        data = ResourceChannel.parser.parse_args()
+        data = Channel.parser.parse_args()
 
         random_data = randomData()
 
@@ -77,7 +76,7 @@ class ResourceChannel(Resource):
 
     def put(self, name):
         channel = ChannelModel.find_by_name(name)
-        data = ResourceChannel.parser.parse_args()
+        data = Channel.parser.parse_args()
 
         if channel is None:
 
@@ -91,10 +90,13 @@ class ResourceChannel(Resource):
                                    json.dumps(data['users'])
                                    )
 
-        elif not ChannelModel.find_by_name(data['name']) or data['name'] == name:
+        elif (not ChannelModel.find_by_name(data['name']) or
+              data['name'] == name):
+
             channel.name = data['name']
             channel.owners = json.dumps(data['owners'])
             channel.users = json.dumps(data['users'])
+
         else:
             return {'message': "An channel with name '{}' already exists".format(data['name'])}, 404
         channel.save_to_db()

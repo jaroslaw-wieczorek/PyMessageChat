@@ -16,17 +16,20 @@ from flask_restful import Api
 from flask_restful import reqparse
 from flask_restful import Resource
 
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_optional
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_claims
+from flask_jwt_extended import get_jwt_identity
 
 from datetime import datetime
 from models.user import UserModel
 from models.message import MessageModel
 from models.channel import ChannelModel
-from resources.channel import ResourceChannel
+from resources.channel import Channel
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class ResourceMessage(Resource):
+class Message(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('content',
                         type=str,
@@ -37,6 +40,7 @@ class ResourceMessage(Resource):
                         type=str,
                         required=False,
                         help='This field cannot be blank')
+
    # parser.add_argument('time',
    #                     type=str,
    #                     required=False,
@@ -47,7 +51,7 @@ class ResourceMessage(Resource):
                         required=False,
                         help='This field cannot be blank')
 
-    # @jwt_required()
+    # @jwt_required
     def get(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
 
@@ -63,23 +67,35 @@ class ResourceMessage(Resource):
             return {'message': 'Channel not found'}, 404
 
     def post(self, channel_name, message_id):
-        channel_id = ChannelModel.find_id_by_name(channel_name)
-        if channel_id:
-            data = ResourceMessage.parser.parse_args()
 
+        channel_id = ChannelModel.find_id_by_name(channel_name)
+
+        if channel_id:
+            if MessageModel.find_msg_by_channel_id_msg_id(channel_id,
+                                                          message_id):
+                return {'message': 'Bad message id'}, 400
+
+            data = Message.parser.parse_args()
             date_now = datetime.utcnow()
 
             message = MessageModel(message_id, channel_id,
                                    data["content"], date_now,
-                                   data["username"], "place for avatar")
+                                   data["username"],
+                                   UserModel.get_avatar(data["username"]))
+
             message.save_to_db()
             return message.json(), 201
         else:
+
             return {'message': 'Channel not exist.'}, 404
 
+    @jwt_required
     def delete(self, channel_name, message_id):
-        channel_id = ChannelModel.find_id_by_name(channel_name)
+        claims = get_jwt_claims()
+        if not claims['is_admin']:
+            return {'message': 'Admin privilege required.'}, 401
 
+        channel_id = ChannelModel.find_id_by_name(channel_name)
         if channel_id:
             message = MessageModel.find_msg_by_channel_id_msg_id(
                 channel_id, message_id)
@@ -92,19 +108,19 @@ class ResourceMessage(Resource):
 
 
 class MessageList(Resource):
-
+    @jwt_optional
     def get(self, channel_name):
+        user_id = get_jwt_identity()
+
         channel_id = ChannelModel.find_id_by_name(channel_name)
-
         if channel_id:
-            messages_list = []
-            messages = MessageModel.find_msgs_by_channel_id(channel_id)
+            messages_list = [message.json() for message in
+                             MessageModel.query.filter_by(
+                             channel_id=channel_id).all()]
 
-            if messages:
-                for message in messages:
-                    messages_list.append(message.json())
-                return {"messages": messages_list}
+            if user_id:
+                return {"messages": messages_list}, 200
             else:
-                return {'message': 'Channel is empty.'}, 200
+                return {"messages": "Not available for non-logged users."}, 403
         else:
-            return {'message': 'Channel doesn\'t exist.'}, 200
+            return {'message': 'Channel with that name not found.'}, 404
