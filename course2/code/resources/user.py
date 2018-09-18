@@ -6,12 +6,15 @@ from hashes import hashData
 from hashes import randomData
 
 from models.user import UserModel
+from blacklist import BLACKLIST
 
 from flask_restful import reqparse
 from flask_restful import Resource
 
 from werkzeug.security import safe_str_cmp
 
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_raw_jwt
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import create_refresh_token
@@ -61,10 +64,12 @@ class UserRegister(Resource):
             return {"message": "A user with that name already exists."}, 400
 
         elif UserModel.find_by_email(data['email']):
-            return {"message": "A user with that email already exists."}, 400
+            return {"message": "That email is in use."}, 400
 
         random_data = randomData()
-        _id = hashData(data=random_data)
+        #print(random_data)
+        _id = hashData(str(random_data))
+        #print(_id)
         user = UserModel(_id, **data)
 
         user.save_to_db()
@@ -121,6 +126,14 @@ class UserLogin(Resource):
                 'refresh_token': refresh_token
             }, 200
         return {'message': 'Invalid credentials'}, 401
+
+
+class UserLogout(Resource):
+    @jwt_required
+    def post(self):
+        jti = get_raw_jwt()['jti']  # jti is "JWT ID", a unique identyfier for a JWT
+        BLACKLIST.add(jti)
+        return {'messages': 'Succesfuly logged out.'}, 200
 
 
 class TokenRefresh(Resource):

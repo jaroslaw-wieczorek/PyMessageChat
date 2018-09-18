@@ -26,6 +26,7 @@ from blacklist import BLACKLIST
 from resources.user import User
 from resources.user import UserList
 from resources.user import UserLogin
+from resources.user import UserLogout
 from resources.user import UserRegister
 from resources.user import TokenRefresh
 
@@ -72,7 +73,7 @@ def add_claims_to_jwt(identity):
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
-    return decrypted_token['identity'] in BLACKLIST
+    return decrypted_token['jti'] in BLACKLIST
 
 
 @jwt.expired_token_loader
@@ -119,6 +120,7 @@ api.add_resource(User, '/user/<string:user_id>')
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users')
 api.add_resource(UserLogin, '/login')
+api.add_resource(UserLogout, '/logout')
 api.add_resource(TokenRefresh, '/refresh')
 
 api.add_resource(ChannelList, '/channels')
@@ -136,5 +138,5 @@ def home():
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
-    app.run(port=5000, debug=False)
+    app.run(port=5000, debug=True)
 

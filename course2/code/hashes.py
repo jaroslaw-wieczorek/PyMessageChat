@@ -8,6 +8,7 @@ def randomData(length=64):
                                  string.digits +
                                  string.punctuation, length))
 
-def hashData(data, salt=''):
-    data = data.join(salt)
-    return hashlib.sha256(data.encode("utf-8")).hexdigest()
+
+def hashData(data, specific_data=''):
+    data2 = str(data) + str(specific_data)
+    return hashlib.sha256(data2.encode("utf-8")).hexdigest()
