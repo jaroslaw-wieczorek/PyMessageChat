@@ -42,16 +42,11 @@ class Message(Resource):
                         required=False,
                         help='This field cannot be blank')
 
-   # parser.add_argument('time',
-   #                     type=str,
-   #                     required=False,
-   #                     help='This field cannot be blank')
-
     parser.add_argument('username',
                         type=str,
                         required=False,
                         help='This field cannot be blank')
-
+    """
     @jwt_required
     def get(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
@@ -66,14 +61,16 @@ class Message(Resource):
                 return {'message': 'Message not found'}, 404
         else:
             return {'message': 'Channel not found'}, 404
-
-
+    """
     @fresh_jwt_required
-    def post(self, channel_name, message_id):
+    def post(self, channel_name):
 
         channel_id = ChannelModel.find_id_by_name(channel_name)
 
         if channel_id:
+            random_data = randomData()
+            message_id = hashData(str(random_data))
+
             if MessageModel.find_msg_by_channel_id_msg_id(channel_id,
                                                           message_id):
                 return {'message': 'Bad message id'}, 400
@@ -81,10 +78,13 @@ class Message(Resource):
             data = Message.parser.parse_args()
             date_now = datetime.utcnow()
 
+            user_id = get_jwt_identity()
+            user = UserModel.find_by_id(user_id)
+
             message = MessageModel(message_id, channel_id,
                                    data["content"], date_now,
-                                   data["username"],
-                                   UserModel.get_avatar(data["username"]))
+                                   user.username,
+                                   UserModel.get_avatar(user.username))
 
             message.save_to_db()
             return message.json(), 201

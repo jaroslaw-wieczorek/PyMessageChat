@@ -115,8 +115,7 @@ def revoked_token_callback():
         'error': 'token_revoked'
     }), 401
 
-
-api.add_resource(User, '/user/<string:user_id>')
+api.add_resource(User, '/user')
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users')
 api.add_resource(UserLogin, '/login')
@@ -127,7 +126,7 @@ api.add_resource(ChannelList, '/channels')
 api.add_resource(Channel, '/channels/<string:name>')
 
 api.add_resource(MessageList, '/channels/<string:channel_name>/messages')
-api.add_resource(Message, '/channels/<string:channel_name>/messages/<string:message_id>')
+api.add_resource(Message, '/channels/<string:channel_name>/message')
 
 
 @app.route('/')

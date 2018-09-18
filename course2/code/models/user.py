@@ -83,6 +83,3 @@ class UserModel(db.Model):
     @staticmethod
     def verify_hash(password, hash):
         return sha256.verify(password, hash)
-
-
-

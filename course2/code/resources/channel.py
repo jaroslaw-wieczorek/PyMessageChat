@@ -16,7 +16,10 @@ from flask_restful import Api
 from flask_restful import reqparse
 from flask_restful import Resource
 
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity
+
+from models.user import UserModel
 from models.channel import ChannelModel
 from models.message import MessageModel
 
@@ -40,7 +43,7 @@ class Channel(Resource):
                         action='append',
                         help='This field cannot be blank')
 
-    #@jwt_required()
+    @jwt_required
     def get(self, name):
         channel = ChannelModel.find_by_name(name)
         if channel:
@@ -115,12 +118,26 @@ class Channel(Resource):
 
 
 class ChannelList(Resource):
+    @jwt_required
     def get(self):
-        channels = ChannelModel.query.all()
-        channel_list = []
+        user_id = get_jwt_identity()
+        user = UserModel.find_by_id(user_id)
 
-        if channels != [None]:
+        if user:
+            name = user.username
+            channels = ChannelModel.query.all()
+            channel_list = []
+
             for channel in channels:
-                channel_list.append(channel.json())
-            return {'channels': channel_list}, 200
+                if (name in json.loads(channel.owners) or
+                   name in json.loads(channel.users)):
+                        channel_list.append(channel.json())
+                        print(channel)
+
+            if channel_list:
+                return {'channels': channel_list}, 200
+            else:
+                return {'message': 'User hasn\'t got any channel'}, 200
+        #else:
+        #    return {'message': 'User id is bad.'}, 400
         return {'message': 'Channels not found'}, 404

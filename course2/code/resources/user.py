@@ -79,17 +79,11 @@ class UserRegister(Resource):
 
 class UserList(Resource):
     def get(self):
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
+        users = UserModel.query.all()
 
-        query = 'SELECT * FROM channels'
-        result = cursor.execute(query)
-        row = result.fetchall()
-        connection.close()
-
-        if row:
-            return {'channels': row}
-        return {'message': 'Channels not exists.'}, 404
+        if users:
+            return {'users': [user.json() for user in users]}
+        return {'message': 'Users not exists.'}, 404
 
 
 class User(Resource):
