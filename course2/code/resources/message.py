@@ -2,15 +2,11 @@ import sys
 import sqlite3
 import json
 
-
 from hashes import randomData
 from hashes import hashData
 
-
 from flask import Flask
 from flask import jsonify
-
-#from flask.ext.hashing import Hashing
 
 from flask_restful import Api
 from flask_restful import reqparse
@@ -18,16 +14,21 @@ from flask_restful import Resource
 
 from flask_jwt_extended import jwt_optional
 from flask_jwt_extended import jwt_required
+
 from flask_jwt_extended import get_jwt_claims
 from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import fresh_jwt_required
 
 from datetime import datetime
 from models.user import UserModel
 from models.message import MessageModel
 from models.channel import ChannelModel
+
 from resources.channel import Channel
 
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash
+
 
 class Message(Resource):
     parser = reqparse.RequestParser()
@@ -51,7 +52,7 @@ class Message(Resource):
                         required=False,
                         help='This field cannot be blank')
 
-    # @jwt_required
+    @jwt_required
     def get(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
 
@@ -66,6 +67,8 @@ class Message(Resource):
         else:
             return {'message': 'Channel not found'}, 404
 
+
+    @fresh_jwt_required
     def post(self, channel_name, message_id):
 
         channel_id = ChannelModel.find_id_by_name(channel_name)

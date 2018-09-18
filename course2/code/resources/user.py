@@ -2,16 +2,20 @@
 import sys
 import sqlite3
 
+from hashes import hashData
+from hashes import randomData
+
 from models.user import UserModel
+
 from flask_restful import reqparse
 from flask_restful import Resource
+
 from werkzeug.security import safe_str_cmp
+
+from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import create_refresh_token
-
-
-from hashes import randomData
-from hashes import hashData
+from flask_jwt_extended import jwt_refresh_token_required
 
 
 _user_parser = reqparse.RequestParser()
@@ -118,3 +122,10 @@ class UserLogin(Resource):
             }, 200
         return {'message': 'Invalid credentials'}, 401
 
+
+class TokenRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        current_user = get_jwt_identity()
+        new_token = create_access_token(identity=current_user, fresh=False)
+        return {'access_token': new_token}, 200
