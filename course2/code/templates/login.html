@@ -4,56 +4,272 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="static/style.css">
+    <style>/* Base */
+    body
+    {
+        background: linear-gradient(to left, white 50%, #3f19b1 50%);
+    }
+
+    .wrapper
+    {
+        max-width: 400px;
+        margin: auto;
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    /* Form styles */
+    .signUp,
+    .signIn
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        max-width: 400px;
+        height: 337px;
+        margin: auto;
+        padding: 60px 0;
+
+        background: white;
+        box-shadow: 0 0 15px #333;
+    }
+
+    .signIn
+    {
+        display: none;
+
+        height: 173px;
+    }
+    .signUp
+    {
+        display: none;
+    }
+
+    .formdiv
+    {
+        width: 100%;
+
+        margin-bottom: 35px;
+    }
+
+    /* Input text field styles */
+
+    input
+    {
+        font-size: 1.1em;
+        font-weight: normal;
+
+        display: block;
+
+        width: 85%;
+        margin: 45px auto;
+        height:45px;
+
+        -webkit-transition: box-shadow .3s;
+        transition: box-shadow .3s;
+        transition: .25s linear;
+        text-align: center;
+
+        color: #3f19b1;
+        border: 0;
+        outline: 0;
+        background: #eee;
+        box-shadow: 0 0 0 2px transparent;
+    }
+
+    input:focus
+    {
+        animation: boxShadow .3s backwards;
+
+        box-shadow: 0 0 0 2px #3f19b1;
+    }
+
+    /* Button styles  */
+
+    .btn
+    {
+        float: right;
+
+        width: 50%;
+        height: auto;
+        padding-top: 23px;
+        padding-bottom: 23px;
+
+        cursor: pointer;
+
+        border: 0;
+        border-top: 1px solid #eee;
+        outline: 0;
+    }
+
+    .btn-member,
+    .btn-back
+    {
+        font-size: .9em;
+
+        color: #333;
+        background: white;
+    }
+
+    .btn-sign-up,
+    .btn-log-in
+    {
+        font-size: 1.2em;
+        font-weight: bold;
+
+        color: white;
+        background: #3f19b1;
+    }
+    .logos{
+       margin :auto;
+       width: 100%;
+       max-width: 400px;
+       height: 337px;
+   }
+
+</style>
 
 </head>
 
 <body>
-    <h1>Australia has 10,685 beaches. You could visit a new beach everyday for 29 years.</h1>
+    <div class="logos" id="logo" style="width:800px; margin:0 auto;">
 
-<div class="wrapper">
-            {{ form.hidden_tag() }}
-    <div class="signUp">
+        <svg viewBox="0 0 500 500" version="1.1" id="svg_null"><g id="root" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect id="background.primary" fill="#f3f3f3" x="0" y="0" width="500" height="500"></rect><rect id="frame.secondary" x="163" y="94" width="175" height="175" display="none" fill="#303841"></rect><svg width="175" height="175" viewBox="0 0 175 175" version="1.1" id="svg_frame.secondary" x="163" y="94" fill="#303841"><g id="Page-1" stroke-width="1" fill="none" fill-rule="evenodd"><polygon id="frame.secondary" points="87 0 162 43.75 162 131.25 87 175 12 131.25 12 43.75" fill="#303841"></polygon></g></svg><path d="M178.443 329.438l134.543 -247.05l0.575 -1.056l-2.086 -1.164l-0.574 1.056l-134.544 247.05l-0.575 1.056l2.086 1.164l0.575 -1.056zm71.439 0l134.543 -247.05l0.575 -1.056l-2.085 -1.164l-0.575 1.056l-134.544 247.05l-0.575 1.056l2.086 1.164l0.575 -1.056zm-115.46 32.473l130.971 -279.59l0.51 -1.088l-2.151 -1.033l-0.51 1.089l-130.972 279.59l-0.51 1.088l2.151 1.033l0.51 -1.089zm192.725 -30.21l-209.554 -255.486l-0.76 -0.927l-1.833 1.54l0.76 0.927l209.555 255.487l0.76 0.927l1.833 -1.54l-0.76 -0.927zm42.926 -36.07l-200.03 -291.641l-0.679 -0.99l-1.956 1.374l0.68 0.99l200.029 291.641l0.679 0.99l1.956 -1.374l-0.68 -0.99z" id="shape.primary" fill="#f3f3f3"></path><g id="Group" transform="translate(40.000000, 295.000000)"><rect id="Rectangle-22" x="0" y="0" width="420" height="60"></rect><text id="headerText.secondary" fill="#303841" font-family="Teko" font-size="50" font-weight="500" letter-spacing="3" data-text-alignment="C" font-style="normal"><tspan x="145.7421875" y="43.5">PyChat</tspan></text></g><g id="Group-2" transform="translate(40.000000, 364.000000)"><rect id="Rectangle" x="0" y="0" width="420" height="40"></rect><text id="captionText.secondary" fill="#303841" opacity=".8" font-family="Teko" font-size="20" font-weight="500" line-spacing="35" letter-spacing="1.4777350192413414" data-text-alignment="C" font-style="normal"><tspan x="1.2734375" y="26.5">Many people are secretly interested in life.</tspan></text>
+            <text id="captionText.secondary" fill="#303841" opacity=".8" font-family="Teko" font-size="15" font-weight="500" line-spacing="35" letter-spacing="1.4777350192413414" data-text-alignment="C" font-style="normal"><tspan x="135" y="60.5">Click to continue.</tspan></text>
+        </g></g></svg>      
 
-      <form action="chat.html" method="post">
-          <div>
-            <input required type="text" name="user_name" id="name" placeholder="Username">
+    </div>
 
-          </div>
-          <div>
-            <input required type="email" name="user_email" id="email" placeholder="Email">
+    <div class="wrapper">
+        <div class="signUp">
+            <div class="formdiv">
+              <div>
+                <input required type="text" name="user_name" id="name" placeholder="Username">
 
-          </div>
-          <div>
-            <input required type="password" name="user_password" id="password" placeholder="Password">
+            </div>
+            <div>
+                <input required type="email" name="user_email" id="email" placeholder="Email">
 
-          </div>
+            </div>
+            <div>
+                <input required type="password" name="user_password" id="password" placeholder="Password">
 
-          <button type="submit" class="btn btn-sign-up">Sign Up</button>
+            </div>
 
-          <button type="button" class="btn btn-member">Already a member?</button>
-      </form>
+            <button type="submit" class="btn btn-sign-up" onclick="postfetchsignup()">Sign Up</button>
+            <button type="button" class="btn btn-back">Go back</button>
+
+        </div>
     </div>
     <div class="signIn">
-        <form action="chat.html" method="post">
+        <div class = "formdiv">
 
             <div>
-            {{ form.login(placeholder="Username") }} {% for error in form.login.errors %}{{ error }}{% endfor %}<br>
-
+                <input required type="text" name="user_name" id="name_login" placeholder="Username">
             </div>
 
             <div>
-            {{ form.password(placeholder="Password") }} {% for error in form.password.errors %}{{ error }}{% endfor %}<br>
-
+                <input required type="password" name="user_password" id="password_login" placeholder="Password">
             </div>
+            <button type="submit" class="btn btn-sign-up" onclick="postfetchlogin()">Log in</button>
+            <button type="button" class="btn btn-member">Not a member?</button>
 
-              {{ form.submit(class="btn btn-log-in") }}
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = function(){
 
-              <button type="button" class="btn btn-back">Go back</button>
-          </form>
-      </div>
-  </div>
-    <script type="text/javascript" src="static/magic.js"></script>
+    }
+
+
+
+
+    function httpGetAsync(theUrl, callback)
+    {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+          callback(xmlHttp.responseText);
+  }
+            xmlHttp.open("GET", theUrl, true); // true for asynchronous
+            xmlHttp.send(null);
+        }
+    function postfetchlogin()
+     {
+    xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:5000/login";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+            var json = JSON.parse(xhr.responseText);
+            //console.log(json.email + ", " + json.name)
+            console.log(json);
+            setCookie("access_token",json.access_token);
+            setCookie("refresh_token",json.refresh_token);
+            setCookie("username",document.getElementById('name_login').value);
+
+            window.location.replace("http://127.0.0.1:5000/chat");
+        }
+        else{
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+        }
+    }
+    var data = JSON.stringify({"username":document.getElementById('name_login').value,"password":document.getElementById('password_login').value});
+    xhr.send(data);
+    }
+
+    function setCookie(cname, cvalue) {
+    document.cookie = cname + "=" + cvalue + ";path=/";
+    }
+    
+        function postfetchsignup()
+     {
+    xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:5000/register";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var json = JSON.parse(xhr.responseText);
+
+            //console.log(json.email + ", " + json.name)
+            console.log(json);
+        }
+        else{
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+        }
+    }
+    var data = JSON.stringify({"username":document.getElementById('name').value,"password":document.getElementById('password').value, "email":document.getElementById('email').value, "avatar":"noavatar"});
+    xhr.send(data);
+    }
+
+    /* fade in / fade out effect between Log In / Sign Up forms  */
+    var $signUp = $('.signUp');
+    var $signIn = $('.signIn');
+    $(".btn-member").click(function() {
+      $signIn.fadeOut('slow');
+      $signUp.fadeIn('slow');
+  });
+    $(".btn-back").click(function() {
+      $signUp.fadeOut('slow');
+      $signIn.fadeIn('slow');
+
+  });
+    var $logosino = $('.logos');
+    $(".logos").click(function() {
+      $logosino.fadeOut('slow');
+      $signIn.fadeIn('slow');
+  });
+</script>
 
 </body>
 

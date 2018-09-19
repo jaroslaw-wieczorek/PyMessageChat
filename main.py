@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.debug = True
 app.config['SECRET_KEY'] = 'http_418'
 socketio = SocketIO(app)
- 
+
  
 @app.route('/')
 def chat():

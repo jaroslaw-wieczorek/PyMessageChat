@@ -131,8 +131,10 @@ api.add_resource(Message, '/channels/<string:channel_name>/message')
 
 @app.route('/')
 def home():
+    return render_template('login.html')
+@app.route('/chat')
+def chat():
     return render_template('chat.html')
-
 
 if __name__ == '__main__':
     from db import db

@@ -62,7 +62,7 @@ class Message(Resource):
         else:
             return {'message': 'Channel not found'}, 404
     """
-    @fresh_jwt_required
+    @jwt_required
     def post(self, channel_name):
 
         channel_id = ChannelModel.find_id_by_name(channel_name)

@@ -1,84 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<style>
-html {
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+  html {
     height: 100%;
-}
-body {
+  }
+  body {
     margin: 0 auto;
     max-width: auto;
     padding: 0 20px;
     height: 100%;
     overflow: hidden;
     margin: 0;
-}
+  }
 
-.container {
+  .container {
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
     padding: 10px;
     margin: 10px 0;
-}
+  }
 
-.darker {
+  .darker {
     border-color: #ccc;
     background-color: #ddd;
-}
+  }
 
-.container::after {
+  .container::after {
     content: "";
     clear: both;
     display: table;
-}
+  }
 
-.container img {
+  .container img {
     float: left;
     max-width: 60px;
     width: 100%;
     margin-right: 20px;
     border-radius: 50%;
-}
+  }
 
-.container img.right {
+  .container img.right {
     float: right;
     margin-left: 20px;
     margin-right:0;
-}
+  }
 
-.time-right {
+  .time-right {
     float: right;
     color: #aaa;
-}
+  }
 
-.time-left {
+  .time-left {
     float: left;
     color: #999;
-}
+  }
 
-.row {
+  .row {
     height: 100%;
-}
+  }
 
-.chatcolumn {
+  .chatcolumn {
     float: left;
     width: 65%;
-    height: 90%;
+    height: 88%;
     box-sizing: border-box;
     padding: 0.4em;
-}
-.inputbox {
-    height: 10%;
+  }
+  .inputbox {
+    height: 15%;
     overflow: hide;
     width: 100%;
     box-sizing: border-box;
     padding: 0.4em;
 
-}
-input[type=text] {
+  }
+  input[type=text] {
     width: 100%;
     height: 95%;
     background-color: #ddd;
@@ -86,45 +86,50 @@ input[type=text] {
     margin: 2px 0;
     border-radius: 4px;
     cursor: pointer;
-}
-.msglist{
-    height: 90%;
+  }
+  .msglist{
+    height: 85%;
     box-sizing: border-box;
     overflow: auto;
-}
-.channellistcolumn {
+  }
+  .userlist{
+    height: 85%;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+  .channellistcolumn {
     float: left;
     width: 20%;
     height: 90%;
     overflow: auto;
     box-sizing: border-box;
     padding: 0.4em;
-}
-.userlistcolumn {
+  }
+  .userlistcolumn {
     float: right;
     width: 15%;
-    height: 90%;
+    height: 88%;
     overflow: auto;
     box-sizing: border-box;
     padding: 0.4em;
-}
-.magichide{
+  }
+  .magichide{
     height: 100%;
     width: 100%;
-}
-.magichide:hover {
+  }
+  .magichide:hover {
     display:none;
-}
-.hoverWrapper:hover #hoverShow1 {
- display: block;
- float: right;
-}
+  }
+  .hoverWrapper:hover #hoverShow1 {
+   display: block;
+   float: right;
+ }
 
-.hoverWrapper #hoverShow1 {
-    float: right;
-    display: none;
-    height: 100%;
-    width: 100%;
+ .hoverWrapper #hoverShow1 {
+  float: right;
+  display: none;
+  height: 100%;
+  width: 100%;
 }
 .hoverWrapper:hover #hoverShow2 {
  display: block;
@@ -132,45 +137,114 @@ input[type=text] {
 }
 
 .hoverWrapper #hoverShow2 {
-    float: right;
-    display: none;
-    height: 100%;
-    width: 100%;
+  float: right;
+  display: none;
+  height: 100%;
+  width: 100%;
 }
 .darker_channel {
-    border-color: #ccc;
-    background-color: #ddd;
+  border-color: #ccc;
+  background-color: #ddd;
 }
 .darker_channel:hover {
-    border-color: #ccc;
-    background-color: #999999;
+  border-color: #ccc;
+  background-color: #999999;
+}
+.darker_channel_clicked {
+  border-color: #ccc;
+  background-color: #999999;
+}
+.darker_channel_clicked:hover {
+  border-color: #ccc;
+  background-color: #666666;
 }
 .showme{ 
-display: none;
+  display: none;
 }
 .showhim:hover .showme{
-display : inline-block;
+  display : inline-block;
+}
+.profilemodal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+}
+
+/* Modal Content */
+.profilemodal-content {
+    position: fixed;
+    bottom: 0;
+    background-color: #fefefe;
+    width: 100%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+}
+.profilemodal-header {
+    padding: 2px 16px;
+    background-color: #626362;
+    color: white;
+}
+
+.profilemodal-body {padding: 2px 16px;}
+
+.profilemodal-footer {
+    padding: 2px 16px;
+    background-color: #626362;
+    color: white;
+}
+/* Add Animation */
+@-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+}
+
+@keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+}
+
+@-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
 }
 </style>
 </head>
 <script>
-function addchannel() {
- var channelname = prompt("Please enter the channel name:", "Lemons");
+  function addchannel() {
+   var channelname = prompt("Please enter the channel name:", "Lemons");
 
-    if (channelname == null || channelname == "") {
-        txt = "User cancelled the prompt.";
-    } else {
-        txt = channelname;
-    }
+   if (channelname == null || channelname == "") {
+    txt = "User cancelled the prompt.";
+  } else {
+    postchannel(channelname);
+  }
 }
 function adduser() {
  var username = prompt("Please enter the name of the person you want to invite:", "Lemon_God");
 
-    if (username == null || username == "") {
-        txt = "User cancelled the prompt.";
-    } else {
-        txt = username;
-    }
+ if (username == null || username == "") {
+  txt = "User cancelled the prompt.";
+} else {
+  adduserchannel(username);
+}
 }
 window.onload = function(){
   removechannellist();
@@ -179,337 +253,419 @@ window.onload = function(){
   httpGetAsync('http://127.0.0.1:5000/channels', loadchanlist);
 
   document.getElementById('inputbex').onkeydown = function(e){
-  if(e.keyCode == 13){
-    alert(document.getElementById("msgtext").value);
-    var element = document.getElementById("msglisto");
-    element.scrollTop = element.scrollHeight - element.clientHeight;
-    document.getElementById("msgtext").value = "";
-  }
-
-
-};
+    sendmessage(e);
+  };
+  profilemodal();
 }
+
+function sendmessage(e)
+{
+  if(e.keyCode == 13){
+        //alert(document.getElementById("msgtext").value);
+        postmsg(document.getElementById("msgtext").value);
+        var element = document.getElementById("msglisto");
+        element.scrollTop = element.scrollHeight - element.clientHeight;
+        document.getElementById("msgtext").value = "";
+      }
+}
+
+function profilemodal()
+{
+  // Get the modal
+var modal = document.getElementById("myprofilemodal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myprofilemodalbtn");
+
+// Get the <span> element that closes the modal
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+}
+
 function loadchanlist(jsonstring)
 {
-    var obj = JSON.parse(jsonstring);
-    for (var i = 0; i < obj.channels.length; i++) {
-        addachanneltolist(obj.channels[i].name);
-    }
+  removechannellist();
+  var obj = JSON.parse(jsonstring);
+  for (var i = 0; i < obj.channels.length; i++) {
+    addachanneltolist(obj.channels[i].name);
+  }
 }
 function loadmsgs(jsonstring)
 {
-    removemsglist()
-    var obj = JSON.parse(jsonstring);
-    for (var i = 0; i < obj.messages.length; i++) {
-        addamsgtolist(obj.messages[i].content,obj.messages[i].time,obj.messages[i].username,obj.messages[i].avatar);
-    }
-    var element = document.getElementById("msglisto");
-    element.scrollTop = element.scrollHeight - element.clientHeight;
+  removemsglist()
+  var obj = JSON.parse(jsonstring);
+  for (var i = 0; i < obj.messages.length; i++) {
+    addamsgtolist(obj.messages[i].content,obj.messages[i].time,obj.messages[i].username,obj.messages[i].avatar);
+  }
+  var element = document.getElementById("msglisto");
+  element.scrollTop = element.scrollHeight - element.clientHeight;
 }
 function loaduserlist(jsonstring)
 {
-    removeuserlist()
-    var obj = JSON.parse(jsonstring);
-    for (var i = 0; i < obj.users.length; i++) {
-        addausertolist(obj.users[i],"");
-    }
+  removeuserlist()
+  var obj = JSON.parse(jsonstring);
+  for (var i = 0; i < obj.owners.length; i++) {
+    addausertolist(obj.owners[i],"");
+  }
+  for (var i = 0; i < obj.users.length; i++) {
+    addausertolist(obj.users[i],"");
+  }
+
 }
 
 function httpGetAsync(theUrl, callback)
 {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText);
-    }
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+      callback(xmlHttp.responseText);
+  }
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.setRequestHeader("Authorization", "Bearer " + getCookie("access_token"));
     xmlHttp.send(null);
-}
-function clickedchannel(name) {
- httpGetAsync('http://127.0.0.1:5000/channels/' + name + '/messages', loadmsgs);
- httpGetAsync('http://127.0.0.1:5000/channels/' + name, loaduserlist);
+  }
 
-}
-
-function addachanneltolist(name) {
-    var chanlist  = document.getElementById("chanulisto"),
-        div    = document.createElement('div'),
-        text   = document.createElement('span'),
-        spanhide   = document.createElement('span'),
-        button = document.createElement('button');
+function postchannel(name)
+     {
+    xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:5000/channels/" + name;
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", "Bearer " + getCookie("access_token"));
 
 
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState == 4 && xhr.status == 201) {
 
-    text.innerHTML += name;
-    div.className  = 'showhim container darker_channel';
-    div.onclick = function() { clickedchannel(name); };
-    button.innerHTML += 'x';
-    button.className = 'w3-button w3-small w3-circle w3-red';
-    button.onclick = function() { removechannel(name); };
-    spanhide.className = 'showme';
+            //var json = JSON.parse(xhr.responseText);
+            //console.log(json.email + ", " + json.name)
+            //console.log(json);
+            var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+ httpGetsync('http://127.0.0.1:5000/channels', loadchanlist);
+                  httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel") + '/messages', loadmsgs);
+                httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel"), loaduserlist);            }, delayInMilliseconds);
 
-    spanhide.appendChild(button);
-    div.appendChild(text);
-    div.appendChild(spanhide);
-    chanlist.appendChild(div);
+        }
+        else{
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+            var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+              console.log("DELAY")
+              httpGetAsync('http://127.0.0.1:5000/channels', loadchanlist);
+            }, delayInMilliseconds);
+        }
+    }
+    var data = JSON.stringify({"owners":getCookie("username"),"users":""});
+    xhr.send(data);
+    }
+
+function adduserchannel(name)
+     {
+    xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:5000/channels/" + getCookie("channel");
+    xhr.open("UPDATE", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", "Bearer " + getCookie("access_token"));
+
+
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState == 4 && xhr.status == 201) {
+
+            //var json = JSON.parse(xhr.responseText);
+            //console.log(json.email + ", " + json.name)
+            //console.log(json);
+            var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+ httpGetsync('http://127.0.0.1:5000/channels', loadchanlist);
+                  httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel") + '/messages', loadmsgs);
+                httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel"), loaduserlist);            }, delayInMilliseconds);
+
+        }
+        else{
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+            var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+              console.log("DELAY")
+              httpGetAsync('http://127.0.0.1:5000/channels', loadchanlist);
+            }, delayInMilliseconds);
+        }
+    }
+    var data = JSON.stringify({"owners":getCookie("username"),"users":name});
+    xhr.send(data);
+    }
+
+
+function postmsg(text)
+     {
+    xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:5000/channels/" + getCookie("channel") +"/message";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", "Bearer " + getCookie("access_token"));
+
+
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState == 4 && xhr.status == 201) {
+
+            //var json = JSON.parse(xhr.responseText);
+            //console.log(json.email + ", " + json.name)
+            //console.log(json);
+            var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+                 httpGetsync('http://127.0.0.1:5000/channels', loadchanlist);
+                  httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel") + '/messages', loadmsgs);
+                httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel"), loaduserlist);
+            }, delayInMilliseconds);
+
+
+        }
+        else{
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+            var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+              console.log("DELAY")
+              httpGetAsync('http://127.0.0.1:5000/channels', loadchanlist);
+            }, delayInMilliseconds);
+        }
+    }
+    var data = JSON.stringify({"username":getCookie("username"),"content":text});
+    xhr.send(data);
+    }
+
+function deletechannel(name)
+     {
+    xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:5000/channels/" + name;
+    xhr.open("DELETE", url, true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Authorization", "Bearer " + getCookie("access_token"));
+
+
+    xhr.onreadystatechange = function () { 
+        if (xhr.readyState == 4 && xhr.status == 201) {
+
+            //var json = JSON.parse(xhr.responseText);
+            //console.log(json.email + ", " + json.name)
+            //console.log(json);
+             console.log("Ready")
+            
+                        var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+              console.log("DELAY")
+                  httpGetsync('http://127.0.0.1:5000/channels', loadchanlist);
+                  httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel") + '/messages', loadmsgs);
+                httpGetAsync('http://127.0.0.1:5000/channels/' + getCookie("channel"), loaduserlist);            }, delayInMilliseconds);
+
+        }
+        else{
+            var json = JSON.parse(xhr.responseText);
+            console.log(json)
+            var delayInMilliseconds = 500; //1 second
+            setTimeout(function() {
+              console.log("DELAY")
+              httpGetAsync('http://127.0.0.1:5000/channels', loadchanlist);
+            }, delayInMilliseconds);
+        }
+    }
+    var data = JSON.stringify({"owners":getCookie("username"),"users":""});
+    xhr.send(data);
+    }
+
+function httpGetsync(theUrl, callback)
+{
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+      callback(xmlHttp.responseText);
+  }
+    xmlHttp.open("GET", theUrl, false); // true for asynchronous
+    xmlHttp.setRequestHeader("Authorization", "Bearer " + getCookie("access_token"));
+    xmlHttp.send(null);
+  }
+
+  function clickedchannel(name) {
+   httpGetsync('http://127.0.0.1:5000/channels', loadchanlist);
+   httpGetAsync('http://127.0.0.1:5000/channels/' + name + '/messages', loadmsgs);
+   httpGetAsync('http://127.0.0.1:5000/channels/' + name, loaduserlist);
+   document.getElementById(name).className = 'showhim container darker_channel_clicked';
+   setCookie("channel",name);
+ }
+
+  function setCookie(cname, cvalue) {
+    document.cookie = cname + "=" + cvalue + ";path=/";
+  }
+  function addachanneltolist(name) {
+  var chanlist  = document.getElementById("chanulisto"),
+  div    = document.createElement('div'),
+  text   = document.createElement('span'),
+  spanhide   = document.createElement('span'),
+  button = document.createElement('button');
+
+
+  div.id = name;
+  text.innerHTML += name;
+  div.className  = 'showhim container darker_channel';
+  div.onclick = function() { clickedchannel(name); };
+  button.innerHTML += 'x';
+  button.className = 'w3-button w3-small w3-circle w3-red';
+  button.onclick = function() { removechannel(name); };
+  spanhide.className = 'showme';
+
+  spanhide.appendChild(button);
+  div.appendChild(text);
+  div.appendChild(spanhide);
+  chanlist.appendChild(div);
 }
 
 function removechannel(name) {
-  alert("remove channel")
+  deletechannel(name);
 }
 
 function addamsgtolist(text,date,who,avatar) {
-    var msglist  = document.getElementById("msglisto"),
-            div    = document.createElement('div'),
-            img    = document.createElement('img'),
-            texto   = document.createElement('p'),
-            span   = document.createElement('span'),
-            name   = document.createElement('p');
+  var msglist  = document.getElementById("msglisto"),
+  div    = document.createElement('div'),
+  img    = document.createElement('img'),
+  texto   = document.createElement('p'),
+  span   = document.createElement('span'),
+  name   = document.createElement('p');
 
-        img.src = avatar;
-        img.alt = "Avatar";
-        img.style = "width:100%;";
-        texto.innerHTML += text;
-        span.className = "time-right";
-        span.innerHTML += date;
-        name.innerHTML += who;
+  img.src = avatar;
+  img.alt = "Avatar";
+  img.style = "width:100%;";
+  texto.innerHTML += text;
+  span.className = "time-right";
+  span.innerHTML += date;
+  name.innerHTML += who;
 
-        div.className  = 'container darker';
+  div.className  = 'container darker';
 
-        div.appendChild(img);
-        div.appendChild(name);
-        div.appendChild(texto);
-        div.appendChild(span);
+  div.appendChild(img);
+  div.appendChild(name);
+  div.appendChild(texto);
+  div.appendChild(span);
 
-        msglist.appendChild(div);
+  msglist.appendChild(div);
 
 }
 
 function addausertolist(name,avatar) {
-            var usrlist  = document.getElementById("usrlistocolumn"),
-            div    = document.createElement('div'),
-            img    = document.createElement('img'),
-            nameo   = document.createElement('p');
+  var usrlist  = document.getElementById("usrlistocolumn"),
+  div    = document.createElement('div'),
+  img    = document.createElement('img'),
+  nameo   = document.createElement('p');
 
-        img.src = avatar;
-        img.alt = "Avatar";
-        img.style = "width:100%;";
-        nameo.innerHTML += name;
+  img.src = avatar;
+  img.alt = "Avatar";
+  img.style = "width:100%;";
+  nameo.innerHTML += name;
 
-        div.className  = 'container darker';
+  div.className  = 'container darker';
 
-        div.appendChild(img);
-        div.appendChild(nameo);
+  div.appendChild(img);
+  div.appendChild(nameo);
 
-        usrlist.appendChild(div);
+  usrlist.appendChild(div);
 }
 function removeuserlist(){
-    var myNode = document.getElementById("usrlistocolumn");
-    while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-    }
+  var myNode = document.getElementById("usrlistocolumn");
+  while (myNode.firstChild) {
+    myNode.removeChild(myNode.firstChild);
+  }
 
 }
 function removemsglist(){
-    var myNode = document.getElementById("msglisto");
-    while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-    }
+  var myNode = document.getElementById("msglisto");
+  while (myNode.firstChild) {
+    myNode.removeChild(myNode.firstChild);
+  }
 
 }
 function removechannellist(){
-    var myNode = document.getElementById("chanulisto");
-    while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-    }
-
+  var myNode = document.getElementById("chanulisto");
+  while (myNode.firstChild) {
+    myNode.removeChild(myNode.firstChild);
+  }
 }
 
-
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 </script>
 <body>
+  <div id="myprofilemodal" class="profilemodal">
+
+  <!-- Modal content -->
+  <div class="profilemodal-content">
+    <div class="profilemodal-header">
+      <h2>JAREK BANAN</h2>
+    </div>
+    <div class="profilemodal-body">
+      <p>MY EMAIL IS COOL</p>
+      <p>Some other text...</p>
+    </div>
+    <div class="profilemodal-footer">
+      <h3>KORMORANY</h3>
+    </div>
+  </div>
+
+</div>
  <div class="row" style="height: 12%; ! important; min-height: 80px; ! important;">
-     <div class="channellistcolumn" style="overflow: hidden; ! important;">
-         <div class="hoverWrapper">
-            <div id="hoverShow1"><button onclick="addchannel()" class="w3-button w3-xlarge w3-circle w3-green">+</button></div>
-            <h2>CHANNEL LIST</h2>
-         </div>
-     </div>
-     <div class="chatcolumn" style="overflow: hidden; ! important;">
-         <h2>MESSAGES</h2>
-     </div>
-     <div class="userlistcolumn" style="overflow: hidden; ! important;">
-<div    class="hoverWrapper">
-            <div id="hoverShow2"><button onclick="adduser()" class="w3-button w3-xlarge w3-circle w3-green">+</button></div>
-            <h2>USER LIST</h2>
-         </div>     </div>
+   <div class="channellistcolumn" style="overflow: hidden; ! important;">
+     <div class="hoverWrapper">
+      <div id="hoverShow1"><button onclick="addchannel()" class="w3-button w3-xlarge w3-circle w3-green">+</button></div>
+      <h2>CHANNEL LIST</h2>
+    </div>
+  </div>
+  <div class="chatcolumn" style="overflow: hidden; ! important;">
+   <h2>MESSAGES</h2>
  </div>
- <div class="row">
+ <div class="userlistcolumn" style="overflow: hidden; ! important;">
+  <div class="hoverWrapper">
+    <div id="hoverShow2"><button onclick="adduser()" class="w3-button w3-xlarge w3-circle w3-green">+</button></div>
+    <h2>USER LIST</h2>
+  </div>     </div>
+</div>
+<div class="row">
   <div class="channellistcolumn" id="chanulisto">
-      <div class="container darker_channel" onclick="clickedchannel(1)">
-        <p>Channel1</p>
-      </div>
-            <div class="container darker_channel">
-        <p>Channel2</p>
-      </div>
-            <div class="container darker_channel">
-        <p>Channel3</p>
-      </div>
-            <div class="container darker_channel">
-        <p>Channel4</p>
-      </div>
-      <div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div><div class="container darker_channel">
-        <p>Channel4</p>
-      </div>
   </div>
-
   <div class="chatcolumn">
-
     <div class="msglist" id="msglisto">
-//example messages
-<div class="container darker">
-  <img src="" alt="Avatar" class="right" style="width:100%;">
-  <p>TTESTET</p>
-  <span class="time-left">11:01</span>
-</div>
-
-<div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div>
-<div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div><div class="container">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TESTDS</p>
-  <span class="time-right">11:02</span>
-</div>
-<div class="container darker">
-  <img src="" alt="Avatar" style="width:100%;">
-  <p>TTEST</p>
-  <span class="time-left">11:05</span>
-</div>
-  </div>
+    </div>
     <div class="inputbox" id="inputbex">
-              <input type="text" id="msgtext" name="msgtexto" placeholder="Say something!">
-      </div>
+      <input type="text" id="msgtext" name="msgtexto" placeholder="Say something!">
+    </div>
   </div>
-
-  <div class="userlistcolumn" id="usrlistocolumn">
-         <div class="container darker">
-             <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User1</p>
-      </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User2</p>
-      </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User3</p>
-      </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
+  <div class="userlistcolumn">
+    <div class="userlist" id="usrlistocolumn"></div>
+      <div id="myprofilemodalbtn" class="container darker" style="height: 10%;"><img src="" alt="Avatar" style="width: 100%;"><p>MYNAME</p></div>
   </div>
-                     <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-            <div class="container darker">
-                <img src="" alt="Avatar" class="right" style="width:100%;">
-        <p>User4</p>
-  </div>
-
 </div>
-
- </div>
-
 </body>
 </html>
