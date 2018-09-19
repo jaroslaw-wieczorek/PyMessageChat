@@ -256,6 +256,7 @@ window.onload = function(){
     sendmessage(e);
   };
   profilemodal();
+  document.getElementById("bame").innerHTML = getCookie("username");
 }
 
 function sendmessage(e)
@@ -664,7 +665,7 @@ function getCookie(cname) {
   </div>
   <div class="userlistcolumn">
     <div class="userlist" id="usrlistocolumn"></div>
-      <div id="myprofilemodalbtn" class="container darker" style="height: 10%;"><img src="" alt="Avatar" style="width: 100%;"><p>MYNAME</p></div>
+      <div id="myprofilemodalbtn" class="container darker" style="height: 10%;"><img src="" alt="Avatar" style="width: 100%;"><p id="bame"></p></div>
   </div>
 </div>
 </body>
