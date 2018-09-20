@@ -50,6 +50,7 @@ class Channel(Resource):
             return channel.json()
         return {'message': 'Channel not found'}, 404
 
+    @jwt_required
     def post(self, name):
         check = ChannelModel.find_by_name(name)
         if check:
@@ -63,12 +64,29 @@ class Channel(Resource):
 
         channel_id = hashData(random_data, str(timestamp) + str(name))
 
+        user_id = get_jwt_identity()
+        user = UserModel.find_by_id(user_id)
+
+        owner = user.username
+
+        owners = set()
+        owners.add(owner)
+
+        for item in data["owners"]:
+            owners.add(item)
+
+        users = set()
+        users.add(owner)
+        for item in data["users"]:
+            users.add(item)
+
         # None is used because the user will not set the channel id.
         try:
             channel = ChannelModel(channel_id, str(name),
-                                   json.dumps(data["owners"]),
-                                   json.dumps(data["users"])
+                                   json.dumps(list(owners)),
+                                   json.dumps(list(users))
                                    )
+            channel.save_to_db()
             channel.save_to_db()
 
         except Exception as err:
@@ -77,9 +95,12 @@ class Channel(Resource):
 
         return channel.json(), 201
 
+    @jwt_required
     def put(self, name):
         channel = ChannelModel.find_by_name(name)
         data = Channel.parser.parse_args()
+        user_id = get_jwt_identity()
+        user = UserModel.find_by_id(user_id)
 
         if channel is None:
 
@@ -88,17 +109,50 @@ class Channel(Resource):
 
             channel_id = hashData(random_data, str(timestamp) + str(name))
 
+            owner = user.username
+            owners = set()
+            owners.add(owner)
+
+            for item in data["owners"]:
+                owners.add(item)
+
+            users = set()
+            users.add(owner)
+
+            for item in data["users"]:
+                users.add(item)
+
+            print(owners, users)
             channel = ChannelModel(channel_id, name,
-                                   json.dumps(data['owners']),
-                                   json.dumps(data['users'])
+                                   json.dumps(list(owners)),
+                                   json.dumps(list(users))
                                    )
 
         elif (not ChannelModel.find_by_name(data['name']) or
               data['name'] == name):
 
+            owner = user.username
+            owners = set()
+            owners.add(owner)
+
+            for item in channel.owners:
+                owners.add(item)
+
+            for item in data["owners"]:
+                owners.add(item)
+
+            users = set()
+            users.add(owner)
+
+            for item in channel.users:
+                users.add(item)
+
+            for item in data["users"]:
+                users.add(item)
+
             channel.name = data['name']
-            channel.owners = json.dumps(data['owners'])
-            channel.users = json.dumps(data['users'])
+            channel.owners = json.dumps(list(owners))
+            channel.users = json.dumps(list(users))
 
         else:
             return {'message': "An channel with name '{}' already exists".format(data['name'])}, 404

@@ -2,6 +2,8 @@ from flask import Flask
 from flask import jsonify
 from flask import render_template
 
+from flask_assets import Environment, Bundle
+
 #from flask.ext.hashing import Hashing
 from flask_restful import Api
 from flask_restful import Resource
@@ -53,6 +55,17 @@ app.config['JWT_AUTH_URL_RULE'] = '/login'
 # config JWT to expire within half an hour
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
 app.secret_key = 'josie'
+
+assets = Environment(app)
+assets.init_app(app)
+
+js = Bundle('js/chat.js', output='gen/packed.js')
+assets.register('js_files', js)
+
+css = Bundle('css/chat.css', output="gen/style.css")
+assets.register("css_files", css)
+
+
 api = Api(app)
 
 
@@ -115,6 +128,7 @@ def revoked_token_callback():
         'error': 'token_revoked'
     }), 401
 
+
 api.add_resource(User, '/user')
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users')
@@ -132,12 +146,14 @@ api.add_resource(Message, '/channels/<string:channel_name>/message')
 @app.route('/')
 def home():
     return render_template('login.html')
+
+
 @app.route('/chat')
 def chat():
     return render_template('chat.html')
+
 
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
     app.run(port=5000, debug=True)
-
