@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import redirect
 from flask import jsonify
 from flask import render_template
 
@@ -15,10 +16,12 @@ from flask_jwt import jwt_required
 
 from flask_jwt_extended import get_raw_jwt
 from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_optional
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import create_refresh_token
 from flask_jwt_extended import jwt_refresh_token_required
+
 
 from blacklist import BLACKLIST
 
@@ -147,11 +150,15 @@ api.add_resource(Message, '/channels/<string:channel_name>/message')
 def home():
     return render_template('login.html')
 
-
+@jwt_optional
 @app.route('/chat')
 def chat():
-    return render_template('chat.html')
-
+    user_id = get_jwt_identity()
+    if user_id:
+        return render_template('chat.html')
+    else:
+        #return redirect("/")
+        return render_template('chat.html')
 
 if __name__ == '__main__':
     from db import db

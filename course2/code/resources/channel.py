@@ -75,10 +75,23 @@ class Channel(Resource):
         for item in data["owners"]:
             owners.add(item)
 
+        print(owners)
+
         users = set()
         users.add(owner)
         for item in data["users"]:
             users.add(item)
+        print(users)
+
+        try:
+            owners.remove('')
+        except Exception as err:
+            pass
+
+        try:
+            users.remove('')
+        except Exception as err:
+            pass
 
         # None is used because the user will not set the channel id.
         try:
@@ -103,7 +116,6 @@ class Channel(Resource):
         user = UserModel.find_by_id(user_id)
 
         if channel is None:
-
             timestamp = datetime.utcnow().timestamp()
             random_data = randomData()
 
@@ -123,6 +135,17 @@ class Channel(Resource):
                 users.add(item)
 
             print(owners, users)
+
+            try:
+                owners.remove('')
+            except Exception as err:
+                pass
+
+            try:
+                users.remove('')
+            except Exception as err:
+                pass
+
             channel = ChannelModel(channel_id, name,
                                    json.dumps(list(owners)),
                                    json.dumps(list(users))
