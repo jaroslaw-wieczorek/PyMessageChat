@@ -15,6 +15,7 @@ from flask_jwt_extended import JWTManager
 from flask_jwt import jwt_required
 
 from flask_jwt_extended import get_raw_jwt
+from flask_jwt_extended import fresh_jwt_required
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import jwt_optional
 from flask_jwt_extended import get_jwt_identity
@@ -27,6 +28,7 @@ from blacklist import BLACKLIST
 
 #from security import authenticate
 #from security import identity as identity_function
+from models.user import UserModel
 
 from resources.user import User
 from resources.user import UserList
@@ -82,9 +84,16 @@ jwt = JWTManager(app)
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):
-    if identity == 1:
-        return {'is_admin': True}
-    return {'is_admin': False}
+    user = UserModel.find_by_id(identity)
+    if user and identity == 1:
+        return {"username": user.username,
+                "email": user.email,
+                "is_admin": True
+                }
+    return {"username": user.username,
+            "email": user.email,
+            "is_admin": False
+            }
 
 
 @jwt.token_in_blacklist_loader
@@ -133,10 +142,10 @@ def revoked_token_callback():
 
 
 api.add_resource(User, '/user')
-api.add_resource(UserRegister, '/register')
 api.add_resource(UserList, '/users')
 api.add_resource(UserLogin, '/login')
 api.add_resource(UserLogout, '/logout')
+api.add_resource(UserRegister, '/register')
 api.add_resource(TokenRefresh, '/refresh')
 
 api.add_resource(ChannelList, '/channels')
@@ -149,6 +158,7 @@ api.add_resource(Message, '/channels/<string:channel_name>/message')
 @app.route('/')
 def home():
     return render_template('login.html')
+
 
 @jwt_optional
 @app.route('/chat')

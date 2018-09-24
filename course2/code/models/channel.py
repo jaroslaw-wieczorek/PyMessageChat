@@ -28,6 +28,10 @@ class ChannelModel(db.Model):
         }
 
     @classmethod
+    def find_channels_by_username(cls, username):
+        return cls.query.filter(ChannelModel.owners.contains(username)).all()
+
+    @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
         # SELECT * FROM items WHERE name=name

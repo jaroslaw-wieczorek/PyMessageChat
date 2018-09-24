@@ -16,7 +16,7 @@ from flask_restful import Api
 from flask_restful import reqparse
 from flask_restful import Resource
 
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, fresh_jwt_required
 from flask_jwt_extended import get_jwt_identity
 
 from models.user import UserModel
@@ -194,27 +194,47 @@ class Channel(Resource):
         return {'message': "An channel not found"}, 404
 
 
-class ChannelList(Resource):
-    @jwt_required
+class UserChannelList(Resource):
+    @fresh_jwt_required
     def get(self):
         user_id = get_jwt_identity()
         user = UserModel.find_by_id(user_id)
 
         if user:
             name = user.username
-            channels = ChannelModel.query.all()
+            channels = ChannelModel.find_channels_by_username(name)
             channel_list = []
 
             for channel in channels:
                 if (name in json.loads(channel.owners) or
                    name in json.loads(channel.users)):
                         channel_list.append(channel.json())
-                        print(channel)
 
             if channel_list:
                 return {'channels': channel_list}, 200
             else:
                 return {'message': 'User hasn\'t got any channel'}, 200
-        #else:
-        #    return {'message': 'User id is bad.'}, 400
+        return {'message': 'Channels not found'}, 404
+
+
+class ChannelList(Resource):
+    @fresh_jwt_required
+    def get(self):
+        user_id = get_jwt_identity()
+        user = UserModel.find_by_id(user_id)
+
+        if user:
+            name = user.username
+            channels = ChannelModel.find_channels_by_username(name)
+            channel_list = []
+
+            for channel in channels:
+                if (name in json.loads(channel.owners) or
+                   name in json.loads(channel.users)):
+                        channel_list.append(channel.json())
+
+            if channel_list:
+                return {'channels': channel_list}, 200
+            else:
+                return {'message': 'User hasn\'t got any channel'}, 200
         return {'message': 'Channels not found'}, 404

@@ -13,7 +13,8 @@ from flask_restful import Resource
 
 from werkzeug.security import safe_str_cmp
 
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, fresh_jwt_required
+#from flask_jwt_extended import jwt_optional_required
 from flask_jwt_extended import get_raw_jwt
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import create_access_token
@@ -78,12 +79,16 @@ class UserRegister(Resource):
 
 
 class UserList(Resource):
+    @jwt_required
     def get(self):
-        users = UserModel.query.all()
+        user_id = get_jwt_identity()
+        #print(user_id)
 
-        if users:
-            return {'users': [user.json() for user in users]}
-        return {'message': 'Users not exists.'}, 404
+        if user_id:
+          users = UserModel.query.all()
+          if users:
+              return {'users': [user.json() for user in users]}, 200
+          return {'users': 'Users not exists.'}, 404
 
 
 class User(Resource):
