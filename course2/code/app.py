@@ -169,7 +169,7 @@ def chat():
 
     if user_id:
         print("User authenticate")
-        return make_response(render_template('chat.html'), 200)
+        return make_response(render_template('chat.html'))
         print("Tego nie powinno być")
     else:
         print("User unauthenticate")
@@ -179,4 +179,4 @@ def chat():
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
-    app.run(port=5000, debug=True)
+    app.run(port=80, debug=True)
