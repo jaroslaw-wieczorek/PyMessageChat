@@ -8,12 +8,16 @@ from hashes import randomData
 from models.user import UserModel
 from blacklist import BLACKLIST
 
+from flask import redirect
+
 from flask_restful import reqparse
 from flask_restful import Resource
 
 from werkzeug.security import safe_str_cmp
 
-from flask_jwt_extended import jwt_required, fresh_jwt_required
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import fresh_jwt_required
+
 #from flask_jwt_extended import jwt_optional_required
 from flask_jwt_extended import get_raw_jwt
 from flask_jwt_extended import get_jwt_identity
@@ -51,7 +55,6 @@ _user_parser.add_argument('status',
 
 
 class UserRegister(Resource):
-
     def get(self, username):
         user = self.find_by_username(username)
         if user:
@@ -96,6 +99,7 @@ class UserList(Resource):
 
 
 class User(Resource):
+    @jwt_required
     @classmethod
     def get(cls, user_id):
         user = UserModel.find_by_id(user_id)
@@ -103,6 +107,7 @@ class User(Resource):
             return {'message': 'User not found.'}, 404
         return user.json()
 
+    @jwt_required
     @classmethod
     def delete(cls, user_id):
         user = UserModel.find_by_id(user_id)
@@ -134,10 +139,15 @@ class UserLogin(Resource):
 class UserLogout(Resource):
     @jwt_required
     def post(self):
-        jti = get_raw_jwt()['jti']  # jti is "JWT ID", a unique identyfier for a JWT
+        user_id = get_jwt_identity()
+        print(user_id)
+        print("JTI")
+        jti = get_raw_jwt()['jti']
+        # jti is "JWT ID", a unique identyfier for a JWT
         BLACKLIST.add(jti)
         return redirect("/")
-        #return {'messages': 'Succesfuly logged out.'}, 200
+
+        # return {'messages': 'Succesfuly logged out.'}, 200
 
 
 class TokenRefresh(Resource):

@@ -4,7 +4,13 @@
 <head>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 	<meta charset="UTF-8">
-	<title>Login</title>
+
+	{% if title %}
+   	<title>{{ title }} - Microblog</title>
+    {% else %}
+    <title>Login!</title>
+    {% endif %}
+	
 	<style>/* Base */
     body
     {
@@ -239,21 +245,21 @@
 					setCookie("refresh_token", json.refresh_token);
 					setCookie("username", document.getElementById('name_login').value);
 
-					//window.location = "http://127.0.0.1:5000/chat"
+					window.location = "http://127.0.0.1:5000/chat"
 
-					var myHeaders = new Headers();
-					myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
+					//var myHeaders = new Headers();
+					//myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
 
-					var myInit = {
-						method: 'GET',
-						headers: myHeaders,
-						mode: 'cors',
-						cache: 'default'
-					};
+					//var myInit = {
+					//	method: 'GET',
+						//headers: myHeaders,
+					//	mode: 'cors',
+					//	cache: 'default'
+					//};
 
-					var myRequest = new Request('http://127.0.0.1:5000/chat', myInit);
+					//var myRequest = new Request('http://127.0.0.1:5000/chat', myInit);
 
-					fetch(myRequest);
+					//fetch(myRequest).then(window.location='http://127.0.0.1:5000/chat');
 				}
 				else {
 					//var json = JSON.parse(xhr.responseText);

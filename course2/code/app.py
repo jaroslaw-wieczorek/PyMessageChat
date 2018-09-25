@@ -53,14 +53,22 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-
+app.config['JWT_COOKIE_DOMAIN'] = '/'
 app.config['JSON_AS_ASCII'] = False
 app.config['JWT_AUTH_URL_RULE'] = '/login'
-app.config['JWT_TOKEN_LOCATION'] = 'headers'
+#app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
+app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
+app.config['JWT_COOKIE_SECURE'] = False
 
+app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
+app.config['JWT_SECRET_KEY'] = 'super-secret'
 # config JWT to expire within half an hour
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
 app.secret_key = 'josie'
+
+app.config.setdefault('JWT_ACCESS_COOKIE_NAME', 'access_token')
+app.config.setdefault('JWT_REFRESH_COOKIE_NAME', 'refresh_token')
 
 assets = Environment(app)
 assets.init_app(app)
@@ -156,7 +164,7 @@ api.add_resource(MessageList, '/channels/<string:channel_name>/messages')
 api.add_resource(Message, '/channels/<string:channel_name>/message')
 
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def home():
     return render_template('login.html')
 
@@ -169,7 +177,7 @@ def chat():
 
     if user_id:
         print("User authenticate")
-        return make_response(render_template('chat.html'))
+        return render_template('chat.html', title='PyMessageChat')
         print("Tego nie powinno być")
     else:
         print("User unauthenticate")
@@ -179,4 +187,4 @@ def chat():
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
-    app.run(port=5000, debug=True)
+    app.run(port=5000, debug=False)

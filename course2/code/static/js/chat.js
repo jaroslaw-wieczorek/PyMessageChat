@@ -20,14 +20,11 @@ function adduser() {
 
 	console.log('add user');
 
-	var myHeaders = new Headers();
-	myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
-
 	var myInit = {
 		method: 'GET',
-		headers: myHeaders,
+		//headers: myHeaders,
 		mode: 'cors',
-		cache: 'default',
+		cache: 'default'
 	};
 
 	var myRequest = new Request('http://127.0.0.1:5000/users', myInit);
@@ -167,8 +164,23 @@ function profilemodal() {
 
 	// Get the button that opens the modal
 	var btn = document.getElementById('myprofilemodalbtn');
-
 	// Get the <span> element that closes the modal
+
+	let btn_logout = document.getElementById('MYNAME_logout');
+	btn_logout.onclick = function(){
+		modal.style.display = 'none';
+
+		xhr = new XMLHttpRequest();
+		var url = 'http://127.0.0.1:5000/logout';
+		xhr.open('POST', url, true);
+
+		//xhr.setRequestHeader('Content-type', 'application/json');
+		//xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
+		
+		xhr.send("null")
+
+	}
+
 
 	// When the user clicks the button, open the modal
 	btn.onclick = function() {
@@ -216,16 +228,17 @@ function httpGetAsync(theUrl, callback) {
 		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) callback(xmlHttp.responseText);
 	};
 	xmlHttp.open('GET', theUrl, true); // true for asynchronous
-	xmlHttp.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
+	//xmlHttp.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
 	xmlHttp.send(null);
 }
+
 
 function postchannel(name) {
 	xhr = new XMLHttpRequest();
 	var url = 'http://127.0.0.1:5000/channels/' + name;
 	xhr.open('POST', url, true);
 	xhr.setRequestHeader('Content-type', 'application/json');
-	xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
+	//xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 201) {
@@ -257,7 +270,7 @@ function adduserchannel(name) {
 	var url = 'http://127.0.0.1:5000/channels/' + getCookie('channel');
 	xhr.open('UPDATE', url, true);
 	xhr.setRequestHeader('Content-type', 'application/json');
-	xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
+	//xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 201) {
@@ -289,7 +302,7 @@ function postmsg(text) {
 	var url = 'http://127.0.0.1:5000/channels/' + getCookie('channel') + '/message';
 	xhr.open('POST', url, true);
 	xhr.setRequestHeader('Content-type', 'application/json');
-	xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
+	//xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 201) {
@@ -324,7 +337,7 @@ function deletechannel(name) {
 	var url = 'http://127.0.0.1:5000/channels/' + name;
 	xhr.open('DELETE', url, true);
 	xhr.setRequestHeader('Content-type', 'application/json');
-	xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
+	//xhr.setRequestHeader('Authorization', 'Bearer ' + getCookie('access_token'));
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 201) {
