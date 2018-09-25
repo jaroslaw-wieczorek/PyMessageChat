@@ -248,18 +248,12 @@
 						method: 'GET',
 						headers: myHeaders,
 						mode: 'cors',
-						cache: 'default',
+						cache: 'default'
 					};
 
-					var myRequest = new Request('http://127.0.0.1:5000/', myInit);
+					var myRequest = new Request('http://127.0.0.1:5000/chat', myInit);
 
-					fetch(myRequest).then(function(response) {
-						return response.json();
-
-					}).then(function(data) {
-						console.log(data);
-						window.location = "http://127.0.0.1:5000/chat"
-					});
+					fetch(myRequest);
 				}
 				else {
 					//var json = JSON.parse(xhr.responseText);

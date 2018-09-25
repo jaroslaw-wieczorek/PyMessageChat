@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import redirect
 from flask import jsonify
-from flask import render_template
+from flask import render_template, make_response
 
 from flask_assets import Environment, Bundle
 
@@ -56,6 +56,7 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
 app.config['JSON_AS_ASCII'] = False
 app.config['JWT_AUTH_URL_RULE'] = '/login'
+app.config['JWT_TOKEN_LOCATION'] = 'headers'
 
 # config JWT to expire within half an hour
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
@@ -160,16 +161,20 @@ def home():
     return render_template('login.html')
 
 
-@jwt_optional
-@app.route('/chat')
+
+@app.route('/chat', methods=["GET"])
+@jwt_required
 def chat():
-    user_id = get_jwt_identity()
-    print(user_id)
-    if user_id:
-        return render_template('chat.html')
-    else:
-        return redirect("/")
-        #return render_template('chat.html')
+    #user_id = get_jwt_identity()
+
+    #if user_id:
+    #    print("User authenticate")
+    return redirect('/users')
+    #    print("Tego nie powinno być")
+    #else:
+    #    print("User unauthenticate")
+    #    return redirect("/")
+    #    #return render_template('chat.html')
 
 if __name__ == '__main__':
     from db import db
