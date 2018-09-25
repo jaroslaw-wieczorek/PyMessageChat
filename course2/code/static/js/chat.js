@@ -11,6 +11,7 @@ function adduser() {
 	let addusermodal = document.querySelector('#addusermodal');
 	let addusermodalcontent = document.querySelector('.addusermodal-content');
 	addusermodalcontent.innerHTML = '';
+
 	// console.log(addusermodal);
 
 	// tutaj zmiana flagi na display: flex;
@@ -43,12 +44,16 @@ function adduser() {
 			for (const key in users) {
 				console.log(users[key]);
 				let elementToList = document.createElement('div');
+				elementToList.className = 'addusermodal-content'
 				// obrazek  nazwa_użtkownika  user:  check_box_1  owner: chehk_box_2
+				let row = document.createElement('div');
 
 				let img = document.createElement('div');
+				img.className = 'avatar';
+				img.style['background-image'] = `url(http://i.pravatar.cc/72?u=${name})`;
 				// dalej tak samo jak w przypadku awatarów na liście
 
-				let username = document.createElement('7');
+				let username = document.createElement('div');
 
 				username.innerHTML = `${users[key].username}`;
 				// aplikujesz do niego tekstu z obiektu `users[key].username`
@@ -69,15 +74,23 @@ function adduser() {
 				check_box_2.value = `${users[key].username}`;
 				check_box_2.innerHTML = `${users[key].username}`;
 
-				elementToList.appendChild(img);
-				elementToList.appendChild(username);
-				elementToList.appendChild(check_box_1);
-				elementToList.appendChild(check_box_2);
+				row.appendChild(img)
+				row.appendChild(username)
+				row.appendChild(check_box_1)
+				row.appendChild(check_box_2)
+
+				row.className = 'element'
+				elementToList.appendChild(row);
+				//elementToList.appendChild(username);
+				//elementToList.appendChild(check_box_1);
+				//elementToList.appendChild(check_box_2);
 
 				addusermodalcontent.appendChild(elementToList);
 				addusermodalcontent.appendChild(document.createElement("br"));
 			}
 			let addbtn = document.createElement("button")
+			addbtn.innerHTML = "update users"
+			addbtn.className = 'addusermodal-content'
 
 			addusermodalcontent.appendChild(addbtn);
 

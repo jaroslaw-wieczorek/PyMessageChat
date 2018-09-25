@@ -82,13 +82,15 @@ class UserList(Resource):
     @jwt_required
     def get(self):
         user_id = get_jwt_identity()
-        #print(user_id)
+        # print(user_id)
+        me = UserModel.find_by_id(user_id)
 
         if user_id:
-          users = UserModel.query.all()
-          if users:
-              return {'users': [user.json() for user in users]}, 200
-          return {'users': 'Users not exists.'}, 404
+            users = UserModel.query.all()
+            users.remove(me.username)
+            if users:
+                return {'users': [user.json() for user in users]}, 200
+            return {'users': 'Users not exists.'}, 404
 
 
 class User(Resource):
