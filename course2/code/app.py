@@ -165,16 +165,16 @@ def home():
 @app.route('/chat', methods=["GET"])
 @jwt_required
 def chat():
-    #user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
 
-    #if user_id:
-    #    print("User authenticate")
-    return redirect('/users')
-    #    print("Tego nie powinno być")
-    #else:
-    #    print("User unauthenticate")
-    #    return redirect("/")
-    #    #return render_template('chat.html')
+    if user_id:
+        print("User authenticate")
+        return make_response(render_template('chat.html'), 200)
+        print("Tego nie powinno być")
+    else:
+        print("User unauthenticate")
+        return redirect("/")
+        #return render_template('chat.html')
 
 if __name__ == '__main__':
     from db import db
