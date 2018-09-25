@@ -84,10 +84,12 @@ class UserList(Resource):
         user_id = get_jwt_identity()
         # print(user_id)
         me = UserModel.find_by_id(user_id)
-
         if user_id:
             users = UserModel.query.all()
-            users.remove(me.username)
+            try:
+                users.remove(me)
+            except Exception as err:
+                print("Exception:", err)
             if users:
                 return {'users': [user.json() for user in users]}, 200
             return {'users': 'Users not exists.'}, 404
@@ -134,7 +136,8 @@ class UserLogout(Resource):
     def post(self):
         jti = get_raw_jwt()['jti']  # jti is "JWT ID", a unique identyfier for a JWT
         BLACKLIST.add(jti)
-        return {'messages': 'Succesfuly logged out.'}, 200
+        return redirect("/")
+        #return {'messages': 'Succesfuly logged out.'}, 200
 
 
 class TokenRefresh(Resource):

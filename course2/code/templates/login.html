@@ -215,8 +215,6 @@
 		}
 
 
-
-
 		function httpGetAsync(theUrl, callback) {
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.onreadystatechange = function () {
@@ -241,11 +239,31 @@
 					setCookie("refresh_token", json.refresh_token);
 					setCookie("username", document.getElementById('name_login').value);
 
-					window.location.replace("http://127.0.0.1:5000/chat");
+					//window.location = "http://127.0.0.1:5000/chat"
+
+					var myHeaders = new Headers();
+					myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
+
+					var myInit = {
+						method: 'GET',
+						headers: myHeaders,
+						mode: 'cors',
+						cache: 'default',
+					};
+
+					var myRequest = new Request('http://127.0.0.1:5000/', myInit);
+
+					fetch(myRequest).then(function(response) {
+						return response.json();
+
+					}).then(function(data) {
+						console.log(data);
+						window.location = "http://127.0.0.1:5000/chat"
+					});
 				}
 				else {
-					var json = JSON.parse(xhr.responseText);
-					console.log(json)
+					//var json = JSON.parse(xhr.responseText);
+					//console.log(json)
 				}
 			}
 			var data = JSON.stringify({ "username": document.getElementById('name_login').value, "password": document.getElementById('password_login').value });
@@ -294,6 +312,25 @@
 			$logosino.fadeOut('slow');
 			$signIn.fadeIn('slow');
 		});
+
+		function getCookie(cname) 
+		{
+			var name = cname + '=';
+			var decodedCookie = decodeURIComponent(document.cookie);
+			var ca = decodedCookie.split(';');
+			for (var i = 0; i < ca.length; i++)
+			{
+				var c = ca[i];
+				while (c.charAt(0) == ' ')
+				{
+					c = c.substring(1);
+				}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+	return '';
+}
 	</script>
 
 </body>

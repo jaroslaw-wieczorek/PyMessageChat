@@ -164,11 +164,12 @@ def home():
 @app.route('/chat')
 def chat():
     user_id = get_jwt_identity()
+    print(user_id)
     if user_id:
         return render_template('chat.html')
     else:
-        #return redirect("/")
-        return render_template('chat.html')
+        return redirect("/")
+        #return render_template('chat.html')
 
 if __name__ == '__main__':
     from db import db
