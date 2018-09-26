@@ -8,7 +8,7 @@ from models.channel import ChannelModel
 
 class MessageModel(db.Model):
 
-    __tablename__ = "messages"
+    __tablename__ = 'messages'
 
     message_id = db.Column(db.String(64), primary_key=True,
                            unique=True,
@@ -36,12 +36,12 @@ class MessageModel(db.Model):
         self.avatar = avatar
 
     def json(self):
-        return {"message_id": self.message_id,
-                #"channel_id": self.channel_id,
-                "content": self.content,
-                "time": json.dumps(str(self.time), cls=DateEncoder),
-                "username": self.username,
-                "avatar": self.avatar
+        return {'message_id': self.message_id,
+                #'channel_id': self.channel_id,
+                'content': self.content,
+                'time': json.dumps(str(self.time), cls=DateEncoder),
+                'username': self.username,
+                'avatar': self.avatar
                 }
 
     @classmethod

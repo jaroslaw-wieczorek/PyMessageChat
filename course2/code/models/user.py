@@ -44,7 +44,7 @@ class UserModel(db.Model):
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
-    """
+    '''
     def is_active(self):
         return True
 
@@ -54,7 +54,7 @@ class UserModel(db.Model):
 
     def is_authenticated(self):
         return self.authenticated
-    """
+    '''
 
     @classmethod
     def find_by_id(cls, _id):
