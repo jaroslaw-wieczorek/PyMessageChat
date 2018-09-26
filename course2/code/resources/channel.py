@@ -171,7 +171,7 @@ class Channel(Resource):
             for item in data["users"]:
                 users.add(item)
 
-            channel.name = data['name']
+            #channel.name = data['name']
             channel.owners = json.dumps(list(owners))
             channel.users = json.dumps(list(users))
 
