@@ -171,7 +171,7 @@ api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(ChannelList, '/channels')
 api.add_resource(Channel, '/channels/<string:name>')
 
-api.add_resource(CheckIsChannelOwner, '/channel/<string:channel_name>/is_owner')
+api.add_resource(CheckIsChannelOwner, '/channel/<string:channel_name>/')
 
 api.add_resource(MessageList, '/channels/<string:channel_name>/messages')
 api.add_resource(Message, '/channels/<string:channel_name>/message')

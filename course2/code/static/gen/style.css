@@ -6,7 +6,7 @@
 	line-height: 1rem;
 	font-size: 0.66666rem;
 	margin: 0;
-	font-family: 'Open Sans', sans-serif !important;
+	font-family: "Open Sans", sans-serif !important;
 }
 
 html {
@@ -31,7 +31,7 @@ summary {
 
 body {
 	color: #4d4d4d;
-	background-image: url('../img/bg.png');
+	background-image: url("../img/bg.png");
 	background-position: calc(50% + 0px) 0%;
 	display: flex;
 	flex-flow: column;
@@ -122,7 +122,12 @@ body {
 	background-color: #fdfefe !important;
 	border-bottom: 2px solid hsl(222, 41.7%, 95.3%) !important;
 }
-.content .chat-container .chatcolumn .msglist .message-container .data-container {
+.content
+	.chat-container
+	.chatcolumn
+	.msglist
+	.message-container
+	.data-container {
 	display: flex;
 	flex-flow: column;
 	align-items: flex-end;
@@ -189,7 +194,7 @@ body {
 	display: flex;
 	flex-flow: column;
 }
-#MYNAME_avatar{
+#MYNAME_avatar {
 	width: 4rem;
 	height: 4rem;
 	border: 2px solid #fff;
@@ -242,7 +247,7 @@ body {
 }
 .content .userlistcolumn .userlist .container.darker .avatar,
 .content .userlistcolumn .ownerlist .container.darker .avatar {
-	width: 2rem;
+	min-width: 2rem;
 	height: 2rem;
 	border: 2px solid #fff;
 	border-radius: 100%;
@@ -255,6 +260,10 @@ body {
 .userlist + h3 {
 	padding-top: 2rem;
 	font-size: 0.875rem;
+	padding-bottom: 1rem;
+}
+
+h3 {
 	padding-bottom: 1rem;
 }
 
@@ -272,21 +281,21 @@ body {
   	flex-flow: column;*/
 }
 
-
 .addusermodal-wrapper {
 	width: 24rem;
 	height: 12rem;
 	background-color: #fff;
 	border-radius: 5px;
 	color: hsl(198.9, 7.6%, 50.8%);
-	padding: 0.5rem 1rem;
+	padding: 1rem;
 	font-size: 0.5625rem;
-	/* border: 1px solid hsl(222, 41.7%, 91.3%); */
+	border: 1px solid hsl(222, 41.7%, 91.3%);
 	box-shadow: 0px 0px 3rem hsl(222, 41.7%, 95.3%);
-	
+	display: flex;
+	flex-flow: column;
 }
 
-.element{
+.element {
 	display: flex;
 	flex-flow: row;
 	flex-wrap: nowrap;
@@ -295,12 +304,31 @@ body {
 }
 
 .addusermodal-content {
-	
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
 	align-items: center;
-	
+}
+
+.addusermodal-row {
+	display: grid;
+	grid-template-columns: 1fr 4rem 4rem;
+	width: 100%;
+	justify-items: flex-start;
+	grid-gap: 1rem;
+}
+
+.addusermodal-row:last-child {
+	margin-bottom: 2rem;
+}
+
+.addusermodal-header {
+	font-weight: 600;
+	padding-bottom: 0.5rem;
+}
+.addusermodal-wrapper > button {
+	width: 6rem;
+	align-self: center;
 }
 
 /* modal */
@@ -325,7 +353,6 @@ body {
 	font-size: 0.5625rem;
 	/* border: 1px solid hsl(222, 41.7%, 91.3%); */
 	box-shadow: 0px 0px 3rem hsl(222, 41.7%, 95.3%);
-
 }
 
 .profilemodal-content {
@@ -341,7 +368,7 @@ body {
 	height: 1rem;
 }
 
-.profilemodal-footer{
+.profilemodal-footer {
 	margin-top: 0.5rem;
 }
 
@@ -349,6 +376,9 @@ body {
 
 h2 {
 	font-size: 1rem;
+}
+
+h3 {
 }
 
 .hoverWrapper {
