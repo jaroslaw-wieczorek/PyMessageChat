@@ -46,7 +46,7 @@ class Message(Resource):
                         type=str,
                         required=False,
                         help='This field cannot be blank')
-    """
+    '''
     @jwt_required
     def get(self, channel_name, message_id):
         channel_id = ChannelModel.find_id_by_name(channel_name)
@@ -61,7 +61,7 @@ class Message(Resource):
                 return {'message': 'Message not found'}, 404
         else:
             return {'message': 'Channel not found'}, 404
-    """
+    '''
     @jwt_required
     def post(self, channel_name):
 
@@ -80,9 +80,9 @@ class Message(Resource):
 
             user_id = get_jwt_identity()
             user = UserModel.find_by_id(user_id)
-
+            print(user.username)
             message = MessageModel(message_id, channel_id,
-                                   data["content"], date_now,
+                                   data['content'], date_now,
                                    user.username,
                                    UserModel.get_avatar(user.username))
 
@@ -122,8 +122,8 @@ class MessageList(Resource):
                              channel_id=channel_id).all()]
 
             if user_id:
-                return {"messages": messages_list}, 200
+                return {'messages': messages_list}, 200
             else:
-                return {"messages": "Not available for non-logged users."}, 403
+                return {'messages': 'Not available for non-logged users.'}, 403
         else:
             return {'message': 'Channel with that name not found.'}, 404

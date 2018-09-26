@@ -28,8 +28,24 @@ class ChannelModel(db.Model):
         }
 
     @classmethod
-    def find_channels_by_username(cls, username):
-        return cls.query.filter(ChannelModel.owners.contains(username)).all()
+    def find_channels_by_owner(cls, username):
+        channels = cls.query.filter(ChannelModel.owners.contains(username)).all()
+        channels_by_owner = []
+        for channel in channels:
+            if username in json.loads(channel.owners):
+                channels_by_owner.append(channel)
+        channels = []
+        return channels_by_owner
+
+    @classmethod
+    def find_channels_by_user(cls, username):
+        channels = cls.query.filter(ChannelModel.users.contains(username)).all()
+        channels_by_user = []
+        for channel in channels:
+            if username in json.loads(channel.users):
+                channels_by_user.append(channel)
+        channels = []
+        return channels_by_user
 
     @classmethod
     def find_by_name(cls, name):

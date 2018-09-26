@@ -95,9 +95,19 @@ jwt = JWTManager(app)
 def add_claims_to_jwt(identity):
     user = UserModel.find_by_id(identity)
     if user and identity == 1:
+        channels = ChannelModel.find_channels_by_username(name)
+        owner_list = []
+        user_list = []
+        for channel in channels:
+            if (user.username in json.loads(channel.owners)):
+                owner_list.append(channel.name)
+
+            if (user.username in json.loads(channel.owners)):
+                owner_list.append(channel.name)
+
         return {"username": user.username,
                 "email": user.email,
-                "is_admin": True
+                "owner": True
                 }
     return {"username": user.username,
             "email": user.email,

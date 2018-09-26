@@ -225,13 +225,20 @@ class ChannelList(Resource):
 
         if user:
             name = user.username
-            channels = ChannelModel.find_channels_by_username(name)
+            user_channels = ChannelModel.find_channels_by_user(name)
+            owner_channels = ChannelModel.find_channels_by_owner(name)
+
             channel_list = []
 
-            for channel in channels:
-                if (name in json.loads(channel.owners) or
-                   name in json.loads(channel.users)):
+            for channel in owner_channels:
+                if name in json.loads(channel.owners):
                         channel_list.append(channel.json())
+
+            for channel in user_channels:
+                if name in json.loads(channel.users) and(
+                    channel.json() not in channel_list
+                ):
+                    channel_list.append(channel.json())
 
             if channel_list:
                 return {'channels': channel_list}, 200
