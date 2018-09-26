@@ -254,7 +254,7 @@
 				if (xhr.readyState == 4 && xhr.status == 200) {
 
 					var json = JSON.parse(xhr.responseText);
-					console.log(json.name);
+					//console.log(json.name);
 					//console.log(json);
 					setCookie('access_token', json.access_token);
 					setCookie('refresh_token', json.refresh_token);
@@ -279,7 +279,7 @@
 					fetch(myRequest).then(window.location='/chat');
 				}
 				else {
-					//var json = JSON.parse(xhr.responseText);
+					var json = JSON.parse(xhr.responseText);
 					var status_div = document.getElementById('login_response_status');
 					status_div.innerHTML = xhr.responseText;
 					console.log('STATUS_DIV:', xhr.responseText);

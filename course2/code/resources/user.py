@@ -56,6 +56,34 @@ _user_parser.add_argument('status',
 
 
 class UserRegister(Resource):
+
+    _user_parser = reqparse.RequestParser()
+    _user_parser.add_argument('username',
+                              type=str,
+                              required=True,
+                              help="This field cannot be blank")
+
+    _user_parser.add_argument('email',
+                              type=str,
+                              required=True,
+                              help="This field cannot be blank")
+
+    _user_parser.add_argument('password',
+                              type=str,
+                              required=True,
+                              help="This field cannot be blank")
+
+    _user_parser.add_argument('avatar',
+                              type=str,
+                              required=False,
+                              help="This field cannot be blank")
+
+    _user_parser.add_argument('status',
+                          type=bool,
+                          required=False,
+                          default=False,
+                          help="Status is setup by server")
+
     def get(self, username):
         user = self.find_by_username(username)
         if user:
@@ -63,7 +91,7 @@ class UserRegister(Resource):
         return {'message': 'User not exist.'}, 404
 
     def post(self):
-        data = _user_parser.parse_args()
+        data = UserRegister._user_parser.parse_args()
 
         if UserModel.find_by_username(data['username']):
             return {"message": "A user with that name already exists."}, 400
