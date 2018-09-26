@@ -42,6 +42,7 @@ from resources.message import MessageList
 
 from resources.channel import Channel
 from resources.channel import ChannelList
+from resources.channel import CheckIsChannelOwner
 
 from datetime import timedelta
 
@@ -169,6 +170,8 @@ api.add_resource(TokenRefresh, '/refresh')
 
 api.add_resource(ChannelList, '/channels')
 api.add_resource(Channel, '/channels/<string:name>')
+
+api.add_resource(CheckIsChannelOwner, '/channel/<string:channel_name>/is_owner')
 
 api.add_resource(MessageList, '/channels/<string:channel_name>/messages')
 api.add_resource(Message, '/channels/<string:channel_name>/message')

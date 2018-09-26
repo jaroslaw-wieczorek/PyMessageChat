@@ -223,7 +223,7 @@
 				<div>
 					<input required type='password' name='user_password' id='password_login' placeholder='Password'>
 				</div>
-				<div id='login_response_status'> Status </div>
+				<div id='login_response_status'>  </div>
 				<button type='submit' class='btn btn-sign-up' onclick='postfetchlogin()'>Log in</button>
 				<button type='button' class='btn btn-member'>Not a member?</button>
 
@@ -239,8 +239,9 @@
 		function httpGetAsync(theUrl, callback) {
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.onreadystatechange = function () {
-				if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+				if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
 					callback(xmlHttp.responseText);
+				}
 			}
 			xmlHttp.open('GET', theUrl, true); // true for asynchronous
 			xmlHttp.send(null);
@@ -279,12 +280,16 @@
 					fetch(myRequest).then(window.location='/chat');
 				}
 				else {
-					var json = JSON.parse(xhr.responseText);
 					var status_div = document.getElementById('login_response_status');
+					var json = JSON.parse(xhr.responseText);
+					if (json.hasOwnProperty('access_token')){
+						status_div.innerHTML = "{'message': 'Acces succesful'}";
+					}
+					else{
 					status_div.innerHTML = xhr.responseText;
-					console.log('STATUS_DIV:', xhr.responseText);
+					};
+					//console.log('STATUS_DIV:', xhr.responseText);
 					//console.log(json);
-					
 				}
 			}
 			var data = JSON.stringify({ 'username': document.getElementById('name_login').value, 'password': document.getElementById('password_login').value });

@@ -7,6 +7,7 @@ function addchannel() {
 		postchannel(channelname);
 	}
 }
+
 function adduser() {
 	let addusermodal = document.querySelector('#addusermodal');
 	let addusermodalcontent = document.querySelector('.addusermodal-content');
@@ -171,6 +172,8 @@ function profilemodal() {
 	// Get the <span> element that closes the modal
 
 	let btn_logout = document.getElementById('MYNAME_logout');
+
+
 	btn_logout.onclick = function(){
 		modal.style.display = 'none';
 
@@ -186,7 +189,31 @@ function profilemodal() {
 		window.location = "/"
 
 	}
+	let avatar_label = document.getElementById('MYNAME_avatar')
+	let name_label = document.getElementById('MYNAME_username');
+	let email_label = document.getElementById('MYNAME_email');
 
+	var myHeaders = new Headers();
+	myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
+
+	var myInit = {
+		method: 'GET',
+		headers: myHeaders,
+		mode: 'cors',
+		cache: 'default'
+	};
+
+	var myRequest = new Request('/user', myInit);
+	
+	fetch(myRequest).then(function(response) {
+			return response.json();
+		}).then(function(data) {
+			
+			avatar_label.style['background-image'] = `url(http://i.pravatar.cc/72?u=${data.username})`;
+			name_label.innerHTML = data.username;
+			email_label.innerHTML = data.email;
+		});
+	
 
 	// When the user clicks the button, open the modal
 	btn.onclick = function() {

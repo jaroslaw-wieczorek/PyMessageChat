@@ -79,10 +79,10 @@ class UserRegister(Resource):
                               help="This field cannot be blank")
 
     _user_parser.add_argument('status',
-                          type=bool,
-                          required=False,
-                          default=False,
-                          help="Status is setup by server")
+                              type=bool,
+                              required=False,
+                              default=False,
+                              help="Status is setup by server")
 
     def get(self, username):
         user = self.find_by_username(username)
@@ -129,16 +129,20 @@ class UserList(Resource):
 
 class User(Resource):
     @jwt_required
-    @classmethod
-    def get(cls, user_id):
+    def get(cls):
+        user_id = get_jwt_identity()
         user = UserModel.find_by_id(user_id)
+
         if not user:
             return {'message': 'User not found.'}, 404
-        return user.json()
+        data = user.json()
+        data["email"] = user.email
+        print(data)
+        return data
 
     @jwt_required
-    @classmethod
-    def delete(cls, user_id):
+    def delete(cls):
+        user_id = get_jwt_identity()
         user = UserModel.find_by_id(user_id)
 
         if not user:

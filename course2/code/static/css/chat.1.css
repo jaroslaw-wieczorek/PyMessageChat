@@ -172,6 +172,7 @@ input[type="text"] {
 	-webkit-animation-duration: 0.4s;
 	animation-name: fadeIn;
 	animation-duration: 0.4s;
+	text-align: center;
 }
 
 /* Modal Content */
@@ -184,6 +185,7 @@ input[type="text"] {
 	-webkit-animation-duration: 0.4s;
 	animation-name: slideIn;
 	animation-duration: 0.4s;
+	align-items: center;
 }
 .profilemodal-header {
 	padding: 2px 16px;

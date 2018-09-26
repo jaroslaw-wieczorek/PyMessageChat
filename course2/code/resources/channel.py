@@ -154,21 +154,19 @@ class Channel(Resource):
         elif (not ChannelModel.find_by_name(data['name']) or
               data['name'] == name):
 
+            if user.username not in channel.owners:
+                return {
+                    'message': 'You arn\'t owner channel: ' + channel.name
+                }
             owner = user.username
             owners = set()
             owners.add(owner)
-
-            for item in channel.owners:
-                owners.add(item)
 
             for item in data["owners"]:
                 owners.add(item)
 
             users = set()
             users.add(owner)
-
-            for item in channel.users:
-                users.add(item)
 
             for item in data["users"]:
                 users.add(item)
@@ -215,6 +213,19 @@ class UserChannelList(Resource):
             else:
                 return {'message': 'User hasn\'t got any channel'}, 200
         return {'message': 'Channels not found'}, 404
+
+
+class CheckIsChannelOwner(Resource):
+    @jwt_required
+    def get(self, channel_name):
+        user_id = get_jwt_identity()
+        user = UserModel.find_by_id(user_id)
+        channel = ChannelModel.find_by_name(channel_name)
+        if channel:
+            if user.username in channel.owners:
+                return {'is_owner': True}, 200
+            return {'is_owner': False}, 403
+        return {'message': 'Channel not found'}, 404
 
 
 class ChannelList(Resource):
