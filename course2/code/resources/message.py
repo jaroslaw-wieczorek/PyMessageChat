@@ -94,9 +94,9 @@ class Message(Resource):
 
     @jwt_required
     def delete(self, channel_name, message_id):
-        claims = get_jwt_claims()
-        if not claims['is_admin']:
-            return {'message': 'Admin privilege required.'}, 401
+        #claims = get_jwt_claims()
+        #if not claims['is_admin']:
+        #    return {'message': 'Admin privilege required.'}, 401
 
         channel_id = ChannelModel.find_id_by_name(channel_name)
         if channel_id:

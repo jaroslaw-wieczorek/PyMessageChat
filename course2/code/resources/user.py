@@ -8,12 +8,13 @@ from hashes import randomData
 from models.user import UserModel
 from blacklist import BLACKLIST
 
-from flask import redirect
+from flask import redirect, request
 
 from flask_restful import reqparse
 from flask_restful import Resource
 
 from werkzeug.security import safe_str_cmp
+from flask import render_template, make_response
 
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import fresh_jwt_required
@@ -71,9 +72,9 @@ class UserRegister(Resource):
             return {"message": "That email is in use."}, 400
 
         random_data = randomData()
-        #print(random_data)
+        # print(random_data)
         _id = hashData(str(random_data))
-        #print(_id)
+        # print(_id)
         user = UserModel(_id, **data)
 
         user.save_to_db()
@@ -129,6 +130,9 @@ class UserLogin(Resource):
         if user and safe_str_cmp(user.password, data['password']):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
+            response = make_response()
+            response.set_cookie('access_token', value=access_token)
+            response.set_cookie('refresh_token', value=refresh_token)
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -138,14 +142,14 @@ class UserLogin(Resource):
 
 class UserLogout(Resource):
     @jwt_required
-    def post(self):
+    def get(self):
         user_id = get_jwt_identity()
-        print(user_id)
-        print("JTI")
+        #print(user_id)
         jti = get_raw_jwt()['jti']
         # jti is "JWT ID", a unique identyfier for a JWT
         BLACKLIST.add(jti)
-        return redirect("/")
+
+        return  redirect('/')
 
         # return {'messages': 'Succesfuly logged out.'}, 200
 

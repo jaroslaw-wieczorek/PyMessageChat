@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import redirect
 from flask import jsonify
-from flask import render_template, make_response
+from flask import render_template, make_response, request
 
 from flask_assets import Environment, Bundle
 
@@ -53,15 +53,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-app.config['JWT_COOKIE_DOMAIN'] = '/'
 app.config['JSON_AS_ASCII'] = False
 app.config['JWT_AUTH_URL_RULE'] = '/login'
-#app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
-app.config['JWT_TOKEN_LOCATION'] = ['cookies', 'headers']
+app.config['JWT_TOKEN_LOCATION'] = ['headers']
+#app.config['JWT_TOKEN_LOCATION'] = ['headers']
+#app.config['JWT_TOKEN_LOCATION'] = ['headers']# ['cookies']
 app.config['JWT_COOKIE_SECURE'] = False
 
-app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
-app.config['JWT_REFRESH_COOKIE_PATH'] = '/refresh'
+app.config['JWT_ACCESS_COOKIE_PATH'] = '/chat'
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/'
 app.config['JWT_SECRET_KEY'] = 'super-secret'
 # config JWT to expire within half an hour
 app.config['JWT_EXPIRATION_DELTA'] = timedelta(seconds=3600)
@@ -169,22 +169,29 @@ def home():
     return render_template('login.html')
 
 
-
 @app.route('/chat', methods=["GET"])
-@jwt_required
+#@jwt_required
 def chat():
-    user_id = get_jwt_identity()
+    #user_id = get_jwt_identity()
 
-    if user_id:
-        print("User authenticate")
-        return render_template('chat.html', title='PyMessageChat')
-        print("Tego nie powinno być")
+    if request.cookies.get('access_token') is not None:
+        response = make_response(
+            render_template('chat.html', title='PyMessageChat')
+        )
+        response.set_cookie('access_token',
+                            request.cookies.get('access_token'))
+
+        response.set_cookie('refresh_token',
+                            request.cookies.get('refresh_token'))
+        return response
+
     else:
         print("User unauthenticate")
         return redirect("/")
-        #return render_template('chat.html')
+        # return render_template('chat.html')
+
 
 if __name__ == '__main__':
     from db import db
     db.init_app(app)
-    app.run(port=5000, debug=False)
+    app.run(port=5000, debug=True)

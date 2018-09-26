@@ -244,22 +244,24 @@
 					setCookie("access_token", json.access_token);
 					setCookie("refresh_token", json.refresh_token);
 					setCookie("username", document.getElementById('name_login').value);
+ 				    
+ 				    window.sessionStorage.setItem('access_token', json.access_token);
+ 				    window.sessionStorage.setItem('refresh_token', json.refresh_token);
+					//window.location = "/chat"
 
-					window.location = "http://127.0.0.1:5000/chat"
+					var myHeaders = new Headers();
+					myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
 
-					//var myHeaders = new Headers();
-					//myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
+					var myInit = {
+						method: 'GET',
+					headers: myHeaders,
+						mode: 'cors',
+						cache: 'default'
+					};
 
-					//var myInit = {
-					//	method: 'GET',
-						//headers: myHeaders,
-					//	mode: 'cors',
-					//	cache: 'default'
-					//};
+					var myRequest = new Request('http://127.0.0.1:5000/chat', myInit);
 
-					//var myRequest = new Request('http://127.0.0.1:5000/chat', myInit);
-
-					//fetch(myRequest).then(window.location='http://127.0.0.1:5000/chat');
+					fetch(myRequest).then(window.location='/chat');
 				}
 				else {
 					//var json = JSON.parse(xhr.responseText);
