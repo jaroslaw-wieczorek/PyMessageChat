@@ -33,13 +33,13 @@ class Channel(Resource):
 
     parser.add_argument('users',
                         type=str,
-                        required=True,
+                        required=False,
                         action='append',
                         help='This field cannot be blank')
 
     parser.add_argument('owners',
                         type=str,
-                        required=True,
+                        required=False,
                         action='append',
                         help='This field cannot be blank')
 
@@ -125,24 +125,28 @@ class Channel(Resource):
             owners = set()
             owners.add(owner)
 
-            for item in data["owners"]:
-                owners.add(item)
+            if data["owners"] and hasattr(data["owners"], '__iter__'):
+                for item in data["owners"]:
+                    owners.add(item)
 
             users = set()
             users.add(owner)
 
-            for item in data["users"]:
-                users.add(item)
+            if data["users"] and hasattr(data["users"], '__iter__'):
+                for item in data["users"]:
+                    users.add(item)
 
             print(owners, users)
 
             try:
                 owners.remove('')
+                owners.remove('null')
             except Exception as err:
                 pass
 
             try:
                 users.remove('')
+                users.remove('null')
             except Exception as err:
                 pass
 
@@ -161,15 +165,25 @@ class Channel(Resource):
             owner = user.username
             owners = set()
             owners.add(owner)
-
-            for item in data["owners"]:
-                owners.add(item)
+            if data["owners"] and hasattr(data["owners"], '__iter__'):
+                for item in data["owners"]:
+                    owners.add(item)
 
             users = set()
             users.add(owner)
+            if data["users"] and hasattr(data["users"], '__iter__'):
+                for item in data["users"]:
+                    users.add(item)
 
-            for item in data["users"]:
-                users.add(item)
+            try:
+                owners.remove('')
+            except Exception as err:
+                pass
+
+            try:
+                users.remove('')
+            except Exception as err:
+                pass
 
             channel.owners = json.dumps(list(owners))
             channel.users = json.dumps(list(users))

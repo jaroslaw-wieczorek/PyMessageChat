@@ -145,6 +145,8 @@ function prepareBodyFromUpdateUserList(rows) {
 		row.querySelector(".user").checked ? body.users.push(username) : null;
 		row.querySelector(".owner").checked ? body.owners.push(username) : null;
 	}
+	//body.users.length === 0 ? (body.users = null) : null;
+  	//body.owners.length === 0 ? (body.owners = null) : null;
 
 	let myHeaders = new Headers();
 	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
@@ -170,16 +172,20 @@ function prepareBodyFromUpdateUserList(rows) {
 		})
 		.then(data => {
 			let { owners, users } = data;
-			for (let i = 0; i < owners.length; i++)
-				addausertolist(owners[i], "owner");
+			if (owners !== undefined) {
+				for (let i = 0; i < owners.length; i++)
+					addausertolist(owners[i], "owner");
+			}
 
-			for (let i = 0; i < users.length; i++)
-				addausertolist(users[i], "user");
+			if (users !== undefined) {
+				for (let i = 0; i < users.length; i++)
+					addausertolist(users[i], "user");
+			}
 		})
 		.catch(function error(error) {
-			console.log('request failed', error);
-        	console.log('request failed', error.stack);
-			
+			console.log("request failed", error);
+			console.log("request failed", error.stack);
+
 			alert("Sesja została zakończona, zaloguj się ponownie");
 			//document.location.replace("http://127.0.0.1:5000");
 		});
