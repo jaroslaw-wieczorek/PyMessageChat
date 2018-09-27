@@ -1,3 +1,37 @@
+window.onload = function() {
+	let user_myname = document.getElementById("MYNAME");
+	user_myname.innerHTML = `${getCookie("username")}`;
+
+	let current_channel = document.getElementById("currentChannel");
+	current_channel.innerHTML = `Messages: ${getCookie("channel")}`;
+}
+
+window.setInterval(
+function(){ 
+	//let myHeaders = new Headers();
+	//myHeaders.set("Authorization", `Bearer ${getCookie("refresh_token")}`);
+
+	xhr = new XMLHttpRequest();
+	var url = "http://127.0.0.1:5000/refresh";
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.setRequestHeader("Authorization",`Bearer ${getCookie("refresh_token")}`);
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			
+			var json = JSON.parse(xhr.responseText);
+			//console.log(json);
+			console.log(json.access_token)
+			setCookie('access_token', json.access_token);
+			//setCookie('refresh_token', json.refresh_token);
+
+		}
+	};
+	xhr.send(null);
+
+}, 1000);
+
 function addchannel() {
 	var channelname = prompt("Please enter the channel name:", "Lemons");
 
@@ -356,7 +390,7 @@ function postchannel(name) {
 		"Authorization",
 		"Bearer " + getCookie("access_token")
 	);
-	console.log("dupa");
+	//console.log("dupa");
 	console.log(getCookie("access_token"));
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 201) {
