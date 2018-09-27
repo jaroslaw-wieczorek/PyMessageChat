@@ -1,35 +1,64 @@
 window.onload = function() {
-	let user_myname = document.getElementById("MYNAME");
-	user_myname.innerHTML = `${getCookie("username")}`;
-
-	let current_channel = document.getElementById("currentChannel");
-	current_channel.innerHTML = `Messages: ${getCookie("channel")}`;
-}
-
-window.setInterval(
-function(){ 
-	//let myHeaders = new Headers();
-	//myHeaders.set("Authorization", `Bearer ${getCookie("refresh_token")}`);
 
 	xhr = new XMLHttpRequest();
 	var url = "http://127.0.0.1:5000/refresh";
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json");
-	xhr.setRequestHeader("Authorization",`Bearer ${getCookie("refresh_token")}`);
+	xhr.setRequestHeader("Authorization",`Bearer ${localStorage.getItem("refresh_token")}`);
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			
 			var json = xhr.responseText;
 			console.log(json);
-			
+
+			localStorage.setItem('access_token', json.access_token);
 			//document.setCookie('access_token', json.access);
 
 			//setCookie('refresh_token', json.refresh_token);
 
 			//httpGetAsync(
 			//	"http://127.0.0.1:5000/channels/" +
-			//	getCookie("channel") +
+			//	localStorage.getItem("channel") +
+			//	"/messages",
+			//	loadmsgs
+			//);
+		}};
+	xhr.send(null);
+
+	let current_channel = document.getElementById("currentChannel");
+	current_channel.innerHTML = `Messages: ${localStorage.getItem("channel")}`;
+
+	let user_myname = document.getElementById("MYNAME");
+	user_myname.innerHTML = `${localStorage.getItem("username")}`;
+
+}
+
+window.setInterval(
+function(){ 
+	//let myHeaders = new Headers();
+	//myHeaders.set("Authorization", `Bearer ${localStorage.getItem("refresh_token")}`);
+
+	xhr = new XMLHttpRequest();
+	var url = "http://127.0.0.1:5000/refresh";
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json");
+	xhr.setRequestHeader("Authorization",`Bearer ${localStorage.getItem("refresh_token")}`);
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			
+			var json = xhr.responseText;
+			console.log(json);
+
+			localStorage.setItem('access_token', json.access_token);
+			//document.setCookie('access_token', json.access);
+
+			//setCookie('refresh_token', json.refresh_token);
+
+			//httpGetAsync(
+			//	"http://127.0.0.1:5000/channels/" +
+			//	localStorage.getItem("channel") +
 			//	"/messages",
 			//	loadmsgs
 			//);
@@ -58,7 +87,7 @@ async function asyncFetchUsers() {
 	// Fire both API requests at the same time
 
 	let myHeaders = new Headers();
-	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+	myHeaders.set("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
 
 	let myInit = {
 		method: "GET",
@@ -67,7 +96,7 @@ async function asyncFetchUsers() {
 		cache: "default",
 	};
 	const channelUsers = fetch(
-		`http://127.0.0.1:5000/channels/${getCookie("channel")}`,
+		`http://127.0.0.1:5000/channels/${localStorage.getItem("channel")}`,
 		myInit
 	);
 	const allUsers = fetch("http://127.0.0.1:5000/users", myInit);
@@ -79,14 +108,14 @@ async function asyncFetchUsers() {
 function adduser() {
 	// console.log(asyncFetchUsers());
 
-	console.log(getCookie("username"));
+	console.log(localStorage.getItem("username"));
 
 	let addusermodal = document.querySelector("#addusermodal");
 	let addusermodalcontent = document.querySelector(".addusermodal-content");
 	addusermodalcontent.innerHTML = "";
 
 	let myHeaders = new Headers();
-	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+	myHeaders.set("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
 
 	let myInit = {
 		method: "GET",
@@ -95,7 +124,7 @@ function adduser() {
 		cache: "default",
 	};
 	const channelUsers = fetch(
-		`http://127.0.0.1:5000/channels/${getCookie("channel")}`,
+		`http://127.0.0.1:5000/channels/${localStorage.getItem("channel")}`,
 		myInit
 	);
 	const allUsers = fetch("http://127.0.0.1:5000/users", myInit);
@@ -107,7 +136,7 @@ function adduser() {
 		const owners = new Set(values[0].owners);
 		const allUsers = values[1].users.map(el => el.username);
 
-		if (owners.has(getCookie("username"))) {
+		if (owners.has(localStorage.getItem("username"))) {
 			addusermodal.style.display = "flex";
 			createUserlistForUpdate(
 				values[0],
@@ -195,7 +224,7 @@ function prepareBodyFromUpdateUserList(rows) {
   	//body.owners.length === 0 ? (body.owners = null) : null;
 
 	let myHeaders = new Headers();
-	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+	myHeaders.set("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
 	myHeaders.set("Content-Type", "application/json; charset=utf-8");
 
 	let myInit = {
@@ -207,7 +236,7 @@ function prepareBodyFromUpdateUserList(rows) {
 	};
 
 	let myRequest = new Request(
-		`http://127.0.0.1:5000/channels/${getCookie("channel")}`,
+		`http://127.0.0.1:5000/channels/${localStorage.getItem("channel")}`,
 		myInit
 	);
 
@@ -239,7 +268,7 @@ function prepareBodyFromUpdateUserList(rows) {
 
 function getUsers() {
 	let myHeaders = new Headers();
-	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+	myHeaders.set("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
 	myHeaders.set("Content-Type", "application/json; charset=utf-8");
 
 	let myInit = {
@@ -303,7 +332,7 @@ function profilemodal() {
 		xhr.setRequestHeader("Content-type", "application/json");
 		xhr.setRequestHeader(
 			"Authorization",
-			"Bearer " + getCookie("access_token")
+			"Bearer " + localStorage.getItem("access_token")
 		);
 
 		xhr.send(null);
@@ -315,7 +344,7 @@ function profilemodal() {
 	let email_label = document.getElementById("MYNAME_email");
 
 	let myHeaders = new Headers();
-	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+	myHeaders.set("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
 
 	let myInit = {
 		method: "GET",
@@ -388,7 +417,7 @@ function httpGetAsync(theUrl, callback) {
 	xmlHttp.open("GET", theUrl, true); // true for asynchronous
 	xmlHttp.setRequestHeader(
 		"Authorization",
-		"Bearer " + getCookie("access_token")
+		"Bearer " + localStorage.getItem("access_token")
 	);
 	xmlHttp.send(null);
 }
@@ -400,10 +429,10 @@ function postchannel(name) {
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.setRequestHeader(
 		"Authorization",
-		"Bearer " + getCookie("access_token")
+		"Bearer " + localStorage.getItem("access_token")
 	);
 	//console.log("dupa");
-	console.log(getCookie("access_token"));
+	console.log(localStorage.getItem("access_token"));
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 201) {
 			//var json = JSON.parse(xhr.responseText);
@@ -414,12 +443,12 @@ function postchannel(name) {
 				httpGetsync("http://127.0.0.1:5000/channels", loadchanlist);
 				httpGetAsync(
 					"http://127.0.0.1:5000/channels/" +
-						getCookie("channel") +
+						localStorage.getItem("channel") +
 						"/messages",
 					loadmsgs
 				);
 				httpGetAsync(
-					"http://127.0.0.1:5000/channels/" + getCookie("channel"),
+					"http://127.0.0.1:5000/channels/" + localStorage.getItem("channel"),
 					loaduserlist
 				);
 			}, delayInMilliseconds);
@@ -434,18 +463,18 @@ function postchannel(name) {
 			}, delayInMilliseconds);
 		}
 	};
-	var data = JSON.stringify({ owners: getCookie("username"), users: "" });
+	var data = JSON.stringify({ owners: localStorage.getItem("username"), users: "" });
 	xhr.send(data);
 }
 
 function adduserchannel(name) {
 	xhr = new XMLHttpRequest();
-	var url = "http://127.0.0.1:5000/channels/" + getCookie("channel");
+	var url = "http://127.0.0.1:5000/channels/" + localStorage.getItem("channel");
 	xhr.open("UPDATE", url, true);
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.setRequestHeader(
 		"Authorization",
-		"Bearer " + getCookie("access_token")
+		"Bearer " + localStorage.getItem("access_token")
 	);
 
 	xhr.onreadystatechange = function() {
@@ -458,12 +487,12 @@ function adduserchannel(name) {
 				httpGetsync("http://127.0.0.1:5000/channels", loadchanlist);
 				httpGetAsync(
 					"http://127.0.0.1:5000/channels/" +
-						getCookie("channel") +
+						localStorage.getItem("channel") +
 						"/messages",
 					loadmsgs
 				);
 				httpGetAsync(
-					"http://127.0.0.1:5000/channels/" + getCookie("channel"),
+					"http://127.0.0.1:5000/channels/" + localStorage.getItem("channel"),
 					loaduserlist
 				);
 			}, delayInMilliseconds);
@@ -477,19 +506,19 @@ function adduserchannel(name) {
 			}, delayInMilliseconds);
 		}
 	};
-	var data = JSON.stringify({ owners: getCookie("username"), users: name });
+	var data = JSON.stringify({ owners: localStorage.getItem("username"), users: name });
 	xhr.send(data);
 }
 
 function postmsg(text) {
 	xhr = new XMLHttpRequest();
 	var url =
-		"http://127.0.0.1:5000/channels/" + getCookie("channel") + "/message";
+		"http://127.0.0.1:5000/channels/" + localStorage.getItem("channel") + "/message";
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.setRequestHeader(
 		"Authorization",
-		"Bearer " + getCookie("access_token")
+		"Bearer " + localStorage.getItem("access_token")
 	);
 
 	xhr.onreadystatechange = function() {
@@ -502,12 +531,12 @@ function postmsg(text) {
 				httpGetsync("http://127.0.0.1:5000/channels", loadchanlist);
 				httpGetAsync(
 					"http://127.0.0.1:5000/channels/" +
-						getCookie("channel") +
+						localStorage.getItem("channel") +
 						"/messages",
 					loadmsgs
 				);
 				httpGetAsync(
-					"http://127.0.0.1:5000/channels/" + getCookie("channel"),
+					"http://127.0.0.1:5000/channels/" + localStorage.getItem("channel"),
 					loaduserlist
 				);
 			}, delayInMilliseconds);
@@ -522,7 +551,7 @@ function postmsg(text) {
 		}
 	};
 	var data = JSON.stringify({
-		username: getCookie("username"),
+		username: localStorage.getItem("username"),
 		content: text,
 	});
 	xhr.send(data);
@@ -535,7 +564,7 @@ function deletechannel(name) {
 	xhr.setRequestHeader("Content-type", "application/json");
 	xhr.setRequestHeader(
 		"Authorization",
-		"Bearer " + getCookie("access_token")
+		"Bearer " + localStorage.getItem("access_token")
 	);
 
 	xhr.onreadystatechange = function() {
@@ -551,12 +580,12 @@ function deletechannel(name) {
 				httpGetsync("http://127.0.0.1:5000/channels", loadchanlist);
 				httpGetAsync(
 					"http://127.0.0.1:5000/channels/" +
-						getCookie("channel") +
+						localStorage.getItem("channel") +
 						"/messages",
 					loadmsgs
 				);
 				httpGetAsync(
-					"http://127.0.0.1:5000/channels/" + getCookie("channel"),
+					"http://127.0.0.1:5000/channels/" + localStorage.getItem("channel"),
 					loaduserlist
 				);
 			}, delayInMilliseconds);
@@ -570,7 +599,7 @@ function deletechannel(name) {
 			}, delayInMilliseconds);
 		}
 	};
-	var data = JSON.stringify({ owners: getCookie("username"), users: "" });
+	var data = JSON.stringify({ owners: localStorage.getItem("username"), users: "" });
 	xhr.send(data);
 }
 
@@ -583,7 +612,7 @@ function httpGetsync(theUrl, callback) {
 	xmlHttp.open("GET", theUrl, false); // true for asynchronous
 	xmlHttp.setRequestHeader(
 		"Authorization",
-		"Bearer " + getCookie("access_token")
+		"Bearer " + localStorage.getItem("access_token")
 	);
 	xmlHttp.send(null);
 }
@@ -597,7 +626,7 @@ function clickedchannel(name) {
 	httpGetAsync("http://127.0.0.1:5000/channels/" + name, loaduserlist);
 	document.getElementById(name).className =
 		"showhim container darker_channel_clicked";
-	setCookie("channel", name);
+	localStorage.setItem("channel", name);
 }
 
 function setCookie(cname, cvalue) {
@@ -644,7 +673,7 @@ function addamsgtolist(text, date, who) {
 		name = document.createElement("p");
 
 	messageContainer.className = `message-container ${
-		getCookie("username") === who ? "logged-user" : "another-user"
+		localStorage.getItem("username") === who ? "logged-user" : "another-user"
 	}`;
 
 	avatar.className = "avatar";

@@ -257,16 +257,16 @@
 					var json = JSON.parse(xhr.responseText);
 					//console.log(json.name);
 					//console.log(json);
-					setCookie('access_token', json.access_token);
-					setCookie('refresh_token', json.refresh_token);
-					setCookie('username', document.getElementById('name_login').value);
+					localStorage.setItem('access_token', json.access_token);
+					localStorage.setItem('refresh_token', json.refresh_token);
+					localStorage.setItem('username', document.getElementById('name_login').value);
  				    
- 				    window.sessionStorage.setItem('access_token', json.access_token);
- 				    window.sessionStorage.setItem('refresh_token', json.refresh_token);
+ 				    window.localStorage.setItem('access_token', json.access_token);
+ 				    window.localStorage.setItem('refresh_token', json.refresh_token);
 					//window.location = '/chat'
 
 					var myHeaders = new Headers();
-					myHeaders.set('Authorization', `Bearer ${getCookie('access_token')}`);
+					myHeaders.set('Authorization', `Bearer ${localStorage.getItem('access_token')}`);
 
 					var myInit = {
 						method: 'GET',
