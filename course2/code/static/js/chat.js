@@ -515,7 +515,7 @@ function postmsg(text) {
 					loaduserlist
 				);
 			}, delayInMilliseconds);
-		} else {
+		} else if (xhr.readyState == 4 && (xhr.status == 400 || xhr.status == 401)) {
 			var json = JSON.parse(xhr.responseText);
 			console.log(json);
 			var delayInMilliseconds = 500; //1 second
