@@ -260,6 +260,10 @@
 					localStorage.setItem('access_token', json.access_token);
 					localStorage.setItem('refresh_token', json.refresh_token);
 					localStorage.setItem('username', document.getElementById('name_login').value);
+
+					setCookie('access_token', json.access_token);
+					setCookie('refresh_token', json.refresh_token);
+					setCookie('username', document.getElementById('name_login').value);
  				    
  				    window.localStorage.setItem('access_token', json.access_token);
  				    window.localStorage.setItem('refresh_token', json.refresh_token);

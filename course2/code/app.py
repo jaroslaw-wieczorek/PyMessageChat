@@ -187,21 +187,21 @@ def home():
 def chat():
     #user_id = get_jwt_identity()
 
-    if request.cookies.get('access_token') is not None:
-        response = make_response(
-            render_template('chat.html', title='PyMessageChat')
-        )
-        response.set_cookie('access_token',
-                            request.cookies.get('access_token'))
+    #if request.cookies.get('access_token') is not None:
+    response = make_response(
+        render_template('chat.html', title='PyMessageChat')
+    )
+        #response.set_cookie('access_token',
+        #                    request.cookies.get('access_token'))
 
-        response.set_cookie('refresh_token',
-                            request.cookies.get('refresh_token'))
-        return response
+        #response.set_cookie('refresh_token',
+        #                    request.cookies.get('refresh_token'))
+    return response
 
-    else:
-        print("User unauthenticate")
-        return redirect("/")
-        # return render_template('chat.html')
+    #else:
+    #    print("User unauthenticate")
+    #    return redirect("/")
+    #    # return render_template('chat.html')
 
 
 if __name__ == '__main__':
