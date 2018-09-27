@@ -51,7 +51,7 @@ function(){
 			var json = xhr.responseText;
 			console.log(json);
 
-			localStorage.setItem('access_token', json.access_token);
+			//localStorage.setItem('access_token', json.access_token);
 			//document.setCookie('access_token', json.access);
 
 			//setCookie('refresh_token', json.refresh_token);
