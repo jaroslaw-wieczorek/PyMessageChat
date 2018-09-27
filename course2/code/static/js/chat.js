@@ -26,11 +26,27 @@ function(){
 			setCookie('access_token', json.access_token);
 			//setCookie('refresh_token', json.refresh_token);
 
+			httpGetAsync(
+				"http://127.0.0.1:5000/channels/" +
+				getCookie("channel") +
+				"/messages",
+				loadmsgs
+			);
 		}
 	};
 	xhr.send(null);
 
+
+
+
+
 }, 30000);
+
+
+
+
+
+
 
 function addchannel() {
 	var channelname = prompt("Please enter the channel name:", "Lemons");
@@ -412,8 +428,9 @@ function postchannel(name) {
 				);
 			}, delayInMilliseconds);
 		} else {
-			var json = JSON.parse(xhr.responseText);
-			console.log(json);
+			//var json = JSON.parse(xhr.responseText);
+			console.log(xhr.responseText);
+
 			var delayInMilliseconds = 500; //1 second
 			setTimeout(function() {
 				console.log("DELAY");
