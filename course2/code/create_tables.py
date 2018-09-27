@@ -38,8 +38,8 @@ cursor.execute(create_table_users)
 cursor.execute(create_table_channels)
 cursor.execute(create_table_messages)
 
-create_user = """ INSERT INTO users values("fdf", 'jaro', '1234', 'jaroslaw.wieczorek@sealcode.org', 'None', 'offline');"""
-cursor.execute(create_user)
+#create_user = """ INSERT INTO users values("fdf", 'jaro', '1234', 'jaroslaw.wieczorek@sealcode.org', 'None', 'offline');"""
+$cursor.execute(create_user)
 
 json_users = ["jaro", "bob"]
 

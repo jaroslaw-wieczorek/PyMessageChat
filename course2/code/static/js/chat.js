@@ -8,100 +8,198 @@ function addchannel() {
 	}
 }
 
+async function asyncFetchUsers() {
+	// Fire both API requests at the same time
+
+	let myHeaders = new Headers();
+	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+
+	let myInit = {
+		method: "GET",
+		headers: myHeaders,
+		mode: "cors",
+		cache: "default",
+	};
+	const channelUsers = fetch(
+		`http://127.0.0.1:5000/channels/${getCookie("channel")}`,
+		myInit
+	);
+	const allUsers = fetch("http://127.0.0.1:5000/users", myInit);
+
+	const [channel, all] = await Promise.all([channelUsers, allUsers]);
+
+	return { channel, all };
+}
 function adduser() {
+	// console.log(asyncFetchUsers());
+
+	console.log(getCookie("username"));
+
 	let addusermodal = document.querySelector("#addusermodal");
 	let addusermodalcontent = document.querySelector(".addusermodal-content");
 	addusermodalcontent.innerHTML = "";
 
-	addusermodal.style.display = "flex";
-
-	var myHeaders = new Headers();
+	let myHeaders = new Headers();
 	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
 
-	var myInit = {
+	let myInit = {
+		method: "GET",
+		headers: myHeaders,
+		mode: "cors",
+		cache: "default",
+	};
+	const channelUsers = fetch(
+		`http://127.0.0.1:5000/channels/${getCookie("channel")}`,
+		myInit
+	);
+	const allUsers = fetch("http://127.0.0.1:5000/users", myInit);
+
+	Promise.all([
+		channelUsers.then(response => response.json()),
+		allUsers.then(response => response.json()),
+	]).then(function(values) {
+		const owners = new Set(values[0].owners);
+		const allUsers = values[1].users.map(el => el.username);
+
+		if (owners.has(getCookie("username"))) {
+			addusermodal.style.display = "flex";
+			createUserlistForUpdate(
+				values[0],
+				allUsers,
+				addusermodal,
+				addusermodalcontent
+			);
+		} else {
+			addusermodal.style.display = "none";
+			alert("Nie masz uprawnień do edycji tego kanału");
+		}
+	});
+}
+
+function createUserlistForUpdate(
+	channelUsers,
+	allUsers,
+	addusermodal,
+	addusermodalcontent
+) {
+	const users = new Set(channelUsers.users);
+	const owners = new Set(channelUsers.owners);
+	console.log(allUsers);
+
+	for (const name in allUsers) {
+		let elementToList = document.createElement("div");
+		elementToList.className = "addusermodal-row";
+
+		let img = document.createElement("div");
+		img.className = "avatar";
+		img.style["background-image"] = `url(http://i.pravatar.cc/72?u=${
+			allUsers[name]
+		})`;
+
+		let username = document.createElement("p");
+		username.innerHTML = `${allUsers[name]}`;
+
+		let check_box_1 = document.createElement("input");
+		check_box_1.type = "checkbox";
+		check_box_1.value = "user";
+		check_box_1.checked = users.has(allUsers[name]) ? true : false;
+		check_box_1.className = "user";
+
+		let check_box_2 = document.createElement("input");
+		check_box_2.type = "checkbox";
+		check_box_2.value = "user";
+		check_box_2.checked = owners.has(allUsers[name]) ? true : false;
+		check_box_2.className = "owner";
+
+		elementToList.appendChild(username);
+		elementToList.appendChild(check_box_1);
+		elementToList.appendChild(check_box_2);
+
+		addusermodalcontent.appendChild(elementToList);
+	}
+
+	let addbtn = document.createElement("button");
+	addbtn.innerHTML = "Save";
+
+	let addusermodalwrapper = document.querySelector(".addusermodal-wrapper");
+	addusermodalwrapper.appendChild(addbtn);
+
+	addbtn.onclick = () => {
+		addusermodal.style.display = "none";
+		addusermodalwrapper.removeChild(addbtn);
+		prepareBodyFromUpdateUserList(
+			document.querySelectorAll(".addusermodal-row")
+		);
+	};
+}
+
+function prepareBodyFromUpdateUserList(rows) {
+	const body = {
+		users: [],
+		owners: [],
+	};
+
+	for (const row of rows) {
+		const username = row.querySelector("p").textContent;
+
+		row.querySelector(".user").checked ? body.users.push(username) : null;
+		row.querySelector(".owner").checked ? body.owners.push(username) : null;
+	}
+
+	let myHeaders = new Headers();
+	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+	myHeaders.set("Content-Type", "application/json; charset=utf-8");
+
+	let myInit = {
+		method: "PUT",
+		headers: myHeaders,
+		mode: "cors",
+		cache: "default",
+		body: JSON.stringify(body),
+	};
+
+	let myRequest = new Request(
+		`http://127.0.0.1:5000/channels/${getCookie("channel")}`,
+		myInit
+	);
+
+	fetch(myRequest)
+		.then(response => {
+			removeuserlist();
+			return response.json();
+		})
+		.then(data => {
+			let { owners, users } = data;
+			for (let i = 0; i < owners.length; i++)
+				addausertolist(owners[i], "owner");
+
+			for (let i = 0; i < users.length; i++)
+				addausertolist(users[i], "user");
+		})
+		.catch(function error(error) {
+			console.log('request failed', error);
+        	console.log('request failed', error.stack);
+			
+			alert("Sesja została zakończona, zaloguj się ponownie");
+			//document.location.replace("http://127.0.0.1:5000");
+		});
+}
+
+function getUsers() {
+	let myHeaders = new Headers();
+	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
+	myHeaders.set("Content-Type", "application/json; charset=utf-8");
+
+	let myInit = {
 		method: "GET",
 		headers: myHeaders,
 		mode: "cors",
 		cache: "default",
 	};
 
-	var myRequest = new Request(
-		`http://127.0.0.1:5000/channels/${getCookie("channel")}`,
-		myInit
-	);
-
-	fetch(myRequest)
-		.then(response => response.json())
-		.then(data => {
-			const users = data.users;
-			const owners = new Set(data.owners);
-
-			console.log(users, owners);
-
-			for (const name in users) {
-				let elementToList = document.createElement("div");
-				elementToList.className = "addusermodal-row";
-
-				let img = document.createElement("div");
-				img.className = "avatar";
-				img.style[
-					"background-image"
-				] = `url(http://i.pravatar.cc/72?u=${users[name]})`;
-
-				let username = document.createElement("p");
-				username.innerHTML = `${users[name]}`;
-
-				let check_box_1 = document.createElement("input");
-				check_box_1.type = "checkbox";
-				check_box_1.value = "user";
-				check_box_1.checked = true;
-
-				let check_box_2 = document.createElement("input");
-				check_box_2.type = "checkbox";
-				check_box_2.value = "user";
-				check_box_2.checked = owners.has(users[name]) ? true : false;
-
-				elementToList.appendChild(username);
-				elementToList.appendChild(check_box_1);
-				elementToList.appendChild(check_box_2);
-
-				addusermodalcontent.appendChild(elementToList);
-			}
-
-			let addbtn = document.createElement("button");
-			addbtn.innerHTML = "update users";
-
-			let addusermodalwrapper = document.querySelector(
-				".addusermodal-wrapper"
-			);
-			addusermodalwrapper.appendChild(addbtn);
-
-			// potrzebna logika zczytywnaia checkboxów
-			// dodajesz button
-			let btn = document.getElementById("hoverShow2");
-
-			addbtn.onclick = function() {
-				addusermodal.style.display = "none";
-
-				console.log("request");
-			};
-		})
-
-		.then(() => {
-			console.log("kolejny chunk code");
-		});
-	//.catch(() => {
-	//	alert('Sesja została zakończona');
-	// });
-
-	// var username = prompt("Please enter the name of the person you want to invite:", "Lemon_God");
-
-	// if (username == null || username == "") {
-	// 	txt = "User cancelled the prompt.";
-	// } else {
-	// 	adduserchannel(username);
-	// }
+	return new Request("http://127.0.0.1:5000/users", myInit);
 }
+
 window.onclick = function(event) {
 	if (event.target) {
 		model = document.getElementById("profilemodal");
@@ -164,17 +262,17 @@ function profilemodal() {
 	let name_label = document.getElementById("MYNAME_username");
 	let email_label = document.getElementById("MYNAME_email");
 
-	var myHeaders = new Headers();
+	let myHeaders = new Headers();
 	myHeaders.set("Authorization", `Bearer ${getCookie("access_token")}`);
 
-	var myInit = {
+	let myInit = {
 		method: "GET",
 		headers: myHeaders,
 		mode: "cors",
 		cache: "default",
 	};
 
-	var myRequest = new Request("/user", myInit);
+	let myRequest = new Request("/user", myInit);
 
 	fetch(myRequest)
 		.then(function(response) {
@@ -224,13 +322,9 @@ function loadmsgs(jsonstring) {
 }
 function loaduserlist(jsonstring) {
 	removeuserlist();
-	var obj = JSON.parse(jsonstring);
-	for (var i = 0; i < obj.owners.length; i++) {
-		addausertolist(obj.owners[i], "owner");
-	}
-	for (var i = 0; i < obj.users.length; i++) {
-		addausertolist(obj.users[i], "user");
-	}
+	let { owners, users } = JSON.parse(jsonstring);
+	for (let i = 0; i < owners.length; i++) addausertolist(owners[i], "owner");
+	for (let i = 0; i < users.length; i++) addausertolist(users[i], "user");
 }
 
 function httpGetAsync(theUrl, callback) {
