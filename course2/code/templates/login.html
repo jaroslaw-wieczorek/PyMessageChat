@@ -207,7 +207,7 @@
 					<input required type='password' name='user_password' id='password' placeholder='Password'>
 
 				</div>
-				<div id='sign_response_status'> Status </div>
+				<div id='sign_response_status'>  </div>
 				<button type='submit' class='btn btn-sign-up' onclick='postfetchsignup()'>Sign Up</button>
 				<button type='button' class='btn btn-back'>Go back</button>
 
@@ -292,8 +292,15 @@
 					//console.log(json);
 				}
 			}
-			var data = JSON.stringify({ 'username': document.getElementById('name_login').value, 'password': document.getElementById('password_login').value });
-			xhr.send(data);
+			if (!document.getElementById('name_login').value || 
+				!document.getElementById('password_login').value){
+				alert("No field can be empty!")
+			}
+			else{
+				var data = JSON.stringify({ 'username': document.getElementById('name_login').value, 'password': document.getElementById('password_login').value });
+			
+				xhr.send(data);
+			}
 		}
 
 		function setCookie(cname, cvalue) {
@@ -322,13 +329,20 @@
 					console.log('STATUS_DIV:', xhr.responseText);
 				}
 			};
-			var data = JSON.stringify({ 
-				'username': document.getElementById('name').value,
-			    'password': document.getElementById('password').value,
-			    'email': document.getElementById('email').value, 
-			    'avatar': 'noavatar' });
+			if (!document.getElementById('name').value || 
+				!document.getElementById('password').value ||
+				!document.getElementById('email').value){
+				alert("No field can be empty!")
+			}
+			else{			
+				var data = JSON.stringify({ 
+					'username': document.getElementById('name').value,
+			    	'password': document.getElementById('password').value,
+			    	'email': document.getElementById('email').value, 
+			    	'avatar': 'noavatar' });
 
-			xhr.send(data);
+				xhr.send(data);
+			}
 		}
 
 		/* fade in / fade out effect between Log In / Sign Up forms  */

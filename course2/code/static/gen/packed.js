@@ -20,25 +20,21 @@ function(){
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			
-			var json = JSON.parse(xhr.responseText);
-			//console.log(json);
-			console.log(json.access_token)
-			setCookie('access_token', json.access_token);
+			var json = xhr.responseText;
+			console.log(json);
+			
+			//document.setCookie('access_token', json.access);
+
 			//setCookie('refresh_token', json.refresh_token);
 
-			httpGetAsync(
-				"http://127.0.0.1:5000/channels/" +
-				getCookie("channel") +
-				"/messages",
-				loadmsgs
-			);
-		}
-	};
+			//httpGetAsync(
+			//	"http://127.0.0.1:5000/channels/" +
+			//	getCookie("channel") +
+			//	"/messages",
+			//	loadmsgs
+			//);
+		}};
 	xhr.send(null);
-
-
-
-
 
 }, 30000);
 
