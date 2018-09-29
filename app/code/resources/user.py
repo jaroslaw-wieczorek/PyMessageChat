@@ -162,9 +162,9 @@ class UserLogin(Resource):
         if user and safe_str_cmp(user.password, data['password']):
             access_token = create_access_token(identity=user.id, fresh=True)
             refresh_token = create_refresh_token(user.id)
-            response = make_response()
-            response.set_cookie('access_token', value=access_token)
-            response.set_cookie('refresh_token', value=refresh_token)
+            #response = make_response()
+            #response.set_cookie('access_token', value=access_token)
+            #response.set_cookie('refresh_token', value=refresh_token)
             return {
                 'access_token': access_token,
                 'refresh_token': refresh_token
@@ -190,5 +190,5 @@ class TokenRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
         current_user = get_jwt_identity()
-        new_token = create_access_token(identity=current_user, fresh=False)
-        return {'access_token': new_token}, 200
+        access_token = create_access_token(identity=current_user, fresh=True)
+        return {'access_token': access_token}, 200

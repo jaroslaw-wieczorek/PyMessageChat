@@ -193,6 +193,7 @@ class Channel(Resource):
         channel.save_to_db()
         return channel.json(), 201
 
+    @jwt_required
     def delete(self, name):
         channel = ChannelModel.find_by_name(name)
         if channel is not None:

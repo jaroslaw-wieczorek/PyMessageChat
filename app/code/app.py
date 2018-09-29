@@ -118,11 +118,13 @@ def add_claims_to_jwt(identity):
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
+    print("token_in_blacklist_loader")
     return decrypted_token['jti'] in BLACKLIST
 
 
 @jwt.expired_token_loader
 def expired_token_callback():
+    print("expired_token_callback")
     return jsonify({
         'description': 'The token has expired',
         'error': 'token_expired'
@@ -131,6 +133,7 @@ def expired_token_callback():
 
 @jwt.invalid_token_loader
 def invalid_token_callback(error):
+    print("invalid_token_callback")
     return jsonify({
         'description': 'Signature verification failed.',
         'error': 'invalid_token'
@@ -139,6 +142,7 @@ def invalid_token_callback(error):
 
 @jwt.unauthorized_loader
 def missing_token_callback(error):
+    print("missing_token_callback")
     return jsonify({
         'description': 'Request does not contain an access token.',
         'error': 'authorization_required'
@@ -147,6 +151,7 @@ def missing_token_callback(error):
 
 @jwt.needs_fresh_token_loader
 def token_not_fresh_callback(error):
+    print("token_not_fresh_callback")
     return jsonify({
         'description': 'The token is not fresh.',
         'error': 'fresh_token_required'
@@ -155,6 +160,7 @@ def token_not_fresh_callback(error):
 
 @jwt.revoked_token_loader
 def revoked_token_callback():
+    print("revoked_token_callback")
     return jsonify({
         'description': 'The token has been revoked.',
         'error': 'token_revoked'

@@ -48,10 +48,10 @@ function(){
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			
-			var json = xhr.responseText;
+			var json = JSON.parse(xhr.responseText);
 			console.log(json);
 
-			//localStorage.setItem('access_token', json.access_token);
+			localStorage.setItem('access_token', json.access_token);
 			//document.setCookie('access_token', json.access);
 
 			//setCookie('refresh_token', json.refresh_token);
@@ -65,7 +65,7 @@ function(){
 		}};
 	xhr.send(null);
 
-}, 30000);
+}, 3000);
 
 
 

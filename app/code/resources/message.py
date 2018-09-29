@@ -111,7 +111,7 @@ class Message(Resource):
 
 
 class MessageList(Resource):
-    @jwt_optional
+    @jwt_required
     def get(self, channel_name):
         user_id = get_jwt_identity()
 
