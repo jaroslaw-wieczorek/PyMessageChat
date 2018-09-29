@@ -146,7 +146,7 @@ function adduser() {
 			);
 		} else {
 			addusermodal.style.display = "none";
-			alert("Nie masz uprawnień do edycji tego kanału");
+			alert("You do not have permission to edit a channel.");
 		}
 	});
 }
@@ -589,7 +589,7 @@ function deletechannel(name) {
 					loaduserlist
 				);
 			}, delayInMilliseconds);
-		} else {
+		} else if (xhr.readyState == 4 && xhr.status != 201) {
 			var json = JSON.parse(xhr.responseText);
 			console.log(json);
 			var delayInMilliseconds = 500; //1 second
@@ -599,6 +599,10 @@ function deletechannel(name) {
 			}, delayInMilliseconds);
 		}
 	};
+
+
+
+
 	var data = JSON.stringify({ owners: localStorage.getItem("username"), users: "" });
 	xhr.send(data);
 }
@@ -658,8 +662,38 @@ function addachanneltolist(name) {
 	chanlist.appendChild(div);
 }
 
+
+
+
 function removechannel(name) {
-	deletechannel(name);
+
+	console.log(localStorage.getItem("username"));
+
+	let myHeaders = new Headers();
+	myHeaders.set("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
+
+	let myInit = {
+		method: "GET",
+		headers: myHeaders,
+		mode: "cors",
+		cache: "default",
+	};
+	const channelUsers = fetch(
+		`http://127.0.0.1:5000/channels/${localStorage.getItem("channel")}`,
+		myInit
+	);
+
+	Promise.all([
+		channelUsers.then(response => response.json()),
+	]).then(function(values) {
+		const owners = new Set(values[0].owners);
+
+		if (owners.has(localStorage.getItem("username"))) {
+			deletechannel(name);
+		} else {;
+			alert("You do not have permission to delete a channel.");
+		}
+	});
 }
 
 function addamsgtolist(text, date, who) {
