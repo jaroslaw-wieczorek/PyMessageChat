@@ -18,4 +18,4 @@ pytz==2018.5
 six==1.11.0
 SQLAlchemy==1.2.12
 webassets==0.12.1
-Werkzeug==0.14.1
+Werkzeug==3.0.1
