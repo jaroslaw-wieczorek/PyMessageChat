@@ -7,7 +7,7 @@ Flask-JWT-Extended==3.13.1
 Flask-RESTful==0.3.6
 Flask-SQLAlchemy==2.3.2
 itsdangerous==0.24
-Jinja2==2.10
+Jinja2==3.1.6
 MarkupSafe==1.0
 marshmallow==2.16.1
 passlib==1.7.1
@@ -16,6 +16,6 @@ PyQt5==5.11.2
 PyQt5-sip==4.19.12
 pytz==2018.5
 six==1.11.0
-SQLAlchemy==1.2.12
+SQLAlchemy==1.2.19
 webassets==0.12.1
-Werkzeug==0.14.1
+Werkzeug==3.0.6
