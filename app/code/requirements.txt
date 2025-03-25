@@ -16,6 +16,6 @@ PyQt5==5.11.2
 PyQt5-sip==4.19.12
 pytz==2018.5
 six==1.11.0
-SQLAlchemy==1.2.12
+SQLAlchemy==1.2.19
 webassets==0.12.1
 Werkzeug==3.0.6
