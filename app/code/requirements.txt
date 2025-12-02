@@ -18,5 +18,5 @@ pytz==2018.5
 six==1.11.0
 SQLAlchemy==1.2.19
 webassets==0.12.1
-Werkzeug==3.0.6
+Werkzeug==3.1.4
 zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
